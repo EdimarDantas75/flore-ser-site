@@ -1,0 +1,8 @@
+[
+  { "id": "risco_vandalismo",    "titulo": "Vandalismo e depredação dos espaços",   "dimensao": "Espaço Público", "probabilidade": "Alta",  "impacto": "Alto",  "severidade": "alta",  "tratativa": "Zeladoria compartilhada e adoção comunitária",   "deleted_at": null },
+  { "id": "risco_seca",          "titulo": "Seca e estiagem prolongada",             "dimensao": "Plantio",        "probabilidade": "Alta",  "impacto": "Alto",  "severidade": "alta",  "tratativa": "Irrigação e plantio no início das chuvas",       "deleted_at": null },
+  { "id": "risco_financiamento", "titulo": "Descontinuidade de apoio financeiro",    "dimensao": "Financiamento",  "probabilidade": "Média", "impacto": "Alto",  "severidade": "alta",  "tratativa": "Diversificação de fontes e doações",             "deleted_at": null },
+  { "id": "risco_manutencao",    "titulo": "Falta de manutenção dos espaços",        "dimensao": "Manutenção",     "probabilidade": "Média", "impacto": "Médio", "severidade": "media", "tratativa": "Cronograma de mutirões mensais",                 "deleted_at": null },
+  { "id": "risco_engajamento",   "titulo": "Baixo engajamento comunitário",          "dimensao": "Engajamento",    "probabilidade": "Média", "impacto": "Alto",  "severidade": "alta",  "tratativa": "Oficinas e comunicação de proximidade",          "deleted_at": null },
+  { "id": "risco_pragas",        "titulo": "Perda de mudas por pragas e formigas",   "dimensao": "Biodiversidade", "probabilidade": "Média", "impacto": "Médio", "severidade": "media", "tratativa": "Manejo agroecológico e replantio",               "deleted_at": null }
+]

@@ -1,0 +1,9 @@
+[
+  { "id": "dim_plantio",        "numero": 1, "nucleo": true, "nome": "Plantio",                 "descricao": "Produção e plantio de mudas nativas do Cerrado, PANCs e hortas nos espaços públicos requalificados." },
+  { "id": "dim_arte",           "numero": 2, "nucleo": true, "nome": "Arte-Educação",           "descricao": "Oficinas de arte-educação, cultura e mobilização que ressignificam os espaços junto à comunidade." },
+  { "id": "dim_engajamento",    "numero": 3, "nucleo": true, "nome": "Engajamento Comunitário", "descricao": "Participação popular, adoção de espaços e mutirões que sustentam a permanência das ações." },
+  { "id": "dim_escolas",        "numero": 4, "nucleo": true, "nome": "Ações em Escolas",        "descricao": "Atividades de educação ambiental em CMEIs e escolas municipais e estaduais de Goiânia." },
+  { "id": "dim_biodiversidade", "numero": 5, "nucleo": true, "nome": "Biodiversidade",          "descricao": "Inventário e conservação de espécies nativas, fauna associada e recuperação ecológica urbana." },
+  { "id": "dim_parcerias",      "numero": 6, "nucleo": true, "nome": "Parcerias",               "descricao": "Articulação com AMMA, institutos, Jardim Botânico, PROEC/UFG e a rede de escolas." },
+  { "id": "dim_comunicacao",    "numero": 7, "nucleo": true, "nome": "Comunicação",             "descricao": "Divulgação, sinalização dos espaços e comunicação de proximidade com a comunidade." }
+]

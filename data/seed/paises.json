@@ -1,0 +1,38 @@
+[
+ {
+  "id": "reg_campi_ufg",
+  "nome": "Campi UFG",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ },
+ {
+  "id": "reg_regiao_central",
+  "nome": "Região Central",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ },
+ {
+  "id": "reg_regiao_oeste",
+  "nome": "Região Oeste",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ },
+ {
+  "id": "reg_regiao_norte",
+  "nome": "Região Norte",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ },
+ {
+  "id": "reg_regiao_sul",
+  "nome": "Região Sul",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ },
+ {
+  "id": "reg_regiao_sudoeste",
+  "nome": "Região Sudoeste",
+  "iso2": "GO",
+  "continente": "Goiânia"
+ }
+]

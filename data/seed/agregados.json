@@ -1,0 +1,48 @@
+[
+  {
+    "id": "fin_origem",
+    "descricao": "Apoio captado por origem (R$).",
+    "slices": [
+      { "label": "FAPEG · Chamada 12/2025", "value": 85000, "color": "#f5b301" },
+      { "label": "PROEC/UFG",               "value": 60000, "color": "#8cc63f" },
+      { "label": "AMMA",                     "value": 55000, "color": "#6fae2e" },
+      { "label": "Prefeitura de Goiânia",    "value": 48000, "color": "#a8c256" },
+      { "label": "Instituto EcomAmor",       "value": 30000, "color": "#c0603a" },
+      { "label": "Doações da comunidade",    "value": 18000, "color": "#d99e00" }
+    ]
+  },
+  {
+    "id": "fin_modalidade",
+    "descricao": "Ações por modalidade (nº de ações).",
+    "series": [
+      { "label": "Plantio",         "value": 48, "color": "#5aa64a" },
+      { "label": "Ação em escola",  "value": 30, "color": "#8cc63f" },
+      { "label": "Oficina",         "value": 22, "color": "#f5b301" },
+      { "label": "Horta",           "value": 14, "color": "#6fae2e" },
+      { "label": "Evento cultural", "value": 4,  "color": "#c0603a" }
+    ]
+  },
+  {
+    "id": "conv_regiao",
+    "descricao": "Beneficiados por região (pessoas).",
+    "series": [
+      { "label": "Região Central",   "value": 2200, "color": "#8cc63f" },
+      { "label": "Campi UFG",        "value": 1800, "color": "#5aa64a" },
+      { "label": "Região Sul",       "value": 1600, "color": "#f5b301" },
+      { "label": "Região Leste",     "value": 1500, "color": "#c0603a" },
+      { "label": "Região Norte",     "value": 1200, "color": "#6fae2e" },
+      { "label": "Região Oeste",     "value": 900,  "color": "#d99e00" },
+      { "label": "Região Sudoeste",  "value": 800,  "color": "#a8c256" }
+    ]
+  },
+  {
+    "id": "conv_tipo",
+    "descricao": "Parceiros por tipo.",
+    "slices": [
+      { "label": "Poder público",         "value": 2, "color": "#6fae2e" },
+      { "label": "Instituto/ONG",         "value": 2, "color": "#f5b301" },
+      { "label": "Instituição de ensino", "value": 2, "color": "#8cc63f" },
+      { "label": "Rede de escolas",       "value": 1, "color": "#c0603a" }
+    ]
+  }
+]

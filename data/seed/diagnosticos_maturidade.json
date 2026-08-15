@@ -1,0 +1,58 @@
+[
+ {
+  "id": "diag_2026_plantio",
+  "dimensao_id": "dim_plantio",
+  "ano": 2026,
+  "score": 82,
+  "evidencias": "Levantamento Humanidades 2 (desde 2024): 447 plantas — 102 árvores, 45 cactos e 300 ornamentais; 13 espaços com atividade registrada.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_arte",
+  "dimensao_id": "dim_arte",
+  "ano": 2026,
+  "score": 68,
+  "evidencias": "6 oficinas de arte-educação realizadas com coletivos locais.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_engajamento",
+  "dimensao_id": "dim_engajamento",
+  "ano": 2026,
+  "score": 71,
+  "evidencias": "100 extensionistas e adoção comunitária em 18 espaços.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_escolas",
+  "dimensao_id": "dim_escolas",
+  "ano": 2026,
+  "score": 63,
+  "evidencias": "Ações de educação ambiental em CMEIs e escolas municipais/estaduais.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_biodiversidade",
+  "dimensao_id": "dim_biodiversidade",
+  "ano": 2026,
+  "score": 78,
+  "evidencias": "Inventário com 14 espécies nativas, PANCs e medicinais.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_parcerias",
+  "dimensao_id": "dim_parcerias",
+  "ano": 2026,
+  "score": 74,
+  "evidencias": "Parcerias ativas com AMMA, Arca Goiás e Jardim Botânico de Goiânia.",
+  "deleted_at": null
+ },
+ {
+  "id": "diag_2026_comunicacao",
+  "dimensao_id": "dim_comunicacao",
+  "ano": 2026,
+  "score": 55,
+  "evidencias": "Sinalização dos espaços e redes sociais em consolidação.",
+  "deleted_at": null
+ }
+]

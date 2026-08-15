@@ -1,0 +1,7 @@
+[
+  { "id": "mod_plantio", "nome": "Plantio",             "categoria": "plantio" },
+  { "id": "mod_oficina", "nome": "Oficina",             "categoria": "arte-educacao" },
+  { "id": "mod_evento",  "nome": "Evento cultural",     "categoria": "evento" },
+  { "id": "mod_escola",  "nome": "Ação em escola",      "categoria": "educacao" },
+  { "id": "mod_horta",   "nome": "Horta comunitária",   "categoria": "horta" }
+]

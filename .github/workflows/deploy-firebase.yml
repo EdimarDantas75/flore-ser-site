@@ -1,0 +1,24 @@
+# Publica o site no Firebase Hosting (flore-ser-86479.web.app).
+# Este arquivo viaja no snapshot do publicar.sh, mas o job SÓ executa no
+# repositório público flore-ser-site — onde vive o secret FIREBASE_SERVICE_ACCOUNT.
+name: Deploy Firebase Hosting
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploy:
+    if: github.repository == 'EdimarDantas75/flore-ser-site'
+    runs-on: ubuntu-latest
+    steps:
+      # persist-credentials: false — sem isso o checkout grava o token do runner
+      # em .git/config, que já foi parar no ar quando o hosting publicou o .git.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: flore-ser-86479

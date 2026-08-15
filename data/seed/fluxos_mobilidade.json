@@ -1,0 +1,236 @@
+[
+ {
+  "id": "fl_cid_humanidades_2_out",
+  "cidade_id": "cid_humanidades_2",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 14,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_humanidades_2_in",
+  "cidade_id": "cid_humanidades_2",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 255,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_biblioteca_central_out",
+  "cidade_id": "cid_biblioteca_central",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 2,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_biblioteca_central_in",
+  "cidade_id": "cid_biblioteca_central",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 310,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_campus_samambaia_out",
+  "cidade_id": "cid_campus_samambaia",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 8,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_campus_samambaia_in",
+  "cidade_id": "cid_campus_samambaia",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 2150,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_iesa_out",
+  "cidade_id": "cid_iesa",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_iesa_in",
+  "cidade_id": "cid_iesa",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 30,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_avenida_esperanca_out",
+  "cidade_id": "cid_avenida_esperanca",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_avenida_esperanca_in",
+  "cidade_id": "cid_avenida_esperanca",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 16,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_museu_antropologico_out",
+  "cidade_id": "cid_museu_antropologico",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_museu_antropologico_in",
+  "cidade_id": "cid_museu_antropologico",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 15,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_praca_xi_de_maio_out",
+  "cidade_id": "cid_praca_xi_de_maio",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 2,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_praca_xi_de_maio_in",
+  "cidade_id": "cid_praca_xi_de_maio",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 20,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_bosque_dos_buritis_out",
+  "cidade_id": "cid_bosque_dos_buritis",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_bosque_dos_buritis_in",
+  "cidade_id": "cid_bosque_dos_buritis",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 16,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_shangrila_out",
+  "cidade_id": "cid_shangrila",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_shangrila_in",
+  "cidade_id": "cid_shangrila",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 16,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_parque_leolidio_ramos_di_caiado_go_out",
+  "cidade_id": "cid_parque_leolidio_ramos_di_caiado_go",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_parque_leolidio_ramos_di_caiado_go_in",
+  "cidade_id": "cid_parque_leolidio_ramos_di_caiado_go",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 38,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_vila_itatiaia_out",
+  "cidade_id": "cid_vila_itatiaia",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_vila_itatiaia_in",
+  "cidade_id": "cid_vila_itatiaia",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 30,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_praca_wilton_valente_chaves_setor__out",
+  "cidade_id": "cid_praca_wilton_valente_chaves_setor_",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_praca_wilton_valente_chaves_setor__in",
+  "cidade_id": "cid_praca_wilton_valente_chaves_setor_",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 39,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_escola_municipal_jesuina_de_abreu_out",
+  "cidade_id": "cid_escola_municipal_jesuina_de_abreu",
+  "pais_id": "reg",
+  "tipo": "OUT",
+  "quantidade": 1,
+  "ano": 2025,
+  "deleted_at": null
+ },
+ {
+  "id": "fl_cid_escola_municipal_jesuina_de_abreu_in",
+  "cidade_id": "cid_escola_municipal_jesuina_de_abreu",
+  "pais_id": "reg",
+  "tipo": "IN",
+  "quantidade": 30,
+  "ano": 2025,
+  "deleted_at": null
+ }
+]

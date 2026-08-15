@@ -1,0 +1,102 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "fluxos_mobilidade",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "tipo", "order": "ASCENDING" },
+        { "fieldPath": "ano", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "fluxos_mobilidade",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "pais_id", "order": "ASCENDING" },
+        { "fieldPath": "tipo", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "captacoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "fonte_id", "order": "ASCENDING" },
+        { "fieldPath": "ano", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "captacoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "origem", "order": "ASCENDING" },
+        { "fieldPath": "ano", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "convenios",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "regiao_geografica", "order": "ASCENDING" },
+        { "fieldPath": "data_assinatura", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "convenios",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "data_assinatura", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "producoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ano", "order": "DESCENDING" },
+        { "fieldPath": "tipo", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "producoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "coautoria_internacional", "order": "ASCENDING" },
+        { "fieldPath": "ano", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "producoes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "ano", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "diagnosticos_maturidade",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ano", "order": "DESCENDING" },
+        { "fieldPath": "dimensao_id", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "riscos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "nivel", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "eventos_auditoria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "entidade_tipo", "order": "ASCENDING" },
+        { "fieldPath": "entidade_id", "order": "ASCENDING" },
+        { "fieldPath": "data_evento", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

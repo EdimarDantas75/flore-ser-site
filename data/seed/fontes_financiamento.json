@@ -1,0 +1,9 @@
+[
+  { "id": "fonte_fapeg",     "nome": "FAPEG · Chamada 12/2025", "origem": "estadual",   "esfera": "estadual",      "tipo": "agencia_fomento" },
+  { "id": "fonte_proec",     "nome": "PROEC/UFG",               "origem": "proprio",    "esfera": "institucional", "tipo": "recurso_proprio" },
+  { "id": "fonte_ufg",       "nome": "UFG (institucional)",     "origem": "proprio",    "esfera": "institucional", "tipo": "recurso_proprio" },
+  { "id": "fonte_amma",      "nome": "AMMA",                    "origem": "municipal",  "esfera": "municipal",     "tipo": "orgao_ambiental" },
+  { "id": "fonte_municipal", "nome": "Prefeitura de Goiânia",   "origem": "municipal",  "esfera": "municipal",     "tipo": "poder_publico" },
+  { "id": "fonte_ecomamor",  "nome": "Instituto EcomAmor",      "origem": "parceiro",   "esfera": "privada",       "tipo": "organizacao_civil" },
+  { "id": "fonte_doacoes",   "nome": "Doações da comunidade",   "origem": "comunidade", "esfera": "sociedade_civil","tipo": "doacao" }
+]

@@ -1,0 +1,1304 @@
+  /* ============================================================
+     FUNDAÇÃO DE TEMA (Fase 1)
+     Contrato: data-theme no <html>. Ausente ou "light" = CLARO (padrão,
+     produto institucional). "dark" = ESCURO. Chave de persistência:
+     FLORESER_TEMA, valores "claro" | "escuro". A restauração acontece numa
+     IIFE no <head> de painel.html, antes de qualquer folha pintar.
+
+     REGRA DE OURO: cor de DADO não é cor de TEMA. As 17 cores oficiais das
+     ODS (Agenda 2030), as 7 séries dos gráficos, os semáforos de status e as
+     fotografias do acervo são idênticos nos dois temas. O que inverte é o
+     cromo: fundo, superfície, borda, texto, eixos, grade e rótulos.
+
+     A INVERSÃO NÃO É ESPELHO, e há uma quebra deliberada: --bg-2 (gaveta,
+     rodapé, cartão de login) continua sendo a camada mais PROFUNDA nos dois
+     temas. No claro é mais escura que --bg; no escuro também. Inverter isso
+     jogaria a gaveta para frente e desmontaria a hierarquia.
+
+     --text-3 FOI CORRIGIDO NESTA RODADA, nos dois temas. No claro saiu de
+     #8A7A5E (3.16:1 sobre o creme, 3.90:1 sobre o painel, reprovava em toda
+     superfície clara) para #6B5C43, que fecha 4.5:1 em todas as superfícies
+     onde ele aparece: 6.06:1 sobre --panel, 4.91:1 sobre o creme, 4.76:1
+     sobre --panel-3 e sobre o pé do gradiente da topbar, 4.51:1 sobre
+     --trilho. O equivalente escuro (#A2916F) entrega 4.70:1 no pior caso.
+     Nenhum dos dois temas é mais acessível que o outro neste ponto.
+
+     ASSIMETRIA REMANESCENTE, documentada e não escondida: --ocre. No claro
+     ele dá 2.27:1 sobre --panel e 1.78:1 sobre --panel-3, então no tema
+     claro --ocre só vale como PIGMENTO (fio de KPI, ponto de chip, traço da
+     trilha) e nunca como texto. No escuro ele é tinta legítima: 7.61:1.
+
+     PIOR CASO É O CRITÉRIO: toda razão declarada abaixo foi medida contra
+     --panel-3 escuro (#31281B), a MAIS CLARA das cinco superfícies escuras.
+     Passando nela, passa nas outras quatro. No tema claro o pior caso é
+     --trilho (#E3D6BC), a mais escura das superfícies claras de texto.
+     ============================================================ */
+  :root{
+    /* Flore-ser: identidade "Herbário Comum" (paleta do site de divulgação) */
+
+    /* --- tinta de papel: FIXA nos dois temas ---------------------------
+       --papel e --creme não são superfícies, são a cor do papel usada como
+       TINTA sobre o hero (que é escuro nos dois temas por decisão de
+       design). Se invertessem, o texto do hero sumiria. --hero-txt-1 e
+       --hero-txt-2 são os nomes de papel dessa função. */
+    --papel:#F4EDDD; --creme:#EADFC7;
+    --hero-txt-1:#F3EAD8; --hero-txt-2:#E4D7B8;
+
+    /* --- acentos de marca --- */
+    --verde:#38512F; --oliva:#5C6A34;
+    --terra:#C0603A; --terra-txt:#A64B29; --ocre:#D89B34; --magenta:#E5286E;
+    --tinta:#2A2418; --casca:#4A3826;
+
+    /* --- superfícies --- */
+    --bg:#F4EDDD; --bg-2:#EADFC7;
+    --panel:#FBF7EC; --panel-2:#EFE7D3; --panel-3:#E7DCC2;
+    --topbar-1:#EFE7D3; --topbar-2:#E7DCC2;
+    --hero-1:#3f5a34; --hero-2:#33492b; --hero-3:#27381f;
+    --trilho:#E3D6BC; --trilho-2:#DCCDB0;
+
+    /* --- bordas ---
+       --line e --line-2 são DECORATIVAS: nem uma nem outra chega a 3:1 em
+       nenhum dos dois temas, então nenhuma delas pode ser o único indicador
+       de um controle. Para isso existe --line-portadora, o único papel de
+       borda que fecha 3:1 (4.10:1 no pior caso claro, 3.07:1 no escuro). */
+    --line:rgba(74,56,38,.15); --line-2:rgba(74,56,38,.30);
+    --line-portadora:#75664B;
+
+    /* --- papéis funcionais de cor --- */
+    --cyan:#5C6A34; --cyan-2:#38512F; --blue:#A64B29; --blue-2:#C0603A;
+    --green:#3E6B2E; --green-soft:rgba(62,107,46,.14);
+    --red:#B0472A; --red-soft:rgba(176,71,42,.14);
+    --amber:#B07C1B; --amber-txt:#8A5A00; --amber-soft:rgba(216,155,52,.22);
+    --purple:#C0603A; --purple-soft:rgba(192,96,58,.16);
+    --cyan-soft:rgba(92,106,52,.16); --blue-soft:rgba(166,75,41,.13);
+
+    /* bordas de chip (1px). No escuro o alfa sobe para .60, que é o mínimo
+       que fecha 3:1 sobre --panel-2; em .55 o magenta reprova (2.74:1). */
+    /* duas forcas de borda de acento: --line-acento e a SUAVE (contorno de
+       cartao com sotaque, chip discreto), --chip-b-* e a FORTE (estado
+       ligado, chip de dado, foco de componente). Consolidar as duas numa
+       so engrossaria visivelmente o contorno do .note e do .kpi.accent-cyan
+       no tema claro, que e o tema em producao. */
+    --line-acento:rgba(92,106,52,.25);
+    --chip-b-cy:rgba(92,106,52,.45); --chip-b-gr:rgba(62,107,46,.45);
+    --chip-b-bl:rgba(216,155,52,.30); --chip-b-am:rgba(216,155,52,.60);
+    --chip-b-pp:rgba(192,96,58,.30);  --chip-b-rd:rgba(176,71,42,.30);
+    /* TINTA DE CHIP, medida sobre o chip e não sobre o painel.
+       --terra-txt e --red foram aferidos sobre --panel (5.36:1 e 5.19:1),
+       mas o chip pinta a tinta sobre o próprio tint de acento, que é alguns
+       pontos mais escuro: ali os mesmos dois hex caíam para 4.47:1 e 4.27:1.
+       Estes dois papéis existem só para esse fundo, e foram medidos sobre ele:
+       #9F4726 dá 4.83:1 sobre o tint azul e #9E3F25 dá 5.07:1 sobre o
+       vermelho. No escuro o chip é escuro, e aí a tinta clara já servia. */
+    --chip-bl-txt:#9F4726; --chip-rd-txt:#9E3F25;
+    /* tinta neutra e realce de linha (chip base, .trend.flat, hover de tabela) */
+    --tint-neutro:rgba(74,56,38,.045); --tint-hover:rgba(74,56,38,.022);
+    --tint-codigo:rgba(74,56,38,.09);
+    /* tints de acento sobre superficie (gradientes de botao, nota, menu ativo) */
+    --tint-acento-0:rgba(92,106,52,.05); --tint-acento:rgba(92,106,52,.10);
+    --tint-acento-2:rgba(92,106,52,.16);
+    --tint-ocre:rgba(216,155,52,.12); --tint-ocre-2:rgba(216,155,52,.20);
+    --nav-ativo-1:rgba(92,106,52,.16); --nav-ativo-2:rgba(92,106,52,.03);
+
+    /* --- texto em três níveis --- */
+    /* --text-3 era #8A7A5E e reprovava em TODA superficie clara (3,16:1 sobre
+       o creme, 3,90:1 sobre o painel). #6B5C43 mantem matiz e saturacao e
+       fecha 4.5:1 nas superficies onde ele de fato aparece. Medido (razao de
+       contraste WCAG, tinta sobre chapa):
+         --panel #FBF7EC 6.06:1 | --bg #F4EDDD 5.56:1 | --panel-2 #EFE7D3 5.26:1
+         --bg-2/creme #EADFC7 4.91:1 | --panel-3 #E7DCC2 4.76:1 | --trilho #E3D6BC 4.51:1
+       O gradiente da topbar vai de --panel-2 a --panel-3, entao o pior caso
+       ali e 4.76:1; medido por pixel na captura do painel claro (1280x900),
+       na linha do glifo de .app-title span, a razao real e 4.89:1. O mesmo valor esta em
+       _v1-divulgacao/styles.css: a paleta compartilhada nao diverge mais. */
+    --text:#2A2418; --text-2:#5A4B38; --text-3:#6B5C43;
+
+    /* --- foco, véu, seleção, chrome do navegador ---
+       Anel de foco por tema, com halo de valor oposto em segunda camada:
+       o anel precisa sobreviver ao foco caindo sobre uma foto da galeria ou
+       sobre o hero, onde não há superfície de token nenhuma.
+       Claro #6E5A1C: 4.91:1 no pior caso. Escuro #E7B44F: 7.61:1. */
+    --anel:#6E5A1C; --anel-halo:#FBF7EC;
+    --veu:rgba(23,18,9,.55);
+    --selecao:rgba(192,96,58,.22);
+    --scroll-thumb:#CDBD9A; --scroll-thumb-hover:#BDA986;
+    --grade:rgba(74,56,38,.13);
+    --legenda-bg:rgba(244,237,221,.60);
+    --atrib-bg:rgba(20,16,12,.78); --atrib-txt:#D8CDB5;
+
+    /* --- forma e tipografia: fixas nos dois temas --- */
+    --radius:14px; --radius-sm:10px;
+    --shadow:0 14px 32px -20px rgba(56,81,47,.40), 0 3px 10px -7px rgba(74,56,38,.22), 0 1px 0 rgba(255,252,244,.6) inset;
+    --ff:'Source Serif 4',Georgia,serif;
+    --display:'Fraunces',Georgia,'Times New Roman',serif;
+    --mono:'Space Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+
+  /* ============================================================
+     TEMA ESCURO: "Cerrado à noite", não "painel de servidor".
+     Toda superfície escura fica no hue 30 a 40 graus com saturação 25 a 40%:
+     #171209 é terra profunda de cerradão depois da chuva, não preto neutro.
+
+     A ELEVAÇÃO MUDA DE MECANISMO. No claro ela vem da sombra. No escuro,
+     sombra preta sobre terra profunda é invisível (rgba(0,0,0,.8) sobre
+     #171209 muda a luminância em menos de 0.004). Então o card sobe ficando
+     MAIS CLARO que o fundo (#1F1810 sobre #171209) e ganha um anel luminoso
+     de 1px. Consequência prática: no escuro o contorno legível do card é a
+     BORDA, nunca a sombra. Por isso .card, .kpi, .map-tip, .fb-card,
+     .user-menu e .auth-card ganharam borda visível mais abaixo.
+     ============================================================ */
+  html[data-theme="dark"]{
+    /* --papel, --creme, --hero-txt-1 e --hero-txt-2 NÃO são redefinidos:
+       são tinta de papel sobre o hero, escuro nos dois temas. */
+    --verde:#7FB463; --oliva:#A7BE63;
+    --terra:#E08B5A; --terra-txt:#EC9A72; --ocre:#E7B44F; --magenta:#F2749F;
+    --tinta:#171209; --casca:#CDBB98;
+
+    --bg:#171209; --bg-2:#120E07;
+    --panel:#1F1810; --panel-2:#272016; --panel-3:#31281B;
+    --topbar-1:#272016; --topbar-2:#1F1810;
+    --hero-1:#26361F; --hero-2:#1E2C19; --hero-3:#172113;
+    --trilho:#31281B; --trilho-2:#3C3125;
+
+    --line:rgba(240,226,196,.14); --line-2:rgba(240,226,196,.26);
+    --line-portadora:rgba(240,226,196,.40);
+
+    --cyan:#A7BE63; --cyan-2:#7FB463; --blue:#EC9A72; --blue-2:#E08B5A;
+    --green:#7FC15E; --green-soft:rgba(127,193,94,.14);
+    --red:#E8836A; --red-soft:rgba(232,131,106,.14);
+    --amber:#E0A93A; --amber-txt:#E0A93A; --amber-soft:rgba(231,180,79,.14);
+    --purple:#E08B5A; --purple-soft:rgba(224,139,90,.14);
+    --cyan-soft:rgba(167,190,99,.14); --blue-soft:rgba(224,139,90,.14);
+
+    --line-acento:rgba(167,190,99,.45);
+    --chip-b-cy:rgba(167,190,99,.60); --chip-b-gr:rgba(127,193,94,.60);
+    --chip-b-bl:rgba(224,139,90,.60); --chip-b-am:rgba(231,180,79,.60);
+    --chip-b-pp:rgba(224,139,90,.60); --chip-b-rd:rgba(232,131,106,.60);
+    --chip-bl-txt:#EC9A72; --chip-rd-txt:#E8836A;
+    --tint-neutro:rgba(240,226,196,.05); --tint-hover:rgba(240,226,196,.045);
+    --tint-codigo:rgba(240,226,196,.09);
+    --tint-acento-0:rgba(167,190,99,.06); --tint-acento:rgba(167,190,99,.12);
+    --tint-acento-2:rgba(167,190,99,.18);
+    --tint-ocre:rgba(231,180,79,.14); --tint-ocre-2:rgba(231,180,79,.22);
+    --nav-ativo-1:rgba(167,190,99,.20); --nav-ativo-2:rgba(167,190,99,.03);
+
+    --text:#F3EAD8; --text-2:#CDBB98; --text-3:#A2916F;
+
+    --anel:#E7B44F; --anel-halo:#171209;
+    --veu:rgba(0,0,0,.66);
+    --selecao:rgba(167,190,99,.26);
+    --scroll-thumb:#4E4433; --scroll-thumb-hover:#5E533F;
+    --grade:rgba(240,226,196,.10);
+    --legenda-bg:rgba(23,18,9,.62);
+    --atrib-bg:rgba(10,8,5,.80); --atrib-txt:#CDBB98;
+
+    --shadow:0 18px 40px -22px rgba(0,0,0,.80), 0 4px 14px -8px rgba(0,0,0,.60),
+             0 0 0 1px rgba(240,226,196,.07), 0 1px 0 rgba(255,233,192,.07) inset;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--ff); background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.5;
+  }
+  a{color:inherit}
+  /* scrollbars */
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:8px;border:2px solid var(--bg)}
+  ::-webkit-scrollbar-thumb:hover{background:var(--scroll-thumb-hover)}
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:40; height:62px;
+    display:flex; align-items:center; gap:18px; padding:0 22px;
+    background:linear-gradient(180deg,var(--panel-2),var(--panel-3));
+    border-bottom:1px solid var(--line);
+  }
+  .brand-row{display:flex; align-items:center; gap:16px}
+  .wm{display:flex; align-items:center; gap:7px; color:var(--text); opacity:.92}
+  .wm .dot{width:22px;height:22px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,var(--oliva),var(--verde) 70%);
+    box-shadow:0 0 0 3px rgba(92,106,52,.12)}
+  .wm small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);line-height:1.05}
+  .wm b{font-size:13px;letter-spacing:.02em}
+  .wm.govbr b{font-weight:800}
+  .wm.govbr b i{color:var(--green);font-style:normal}
+  .wm-sep{width:1px;height:26px;background:var(--line-2)}
+  .app-title{display:flex;flex-direction:column;line-height:1.1}
+  .app-title b{font-size:14.5px;font-weight:700;letter-spacing:.01em}
+  .app-title span{font-size:11px;color:var(--text-3)}
+  .topbar .spacer{flex:1}
+  /* C.4 BORDA PORTADORA: onde o controle so existe pela borda (campo de
+     formulario vazio, checkbox), nem --line (1.30:1) nem --line-2 (1.72:1)
+     chegam a 3:1 em nenhum dos dois temas. Esses pontos usam
+     --line-portadora, o unico papel de borda que fecha o minimo. */
+  /* O campo de busca da topbar foi REMOVIDO: nao tinha rotulo nem nome
+     acessivel e, principalmente, nao tinha nenhum ouvinte ligado a ele em
+     script.js: nao buscava nada. Quando a busca existir de verdade, o
+     lugar dela e aqui, com <label> ou aria-label desde a primeira linha. */
+  .avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;
+    background:linear-gradient(135deg,var(--oliva),var(--verde));color:var(--papel);border:1px solid var(--line)}
+  /* A chapa do avatar e um gradiente de ACENTO, e o acento clareia no escuro
+     (--oliva #5C6A34 -> #A7BE63, --verde #38512F -> #7FB463). A tinta de
+     papel, que e fixa nos dois temas, funciona no claro (5.05:1 na ponta
+     oliva, 7.55:1 na ponta verde) e desaparece no escuro (1.77:1 e 2.09:1).
+     Aqui, e so aqui, a tinta inverte junto com a chapa: 9.04:1 e 7.64:1. */
+  html[data-theme="dark"] .avatar{color:#171209}
+
+  /* ===== Shell ===== */
+  .shell{display:flex; min-height:calc(100vh - 62px)}
+  .sidebar{
+    width:248px; flex:0 0 248px; background:var(--panel-2); border-right:1px solid var(--line);
+    padding:14px 12px 22px; position:sticky; top:62px; height:calc(100vh - 62px); overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:width .18s ease, flex-basis .18s ease;
+  }
+  #nav{flex:1 1 auto; overflow-y:auto; min-height:0; margin:0 -4px; padding:0 4px}
+  .side-foot{flex:0 0 auto; margin-top:10px; padding-top:12px; border-top:1px solid var(--line)}
+  .side-foot a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;text-decoration:none;
+    color:var(--tinta);font-weight:700;font-size:13px;background:linear-gradient(90deg,var(--cyan),var(--amber));
+    box-shadow:0 6px 18px rgba(92,106,52,.26);transition:transform .15s,box-shadow .15s}
+  .side-foot a:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(92,106,52,.4)}
+  .side-foot a .ic{width:18px;height:18px;flex:0 0 18px;display:flex;align-items:center;justify-content:center}
+  .side-foot a .ic svg{width:18px;height:18px;display:block}
+  .sidebar.collapsed .side-foot a{justify-content:center;padding:10px}
+  .side-head{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 12px}
+  .side-head .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.01em}
+  .side-head .logo .glyph{width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  /* 24x24 e o alvo minimo (SC 2.5.8): com padding 4x7 este botao media
+     22x23 e passava raspando por baixo. */
+  .collapse-btn{all:unset;cursor:pointer;color:var(--text-3);padding:4px 7px;border-radius:7px;font-size:15px;line-height:1;
+    min-width:26px;min-height:26px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
+  .collapse-btn:hover{background:var(--panel-2);color:var(--text)}
+  .nav-group{margin-top:10px}
+  .nav-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);padding:8px 10px 4px}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;cursor:pointer;color:var(--text-2);
+    font-size:13px;font-weight:500;position:relative;transition:background .12s,color .12s}
+  .nav-item:hover{background:var(--panel-3);color:var(--text)}
+  /* o item ativo se apoia num TINT de .16 a .20, nao num acento
+     preenchido: assim a tinta dele continua sendo --text nos dois temas. */
+  .nav-item.active{background:linear-gradient(90deg,var(--nav-ativo-1),var(--nav-ativo-2));color:var(--text);font-weight:600}
+  .nav-item.active::before{content:"";position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:3px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .nav-item .ic{width:18px;height:18px;flex:0 0 18px;display:flex;align-items:center;justify-content:center;opacity:.82}
+  .nav-item .ic svg{width:18px;height:18px;display:block}
+  .nav-item:hover .ic,.nav-item.active .ic{opacity:1}
+  .nav-item .txt{flex:1;white-space:nowrap;overflow:hidden}
+  .badge-new{font-size:8.5px;font-weight:700;letter-spacing:.08em;color:var(--tinta);background:var(--cyan);padding:2px 6px;border-radius:20px}
+  .sidebar.collapsed{width:62px;flex-basis:62px}
+  .sidebar.collapsed .nav-label,.sidebar.collapsed .txt,.sidebar.collapsed .badge-new,.sidebar.collapsed .side-head .logo span{display:none}
+  .sidebar.collapsed .nav-item{justify-content:center}
+  .sidebar.collapsed .side-head{justify-content:center}
+
+  /* ===== Main ===== */
+  .main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1500px}
+  .view-head{margin-bottom:18px}
+  .view-head h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+  .view-head p{margin:5px 0 0;color:var(--text-2);font-size:13px;max-width:760px}
+  .crumb{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan-2);font-weight:600;margin-bottom:7px}
+
+  /* grids */
+  .grid{display:grid;gap:14px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  .grid-5{grid-template-columns:repeat(5,1fr)}
+  .span-2{grid-column:span 2}
+  @media(max-width:1180px){.grid-4,.grid-5{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}}
+  @media(max-width:1180px){.grid-2{grid-template-columns:1fr}.span-2{grid-column:auto}}
+  .stack{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}
+
+  /* cards */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .card.tight{padding:14px 16px}
+  .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px}
+  /* h2 e h3, e não h3 e h4: o título da tela é o h1, então o cartão precisa
+     ser o h2 e o cartão interno o h3, sem degrau vazio no meio. O tamanho
+     visual não muda: quem manda no tamanho é esta regra, não a tag. */
+  .card-h h2{margin:0;font-size:13.5px;font-weight:600;letter-spacing:.01em}
+  .card-h .sub{font-size:11px;color:var(--text-3)}
+
+  /* KPI */
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;position:relative;overflow:hidden}
+  .kpi .lbl{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-3);font-weight:600}
+  .kpi .val{font-size:30px;font-weight:700;line-height:1.05;margin-top:6px;letter-spacing:-.02em}
+  .kpi .foot{font-size:11.5px;color:var(--text-2);margin-top:5px}
+  .kpi .spark{position:absolute;right:-6px;bottom:-6px;width:78px;height:42px;opacity:.55}
+  .kpi.accent-cyan .val{color:var(--verde)}.kpi.accent-cyan{border-color:var(--line-acento)}
+  .kpi.accent-green .val{color:var(--green)}
+  .kpi.accent-blue .val{color:var(--terra-txt)}
+  .kpi.accent-red .val{color:var(--red)}
+  .kpi.accent-amber .val{color:var(--amber-txt)}
+  .kpi .trend{display:inline-flex;align-items:center;gap:4px;font-weight:600;font-size:11px;padding:2px 7px;border-radius:20px}
+  .trend.up{color:var(--green);background:var(--green-soft)} .trend.down{color:var(--red);background:var(--red-soft)}
+  .trend.flat{color:var(--text-2);background:var(--tint-neutro)}
+
+  /* bars */
+  .bars{display:flex;flex-direction:column;gap:11px}
+  .bar-row{display:grid;grid-template-columns:148px 1fr 52px;align-items:center;gap:12px}
+  .bar-row .bl{font-size:12.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{height:9px;background:var(--trilho);border-radius:6px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--cyan-2),var(--cyan));transition:width .6s cubic-bezier(.2,.7,.2,1)}
+  .bar-val{font-size:12.5px;font-weight:600;text-align:right;color:var(--text)}
+  /* grouped in/out */
+  .gb-row{display:grid;grid-template-columns:128px 1fr;align-items:center;gap:12px}
+  .gb-bars{display:flex;flex-direction:column;gap:5px}
+  .gb-line{display:flex;align-items:center;gap:8px}
+  .gb-line .tag{font-size:9.5px;letter-spacing:.08em;color:var(--text-3);width:30px}
+  .gb-track{flex:1;height:8px;background:var(--trilho);border-radius:6px;overflow:hidden}
+  .gb-out{background:linear-gradient(90deg,var(--terra-txt),var(--blue))}
+  .gb-in{background:linear-gradient(90deg,var(--green),var(--green))}
+  .gb-v{font-size:11.5px;font-weight:600;width:24px;text-align:right}
+
+  /* tables */
+  table.tb{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.tb th{text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);font-weight:600;
+    padding:9px 12px;border-bottom:1px solid var(--line-2)}
+  table.tb td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--text)}
+  table.tb tr:last-child td{border-bottom:none}
+  table.tb tr:hover td{background:var(--tint-hover)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .neg{color:var(--red);font-weight:600}.pos{color:var(--green);font-weight:600}
+
+  /* chips / tags */
+  .chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:7px;
+    background:var(--tint-neutro);border:1px solid var(--line);color:var(--text-2);font-weight:500;white-space:nowrap}
+  .chip.cy{background:var(--cyan-soft);border-color:var(--line-acento);color:var(--verde)}
+  .chip.gr{background:var(--green-soft);border-color:var(--chip-b-gr);color:var(--green)}
+  .chip.bl{background:var(--blue-soft);border-color:var(--chip-b-bl);color:var(--chip-bl-txt)}
+  .chip.am{background:var(--amber-soft);border-color:var(--chip-b-bl);color:var(--amber-txt)}
+  .chip.pp{background:var(--purple-soft);border-color:var(--chip-b-pp);color:var(--terra-txt)}
+  .chip.rd{background:var(--red-soft);border-color:var(--chip-b-rd);color:var(--chip-rd-txt)}
+  /* a tinta NÃO vem daqui: odsBadge()/elODS() a calculam por objetivo, a
+     partir da luminância da cor oficial, e a escrevem no style. Fixar
+     color:#fff aqui era o que reprovava as ODS claras. */
+  .ods{font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;letter-spacing:.02em}
+
+  /* filter pills */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+  .pill{all:unset;cursor:pointer;font-size:12px;padding:7px 13px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line);
+    color:var(--text-2);font-weight:500;transition:.12s}
+  .pill:hover{border-color:var(--line-2);color:var(--text)}
+  .pill.on{background:var(--cyan-soft);border-color:var(--chip-b-cy);color:var(--verde)}
+  select.sel{font-family:var(--ff);font-size:12px;padding:7px 12px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line);color:var(--text-2);cursor:pointer}
+
+  /* notes / framework */
+  .note{background:linear-gradient(180deg,var(--tint-acento-0),transparent);border:1px solid var(--line-acento)}
+  .note h3{color:var(--verde)}
+  .note p{margin:0 0 9px;color:var(--text-2);font-size:12.5px}
+  .note .ref{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}
+  .note .ref b{color:var(--text);font-weight:600}
+  .note .ref .k{flex:0 0 150px;font-weight:600;color:var(--verde);font-size:12px}
+  .note .ref .v{font-size:12px;color:var(--text-2)}
+
+  /* generic item cards */
+  .icard{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 15px;display:flex;flex-direction:column;gap:9px}
+  .icard .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .icard h3{margin:0;font-size:13.5px;font-weight:600}
+  .icard .meta{font-size:11.5px;color:var(--text-3)}
+  .icard .tagrow{display:flex;flex-wrap:wrap;gap:6px}
+  .person{display:flex;gap:12px;align-items:center}
+  .person .pa{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-weight:700;font-size:14px;flex:0 0 42px;color:var(--papel)}
+  .mini-stat{display:flex;gap:16px;flex-wrap:wrap}
+  .mini-stat div{display:flex;flex-direction:column}
+  .mini-stat .n{font-weight:700;font-size:15px}
+  .mini-stat .l{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
+
+  /* ODS grid */
+  .ods-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+  @media(max-width:1100px){.ods-grid{grid-template-columns:repeat(4,1fr)}}
+  .ods-tile{border-radius:11px;padding:11px;color:#fff;position:relative;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;border:1px solid rgba(74,56,38,.1)}
+  .ods-tile .gnum{font-size:18px;font-weight:800;line-height:1}
+  .ods-tile .gname{font-size:10.5px;font-weight:600;line-height:1.2;opacity:.96}
+  .ods-tile .gc{font-size:11px;font-weight:700;background:rgba(0,0,0,.28);padding:3px 7px;border-radius:20px;align-self:flex-start}
+  /* o esmaecimento do "sem ação" saiu daqui: `filter` escurecia a tinta
+     junto com o fundo, e o contraste caía sem aparecer em nenhuma medição
+     de cor computada. Agora odsEsmaecida() devolve a cor já esmaecida e a
+     tinta é escolhida a partir dela. */
+  .ods-tile.off{opacity:.92}
+
+  /* world map */
+  .mapwrap{position:relative;background:radial-gradient(120% 120% at 30% 0%,var(--bg-2),var(--trilho) 60%,var(--trilho-2));
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  /* ATENÇÃO: só filhos diretos, porque o Leaflet desenha SVGs internos que NÃO podem ser redimensionados */
+  .mapwrap > svg{display:block;width:100%;height:auto}
+  .node-c{cursor:pointer}
+  .node-dot{transition:r .15s,opacity .15s,stroke .15s}
+  .node-c:hover .node-dot{stroke:var(--terra);stroke-width:1.8}
+  .node-c:hover .node-halo{opacity:.30!important}
+  .node-c.sel .node-dot{stroke:#ffffff;stroke-width:2.4}
+  .node-c.sel .node-halo{opacity:.36!important}
+  .arc-layer path,.flow-layer circle{pointer-events:none}
+  .map-legend{position:absolute;left:16px;bottom:14px;display:flex;gap:14px;font-size:11px;color:var(--text-2);background:var(--legenda-bg);
+    padding:8px 12px;border-radius:10px;border:1px solid var(--line);backdrop-filter:blur(4px)}
+  .map-legend .lg{display:flex;align-items:center;gap:6px}
+  .lg .d{width:9px;height:9px;border-radius:50%}
+  .map-tip{position:fixed;z-index:80;pointer-events:none;background:var(--panel);border:1px solid var(--line-2);border-radius:10px;
+    padding:9px 12px;font-size:12px;min-width:150px;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;transform:translateY(4px);transition:opacity .1s}
+  .map-tip b{display:block;font-size:12.5px;margin-bottom:4px}
+  .map-tip .r{display:flex;justify-content:space-between;color:var(--text-2);gap:18px}
+  .land-halo{fill:none;stroke:rgba(92,106,52,.13);stroke-width:2.6;stroke-linejoin:round}
+  .land-body{stroke:rgba(92,106,52,.42);stroke-width:.7;stroke-linejoin:round}
+  .cont-label{fill:var(--chip-b-cy);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--ff);paint-order:stroke;stroke:rgba(74,56,38,.55);stroke-width:2.4px}
+
+  /* hero / globe */
+  .hero{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);
+    background:radial-gradient(130% 120% at 78% 20%,var(--hero-1),var(--hero-2) 55%,var(--hero-3));
+    padding:30px 34px;margin-bottom:18px;display:flex;align-items:center;gap:30px;min-height:250px}
+  .hero .htext{position:relative;z-index:2;max-width:560px}
+  .hero h2{margin:0;font-size:30px;font-weight:800;letter-spacing:-.01em}
+  .hero h2 .g{color:var(--cyan)}
+  .hero p{color:var(--creme);font-size:13.5px;margin:11px 0 0;line-height:1.6}
+  .hero .htags{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+  .hero-foto{position:absolute;inset:0;z-index:0}
+  .hero-foto img{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
+  .hero-foto::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,rgba(20,16,12,.95) 0%,rgba(20,16,12,.80) 38%,rgba(20,16,12,.32) 72%,rgba(20,16,12,.10) 100%)}
+  @media(max-width:900px){.hero-foto::after{background:linear-gradient(180deg,rgba(20,16,12,.55),rgba(20,16,12,.93))}}
+
+  /* maturity radar legend */
+  .lvl-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .lvl-row:last-child{border:none}
+  .lvl-dot{width:10px;height:10px;border-radius:3px;flex:0 0 10px}
+  .lvl-row .lname{flex:1;color:var(--text-2)}
+  .lvl-row .lval{font-weight:700}
+  .progress{height:7px;background:var(--trilho);border-radius:6px;overflow:hidden;width:120px}
+  .progress i{display:block;height:100%;border-radius:6px}
+
+  .legend-inline{display:flex;gap:14px;font-size:11px;color:var(--text-2);margin-top:10px}
+  .legend-inline span{display:flex;align-items:center;gap:6px}
+  .legend-inline .sw{width:10px;height:10px;border-radius:3px}
+
+  .footer-note{margin-top:26px;font-size:11px;color:var(--text-3);text-align:right;letter-spacing:.04em}
+  /* os dois links do rodape mediam 16px de altura: o inline-block com padding
+     leva o alvo a 24px sem mudar o desenho da linha. */
+  .footer-note a{display:inline-block;padding:4px 2px;min-height:24px;line-height:16px}
+
+  @media (prefers-reduced-motion: reduce){.bar-fill,.node-dot,.node-halo{transition:none}}
+  .hidden{display:none!important}
+
+  /* ===== Gate de login ===== */
+  .auth-gate{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;
+    background:radial-gradient(1200px 700px at 70% -10%,rgba(92,106,52,.10),transparent 60%),var(--bg)}
+  .auth-gate[hidden]{display:none}
+  .auth-card{width:min(92vw,420px);text-align:center;padding:34px 30px;border-radius:18px;
+    background:var(--bg-2);border:1px solid var(--line-2);box-shadow:0 24px 80px rgba(0,0,0,.55)}
+  .auth-logo{display:flex;align-items:center;justify-content:center;gap:7px;font-size:18px;color:var(--text)}
+  .auth-logo .glyph{width:10px;height:10px;border-radius:3px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+  .auth-logo .g{color:var(--cyan)}
+  .auth-card h2{font-size:15px;font-weight:600;margin:16px 0 6px;color:var(--text)}
+  .auth-card p{font-size:13px;color:var(--text-3);margin:0 0 22px;line-height:1.5}
+  .auth-btn{display:inline-flex;align-items:center;gap:10px;cursor:pointer;width:100%;justify-content:center;
+    padding:11px 16px;border-radius:11px;font-size:14px;font-weight:600;color:var(--tinta);
+    background:#fff;border:1px solid var(--line-2);transition:filter .15s,transform .05s}
+  .auth-btn:hover{filter:brightness(.96)} .auth-btn:active{transform:translateY(1px)}
+  .auth-btn[disabled]{opacity:.6;cursor:default}
+  .auth-msg{min-height:18px;margin-top:14px;font-size:12.5px;color:var(--red)}
+  .auth-foot{margin-top:18px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);opacity:.7}
+  /* avatar clicável quando logado */
+  .avatar.logged{cursor:pointer}
+  .user-menu{position:absolute;top:52px;right:18px;z-index:9998;min-width:200px;padding:10px;
+    background:var(--bg-2);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  .user-menu[hidden]{display:none}
+  .user-menu .um-nome{font-size:13px;font-weight:600;color:var(--text)}
+  .user-menu .um-mail{font-size:11.5px;color:var(--text-3);margin:2px 0 10px;word-break:break-all}
+  .user-menu .um-papel{font-size:11px;color:var(--cyan-2);margin-bottom:10px}
+  .user-menu .um-sair{width:100%;cursor:pointer;padding:8px;border-radius:9px;font-size:13px;font-weight:600;
+    color:var(--text);background:var(--panel-2);border:1px solid var(--line)}
+  .user-menu .um-sair:hover{background:var(--trilho)}
+
+  /* ===== Botão de idioma (PT/EN) ===== */
+  .lang-btn{cursor:pointer;min-width:38px;height:32px;padding:0 11px;border-radius:9px;
+    font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--text);
+    background:var(--panel);border:1px solid var(--line-2);transition:background .15s,color .15s}
+  .lang-btn:hover{background:var(--trilho);color:var(--cyan)}
+  .lang-btn.en{color:var(--cyan);border-color:var(--chip-b-cy)}
+
+  /* ===== Marca Ecoa ===== */
+  .ecoa-brand{display:flex;align-items:center;gap:9px;padding:0 4px}
+  .ecoa-brand svg{width:22px;height:22px}
+  .ecoa-txt{display:flex;flex-direction:column;line-height:1.05}
+  .ecoa-txt b{font:600 17px var(--display);letter-spacing:.01em;background:linear-gradient(90deg,var(--oliva),var(--terra-txt) 55%,var(--verde));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ecoa-txt small{font-size:9px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase}
+
+  /* ===== Botão de relatório (topbar) ===== */
+  .btn-report{display:flex;align-items:center;gap:8px;margin-right:12px;padding:8px 14px;border-radius:9px;cursor:pointer;
+    border:1px solid var(--chip-b-cy);background:linear-gradient(90deg,var(--nav-ativo-1),var(--tint-ocre));
+    color:var(--verde);font:600 12px var(--mono);letter-spacing:.02em;transition:all .15s}
+  .btn-report svg{width:15px;height:15px}
+  .btn-report:hover{background:linear-gradient(90deg,rgba(92,106,52,.28),var(--tint-ocre-2));color:var(--verde);border-color:var(--cyan);box-shadow:0 0 14px rgba(92,106,52,.25)}
+
+  /* ===== Relatório consolidado (visão de impressão A4) ===== */
+  .report-root{display:none}
+  /* BLINDAGEM DO RELATORIO (obrigatoria).
+     O relatorio A4 tem de sair IDENTICO a partir dos dois temas. Duas
+     travas, e as duas sao necessarias:
+       1. NENHUM var() dentro deste bloco: todo valor e hex literal. Um
+          seletor amplo como [data-theme=dark] table alcancaria o
+          #reportRoot, que e descendente de <html data-theme="dark">.
+       2. Cinto de seguranca: os tokens CLAROS sao redeclarados no escopo do
+          proprio #reportRoot, mais color-scheme:light. Assim, se algum
+          var() vazar para ca no futuro, ele resolve para o valor claro em
+          vez de pintar o papel de marrom.
+     A lista abaixo cobre AGORA os 69 tokens que html[data-theme="dark"]
+     redefine, sem excecao. Antes cobria 26, e o buraco custou caro: como
+     ".card,.kpi{box-shadow:var(--shadow)}" e regra global e alcanca o
+     #reportRoot, o unico token faltante que estava EM USO no relatorio
+     (--shadow) vazava o valor escuro e as 92 caixas .kpi saiam com sombra
+     diferente conforme o tema de origem. Os outros 42 nao eram usados no
+     relatorio, entao nao vazavam; ficam aqui para a promessa deste bloco
+     valer daqui em diante. REGRA DE MANUTENCAO: token novo em
+     html[data-theme="dark"] pede a mesma linha aqui, com o valor CLARO
+     literal (nada de var()).
+     Lembrete: muitos elementos do relatorio tem fundo transparente e herdam
+     o #fff daqui. Mexer neste #fff derruba o relatorio inteiro junto. */
+  #reportRoot{
+    --bg:#F4EDDD; --bg-2:#EADFC7; --panel:#FBF7EC; --panel-2:#EFE7D3; --panel-3:#E7DCC2;
+    --text:#2A2418; --text-2:#5A4B38; --text-3:#6B5C43; --tinta:#2A2418;
+    --verde:#38512F; --oliva:#5C6A34; --terra:#C0603A; --terra-txt:#A64B29;
+    --ocre:#D89B34; --magenta:#E5286E; --cyan:#5C6A34; --cyan-2:#38512F;
+    --blue:#A64B29; --blue-2:#C0603A; --green:#3E6B2E; --red:#B0472A;
+    --amber:#B07C1B; --amber-txt:#8A5A00; --trilho:#E3D6BC;
+    --line:rgba(74,56,38,.15); --line-2:rgba(74,56,38,.30);
+    /* resto do cinto: superficies, bordas, tints e cromo */
+    --casca:#4A3826; --topbar-1:#EFE7D3; --topbar-2:#E7DCC2;
+    --hero-1:#3f5a34; --hero-2:#33492b; --hero-3:#27381f;
+    --trilho-2:#DCCDB0; --line-portadora:#75664B;
+    --green-soft:rgba(62,107,46,.14); --red-soft:rgba(176,71,42,.14);
+    --amber-soft:rgba(216,155,52,.22); --purple:#C0603A;
+    --purple-soft:rgba(192,96,58,.16); --cyan-soft:rgba(92,106,52,.16);
+    --blue-soft:rgba(166,75,41,.13); --line-acento:rgba(92,106,52,.25);
+    --chip-b-cy:rgba(92,106,52,.45); --chip-b-gr:rgba(62,107,46,.45);
+    --chip-b-bl:rgba(216,155,52,.30); --chip-b-am:rgba(216,155,52,.60);
+    --chip-b-pp:rgba(192,96,58,.30); --chip-b-rd:rgba(176,71,42,.30);
+    --tint-neutro:rgba(74,56,38,.045); --tint-hover:rgba(74,56,38,.022);
+    --tint-codigo:rgba(74,56,38,.09); --tint-acento-0:rgba(92,106,52,.05);
+    --tint-acento:rgba(92,106,52,.10); --tint-acento-2:rgba(92,106,52,.16);
+    --tint-ocre:rgba(216,155,52,.12); --tint-ocre-2:rgba(216,155,52,.20);
+    --nav-ativo-1:rgba(92,106,52,.16); --nav-ativo-2:rgba(92,106,52,.03);
+    --anel:#6E5A1C; --anel-halo:#FBF7EC; --veu:rgba(23,18,9,.55);
+    --selecao:rgba(192,96,58,.22); --scroll-thumb:#CDBD9A;
+    --scroll-thumb-hover:#BDA986; --grade:rgba(74,56,38,.13);
+    --legenda-bg:rgba(244,237,221,.60); --atrib-bg:rgba(20,16,12,.78);
+    --atrib-txt:#D8CDB5;
+    --shadow:0 14px 32px -20px rgba(56,81,47,.40), 0 3px 10px -7px rgba(74,56,38,.22), 0 1px 0 rgba(255,252,244,.6) inset;
+    color-scheme:light;
+    background:#fff;color:#2a2418;font:11.5pt/1.55 'Source Serif 4',Georgia,serif}
+  #reportRoot .rpt-cover{padding:22mm 0 0}
+  #reportRoot .rpt-ecoa{display:flex;align-items:center;gap:3mm;margin:0 0 6mm}
+  #reportRoot .rpt-ecoa svg{width:11mm;height:11mm}
+  #reportRoot .rpt-ecoa b{display:block;font-size:20pt;font-weight:800;color:#5c6a34;line-height:1}
+  #reportRoot .rpt-ecoa small{display:block;font-size:8pt;color:#6b5d46;letter-spacing:.1em;text-transform:uppercase}
+  #reportRoot .rpt-band{height:10mm;background:linear-gradient(90deg,#38512f 0 62%,#5c6a34 62% 84%,#5c6a34 84% 100%)}
+  #reportRoot .rpt-band.thin{height:2.4mm;margin:5mm 0 7mm}
+  #reportRoot h1{font-size:22pt;color:#38512f;margin:10mm 0 2mm;line-height:1.25}
+  #reportRoot .rpt-sub{font-size:12.5pt;color:#5c6a34;margin:0 0 8mm}
+  #reportRoot .rpt-inst{font-size:10.5pt;color:#6b5d46;line-height:1.7}
+  #reportRoot .rpt-demo{display:inline-block;margin:0 0 4mm;padding:1.6mm 4mm;border:1pt solid #d89b34;border-radius:2mm;
+    color:#8a5a00;background:#f7edd6;font-size:9pt;font-weight:700;letter-spacing:.08em}
+  #reportRoot h2{font-size:14pt;color:#38512f;border-bottom:2.2pt solid #38512f;padding-bottom:1.6mm;margin:0 0 4.5mm}
+  #reportRoot h3{font-size:11.5pt;color:#5c6a34;margin:5mm 0 2mm}
+  #reportRoot p{margin:0 0 3.2mm;text-align:justify}
+  #reportRoot .rpt-section{page-break-before:always;padding-top:2mm}
+  #reportRoot .avoid{page-break-inside:avoid}
+  #reportRoot table{width:100%;border-collapse:collapse;margin:0 0 4mm;font-size:9.5pt}
+  #reportRoot th{background:#38512f;color:#fff;text-align:left;padding:2mm 2.4mm;font-weight:700}
+  #reportRoot td{border:.4pt solid #d8c9ac;padding:1.8mm 2.4mm;vertical-align:top}
+  #reportRoot tr:nth-child(even) td{background:#f6f0e2}
+  #reportRoot td.num,#reportRoot th.num{text-align:right}
+  #reportRoot .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin:0 0 4mm}
+  #reportRoot .kpi{background:#fff!important;color:#2a2418;border:.5pt solid #d8c9ac;border-top:2.6pt solid #5c6a34;border-radius:2mm;padding:2.6mm 3mm;page-break-inside:avoid;overflow:visible}
+  #reportRoot .kpi b{display:block;font-size:15pt;color:#38512f!important;margin:.6mm 0}
+  #reportRoot .kpi .l{display:block;font-size:8pt;color:#6b5d46!important;text-transform:uppercase;letter-spacing:.04em}
+  #reportRoot .kpi .f{display:block;font-size:8pt;color:#8a7a5e!important}
+  #reportRoot .bar-row{display:flex;align-items:center;gap:2.6mm;margin:0 0 1.8mm;page-break-inside:avoid}
+  #reportRoot .bar-row .bl{flex:0 0 52mm;font-size:9pt;color:#4a3826}
+  #reportRoot .bar-row .tr{flex:1;height:4mm;background:#e3d6bc;border-radius:2mm;overflow:hidden}
+  #reportRoot .bar-row .tr i{display:block;height:100%;background:#5c6a34;border-radius:2mm}
+  #reportRoot .bar-row .bv{flex:0 0 12mm;font-size:9pt;font-weight:700;color:#38512f;text-align:right}
+  #reportRoot .rpt-note{border-left:2.6pt solid #5c6a34;background:#f1ead8;padding:2.6mm 3.4mm;font-size:9.5pt;margin:0 0 4mm;page-break-inside:avoid}
+  #reportRoot .rpt-ref{font-size:9.5pt;text-align:left;margin:0 0 2.6mm}
+  #reportRoot .rpt-foot{position:fixed;bottom:0;left:0;right:0;border-top:.5pt solid #d8c9ac;padding-top:1.6mm;
+    font-size:8pt;color:#8a7a5e;display:flex;justify-content:space-between;background:#fff}
+  #reportRoot .sign{margin-top:16mm;page-break-inside:avoid}
+  #reportRoot .sign .line{width:90mm;border-top:.6pt solid #2a2418;margin:14mm auto 1.6mm}
+  #reportRoot .sign p{text-align:center;margin:0;font-size:10pt}
+  #reportRoot .rpt-2col{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin:0 0 4mm}
+  #reportRoot .rpt-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;margin:0 0 4mm}
+  #reportRoot .rbox{border:.5pt solid #d8c9ac;border-radius:2mm;padding:3mm 3.4mm;page-break-inside:avoid}
+  #reportRoot .rbox h4{margin:0 0 2.6mm;font-size:9.5pt;color:#38512f}
+  #reportRoot .rbox .s{display:block;font-size:8pt;color:#8a7a5e;font-weight:400;margin-top:.4mm}
+  #reportRoot .rdonut{display:flex;align-items:center;gap:4mm}
+  #reportRoot .rdonut svg{width:32mm;height:32mm;flex:0 0 32mm}
+  #reportRoot .rdonut .dv{font-size:6.4px;font-weight:700;fill:#38512f;text-anchor:middle}
+  #reportRoot .rdonut .dl{font-size:3.2px;fill:#6b5d46;text-anchor:middle}
+  #reportRoot .rleg{display:flex;flex-direction:column;gap:1.1mm;font-size:8.5pt;color:#4a3826}
+  #reportRoot .rleg.h{flex-direction:row;gap:5mm;margin-top:1.4mm}
+  #reportRoot .rlg i{display:inline-block;width:2.6mm;height:2.6mm;border-radius:.7mm;margin-right:1.6mm;vertical-align:middle}
+  #reportRoot .rradar{width:100%;height:auto;overflow:visible}
+  #reportRoot .rradar .rl{font-size:4.6px;fill:#4a3826;font-weight:600}
+  #reportRoot .gbr{display:flex;align-items:center;gap:2.6mm;margin:0 0 2mm;page-break-inside:avoid}
+  #reportRoot .gbr .bl{flex:0 0 44mm;font-size:9pt;color:#4a3826}
+  #reportRoot .gbr .gbb{flex:1;display:flex;flex-direction:column;gap:.8mm}
+  #reportRoot .gbr .tr{height:3mm;background:#e3d6bc;border-radius:1.6mm;overflow:hidden}
+  #reportRoot .gbr .tr i{display:block;height:100%;border-radius:1.6mm}
+  #reportRoot .gbr .bv{flex:0 0 16mm;font-size:8.5pt;font-weight:700;color:#38512f;text-align:right}
+  #reportRoot .bar-row .bv{flex:0 0 16mm}
+  #reportRoot .rchip{display:inline-block;padding:.5mm 2mm;border-radius:2mm;font-size:8pt;font-weight:700;white-space:nowrap}
+  #reportRoot .rchip.rd{background:#f2ded5;color:#b0472a;border:.5pt solid #c0603a}
+  #reportRoot .rchip.am{background:#f7edd6;color:#8a5a00;border:.5pt solid #d89b34}
+  #reportRoot .rchip.gr{background:#e4edd8;color:#38512f;border:.5pt solid #5c6a34}
+  #reportRoot .ippr{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin:0 0 4mm}
+  #reportRoot .ippr .c{border:.5pt solid #d8c9ac;border-top:2.4pt solid #5c6a34;border-radius:2mm;padding:2.6mm;page-break-inside:avoid;font-size:8.5pt;color:#4a3826}
+  #reportRoot .ippr .c b{display:block;color:#38512f;font-size:10pt;margin-bottom:.6mm}
+  #reportRoot .ippr .c .m{display:block;font-size:7.5pt;color:#5c6a34;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+
+  @media print{
+    @page{size:A4;margin:14mm 13mm 18mm 13mm}
+    /* color-scheme:dark faria o navegador pintar fundos e controles no
+       escuro tambem no papel. Neutralizado aqui e no proprio #reportRoot. */
+    :root,html[data-theme="dark"]{color-scheme:light}
+    body.printing-report{background:#fff}
+    body.printing-report .topbar,body.printing-report .shell{display:none!important}
+    /* nada de chrome no papel. Os quatro primeiros sao elementos NOVOS
+       (fundacao de front-end); .fb-fab, .map-tip, .user-menu e .gal-lb sao
+       vazamentos pre-existentes: position:fixed sem regra de impressao. */
+    body.printing-report .skip-link,
+    body.printing-report .nav-veu,
+    body.printing-report .menu-btn,
+    body.printing-report .tema-btn,
+    body.printing-report .fb-fab,
+    body.printing-report .map-tip,
+    body.printing-report .user-menu,
+    body.printing-report .gal-lb,
+    body.printing-report .welcome{display:none!important}
+    body.printing-report .report-root{display:block}
+    #reportRoot *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+
+  /* ===== Janela de boas-vindas (abertura do sistema) =====
+     DECISAO DE DESIGN, declarada: a janela de abertura tem aparencia UNICA
+     nos dois temas. E um splash de marca (aurora + wordmark + foto do
+     acervo), nao cromo de aplicacao: nao segue o tema, nao inverte e nao
+     usa var() de superficie. Todos os valores abaixo sao literais de
+     proposito. O mesmo vale para .welcome-foto, mais abaixo. */
+  .welcome{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;opacity:0;animation:wFadeIn .5s ease forwards}
+  .welcome.closing{animation:wFadeOut .45s ease forwards;pointer-events:none}
+  .welcome-bg{position:absolute;inset:0;background:radial-gradient(60% 55% at 20% 16%,rgba(56,81,47,.42),transparent 60%),radial-gradient(55% 55% at 84% 24%,rgba(192,96,58,.38),transparent 60%),radial-gradient(65% 60% at 60% 92%,rgba(216,155,52,.34),transparent 62%),linear-gradient(160deg,#ffffff 0%,#efe7d3 56%,#eadfc7 100%);background-size:200% 200%,200% 200%,200% 200%,100% 100%;animation:wAurora 20s ease-in-out infinite}
+  .welcome-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(192,96,58,.12))}
+  .welcome-x{position:absolute;top:20px;right:22px;z-index:3;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:16px;color:#38512f;background:rgba(192,96,58,.08);border:1px solid rgba(192,96,58,.3);transition:all .18s}
+  .welcome-x:hover{background:rgba(176,71,42,.2);border-color:rgba(176,71,42,.55);color:#fff;transform:rotate(90deg)}
+  .welcome-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:560px;animation:wRise .75s cubic-bezier(.2,.7,.2,1) both}
+  .welcome-globe{position:relative;width:300px;height:300px;display:grid;place-items:center}
+  .welcome-globe canvas{position:relative;z-index:2;width:300px;height:300px;display:block}
+  .wg-ring{position:absolute;width:224px;height:224px;border-radius:50%;border:1px solid rgba(56,81,47,.5);box-shadow:0 0 70px rgba(56,81,47,.4),inset 0 0 44px rgba(192,96,58,.18);animation:wPulse 3.6s ease-in-out infinite}
+  .welcome-brand{display:flex;align-items:center;gap:11px;margin-top:2px}
+  .welcome-brand svg{width:30px;height:30px}
+  .welcome-brand .wb-txt{display:flex;flex-direction:column;line-height:1.05;text-align:left}
+  .welcome-brand b{font:600 28px var(--display);letter-spacing:.01em;background:linear-gradient(90deg,#38512f,#c0603a 55%,#d89b34);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .welcome-brand small{font-size:10.5px;color:#5c6a34;letter-spacing:.16em;text-transform:uppercase}
+  .welcome-title{margin:18px 0 0;font-size:25px;font-weight:700;letter-spacing:-.01em;color:#2a2418}
+  .welcome-title span{background:linear-gradient(90deg,#38512f,#d89b34);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .welcome-sub{margin:12px 0 0;font-size:14px;line-height:1.65;color:#5a4b38;max-width:470px}
+  .welcome-enter{margin-top:26px;cursor:pointer;padding:13px 30px;border-radius:12px;font:600 14px var(--mono);color:#fff;background:linear-gradient(90deg,#38512f,#c0603a);border:none;letter-spacing:.02em;box-shadow:0 12px 34px rgba(192,96,58,.42);transition:all .18s}
+  .welcome-enter span{display:inline-block;margin-left:4px;transition:transform .18s}
+  .welcome-enter:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(192,96,58,.58)}
+  .welcome-enter:hover span{transform:translateX(5px)}
+  @keyframes wFadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes wFadeOut{from{opacity:1}to{opacity:0}}
+  @keyframes wRise{from{opacity:0;transform:translateY(28px) scale(.97)}to{opacity:1;transform:none}}
+  @keyframes wAurora{0%,100%{background-position:0% 0%,100% 0%,50% 100%,0 0}50%{background-position:70% 45%,25% 65%,75% 15%,0 0}}
+  @keyframes wPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.16);opacity:.35}}
+  @media(max-width:560px){.welcome-globe,.welcome-globe canvas{width:220px;height:220px}.wg-ring{width:168px;height:168px}.welcome-title{font-size:21px}}
+  @media (prefers-reduced-motion: reduce){.welcome,.welcome-inner{animation:none;opacity:1}.welcome-bg,.wg-ring{animation:none}}
+
+  /* ===== Marcas institucionais (imagem UFG · PRPG · SRI no topbar) ===== */
+  .brand-logos{height:46px;width:auto;display:block;mix-blend-mode:multiply;-webkit-user-drag:none;user-select:none}
+  @media(max-width:1180px){.brand-logos{height:40px}}
+
+  /* ===== Acesso de demonstração (gate de login) ===== */
+  .auth-demo{margin-top:16px}
+  .auth-demo-sep{display:flex;align-items:center;gap:10px;color:var(--text-3);font-size:11px;margin-bottom:10px}
+  .auth-demo-sep::before,.auth-demo-sep::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .auth-demo-btns{display:flex;gap:8px}
+  .demo-btn{flex:1;cursor:pointer;padding:9px 6px;border-radius:9px;font:600 12px var(--mono);letter-spacing:.04em;color:var(--text);background:var(--panel-2);border:1px solid var(--line-2);transition:all .15s}
+  .demo-btn:hover{background:var(--cyan-soft);border-color:var(--chip-b-cy);color:var(--verde)}
+  .demo-btn:disabled{opacity:.5;cursor:wait}
+
+  /* ===== Edição de Dados (view gestor+) ===== */
+  .edit-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .edit-tab{cursor:pointer;padding:8px 14px;border-radius:9px;font:600 12.5px var(--mono);color:var(--text-2);background:var(--panel-2);border:1px solid var(--line);transition:.15s}
+  .edit-tab:hover{color:var(--text);border-color:var(--line-2)}
+  .edit-tab.on{background:var(--cyan-soft);border-color:var(--chip-b-cy);color:var(--verde)}
+  .edit-toolbar{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+  .edit-new{cursor:pointer;padding:9px 16px;border-radius:9px;font:600 12.5px var(--mono);color:var(--tinta);background:linear-gradient(90deg,var(--oliva),var(--terra-txt));border:none;box-shadow:0 6px 18px rgba(92,106,52,.28)}
+  .edit-new:hover{filter:brightness(1.06)}
+  .edit-status{font-size:12.5px;font-weight:600}
+  .edit-status.ok{color:var(--green)} .edit-status.erro{color:var(--red)}
+  .edit-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:4px 6px}
+  .edit-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .edit-table th{text-align:left;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line-2)}
+  .edit-table td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--text)}
+  .edit-table tr:last-child td{border-bottom:none}
+  .edit-table tr:hover td{background:var(--tint-hover)}
+  .edit-acoes{text-align:right;white-space:nowrap}
+  .edit-edit,.edit-del{cursor:pointer;margin-left:6px;padding:5px 11px;border-radius:7px;font:600 11.5px var(--mono);border:1px solid var(--line-2);background:var(--panel-2);color:var(--text-2);transition:.15s}
+  .edit-edit:hover{border-color:var(--chip-b-cy);color:var(--verde)}
+  .edit-del:hover{border-color:var(--chip-b-rd);color:var(--red);background:var(--red-soft)}
+  .edit-vazio,.edit-erro{padding:22px;text-align:center;color:var(--text-3);font-size:13px}
+  .edit-erro{color:var(--red)}
+  .edit-form{background:var(--panel-2);border:1px solid var(--line-2);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
+  .edit-form h3{margin:0 0 14px;font-size:14px;font-weight:600}
+  .edit-form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:760px){.edit-form-grid{grid-template-columns:1fr}}
+  .edit-field{display:flex;flex-direction:column;gap:5px}
+  .edit-field.edit-field-wide{grid-column:1/-1}
+  .edit-field.edit-field-bool{flex-direction:row;align-items:center;gap:9px}
+  .edit-field>span{font-size:11px;letter-spacing:.04em;color:var(--text-3);font-weight:600}
+  .edit-field input,.edit-field select,.edit-field textarea{font-family:var(--ff);font-size:13px;padding:9px 11px;border-radius:9px;background:var(--panel);border:1px solid var(--line-portadora);color:var(--text);width:100%}
+  .edit-field input:focus,.edit-field select:focus,.edit-field textarea:focus{outline:none;border-color:var(--cyan)}
+  .edit-field-bool input{width:18px;height:18px;flex:0 0 18px;accent-color:var(--cyan);outline:1px solid var(--line-portadora);outline-offset:1px}
+  .edit-form-actions{display:flex;align-items:center;gap:10px;margin-top:16px}
+  .edit-save{cursor:pointer;padding:10px 20px;border-radius:9px;font:600 13px var(--mono);color:var(--tinta);background:linear-gradient(90deg,var(--oliva),var(--terra-txt));border:none}
+  .edit-save:disabled{opacity:.6;cursor:wait}
+  .edit-cancel{cursor:pointer;padding:10px 16px;border-radius:9px;font:600 13px var(--mono);color:var(--text-2);background:transparent;border:1px solid var(--line-2)}
+  .edit-cancel:hover{color:var(--text)}
+  .edit-form-msg{font-size:12.5px;font-weight:600}
+  .edit-form-msg.ok{color:var(--green)} .edit-form-msg.erro{color:var(--red)}
+
+  /* ===== Canal de feedback ===== */
+  .fb-fab{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:7px;cursor:pointer;padding:11px 17px;border-radius:30px;font:600 13px var(--mono);color:var(--tinta);background:linear-gradient(90deg,var(--oliva),var(--terra-txt));border:none;box-shadow:0 8px 24px rgba(92,106,52,.4);transition:all .18s}
+  .fb-fab:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(92,106,52,.55)}
+  .fb-fab[hidden]{display:none}
+  .fb-modal{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,11,18,.66);backdrop-filter:blur(3px);animation:wFadeIn .25s ease}
+  .fb-card{position:relative;width:100%;max-width:460px;background:var(--panel-2);border:1px solid var(--line-2);border-radius:16px;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:wRise .4s cubic-bezier(.2,.7,.2,1) both}
+  .fb-card h3{margin:0 0 6px;font-size:17px;font-weight:700}
+  .fb-sub{margin:0 0 16px;font-size:12px;color:var(--text-3)}
+  .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .fb-card .fb-grid .edit-field{margin-bottom:0}
+  .fb-card .edit-field{margin-bottom:12px}
+  .fb-x{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:14px;color:var(--text-2);background:var(--tint-neutro);border:1px solid var(--line-2);transition:.15s}
+  .fb-x:hover{background:rgba(176,71,42,.18);color:#fff}
+  .fb-actions{display:flex;align-items:center;gap:10px;margin-top:6px}
+  /* anexos do feedback */
+  .fb-anexos{margin:2px 0 14px}
+  .fb-anexos-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .fb-anexos-head>span{font-size:11px;letter-spacing:.04em;color:var(--text-3);font-weight:600}
+  .fb-anexos-head small{font-weight:500;color:var(--text-3);opacity:.8}
+  .fb-attach-btn{cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;font:600 12px var(--mono);color:var(--text-2);background:var(--tint-acento);border:1px dashed var(--line-2);transition:.15s}
+  .fb-attach-btn:hover{color:var(--text);border-color:var(--chip-b-cy);background:var(--tint-acento-2)}
+  .fb-anexos-lista{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .fb-chip{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;background:var(--panel);border:1px solid var(--line)}
+  .fb-chip-ico{flex:0 0 auto;font-size:14px}
+  .fb-chip-thumb{flex:0 0 34px;width:34px;height:34px;border-radius:6px;object-fit:cover;border:1px solid var(--line-2)}
+  .fb-chip-nome{flex:1 1 auto;min-width:0;font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fb-chip-tam{flex:0 0 auto;font-size:11px;color:var(--text-3)}
+  .fb-chip-x{flex:0 0 auto;cursor:pointer;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;color:var(--text-2);background:var(--tint-neutro);border:1px solid var(--line-2);transition:.15s}
+  .fb-chip-x:hover{background:rgba(176,71,42,.18);color:#fff}
+  /* anexos na aba de revisão (Edição de Dados) */
+  .fb-anexos-view{display:flex;flex-wrap:wrap;gap:10px;padding:8px;border-radius:9px;background:var(--panel);border:1px solid var(--line);min-height:38px;align-items:flex-start}
+  .fb-anexo-thumb{margin:0;display:flex;flex-direction:column;gap:4px;width:150px}
+  .fb-anexo-thumb img{width:100%;max-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--line-2);background:var(--bg-2)}
+  .fb-anexo-thumb figcaption{font-size:11px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fb-anexo-link{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--oliva);text-decoration:none;background:var(--tint-acento);border:1px solid var(--line-acento)}
+  .fb-anexo-link:hover{background:var(--tint-acento-2);text-decoration:underline}
+  .fb-anexo-vazio{font-size:12px;color:var(--text-3)}
+
+  /* ===== Exposição fotográfica ===== */
+  .gal-grid{columns:4; column-gap:14px; margin-top:14px}
+  .gal-item{margin:0 0 14px; break-inside:avoid; cursor:zoom-in; overflow:hidden;
+    border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--panel);
+    transition:transform .18s, border-color .18s, box-shadow .18s}
+  .gal-item:hover,.gal-item:focus-visible{transform:translateY(-3px); border-color:var(--cyan); box-shadow:var(--shadow)}
+  .gal-item img{width:100%; height:auto; display:block}
+  .gal-item figcaption{padding:9px 11px; font-size:11.5px; color:var(--text-2); line-height:1.35}
+  @media(max-width:1180px){.gal-grid{columns:3}}
+  @media(max-width:760px){.gal-grid{columns:2}}
+  @media(max-width:520px){.gal-grid{columns:1}}
+
+  /* ampliação da foto */
+  .gal-lb{position:fixed; inset:0; z-index:95; display:flex; align-items:center; justify-content:center;
+    background:rgba(10,8,5,.94); padding:clamp(14px,4vw,44px); backdrop-filter:blur(3px)}
+  .gal-lb[hidden]{display:none}
+  .gal-lb figure{margin:0; max-width:min(1100px,92vw); display:flex; flex-direction:column; gap:10px}
+  .gal-lb img{max-width:100%; max-height:78vh; object-fit:contain; border-radius:10px; border:1px solid var(--line-2)}
+  /* O LIGHTBOX E ESCURO NOS DOIS TEMAS (ver a secao "escuros nos dois temas"
+     mais abaixo), logo a tinta e a borda dele tambem sao fixas nos dois.
+     Antes, .gal-lb-btn e figcaption usavam --text/--text-2, que seguem o
+     tema: no CLARO o glifo do X ficava em 1.10:1 sobre a propria chapa do
+     botao, ou seja um circulo vazio, e a legenda em 2.15:1 sobre o scrim.
+     Medido depois desta correcao (chapa composta rgb(46,44,38) no claro e
+     rgb(34,32,27) no escuro, scrim composto rgb(24,22,18) e rgb(11,9,5)):
+       glifo --papel sobre a chapa .... 11.97:1 no claro, 13.95:1 no escuro
+       legenda --creme sobre o scrim .. 13.66:1 no claro, 15.04:1 no escuro
+       borda rgba(244,237,221,.40) .... 3.45:1 no claro, 3.38:1 no escuro
+         (era --line-2, que no claro compunha 1.12:1 e sumia)
+     No :hover a chapa vira --cyan preenchido, que INVERTE de valor com o
+     tema: verde escuro no claro, verde-limao no escuro. Entao so ali a tinta
+     acompanha o tema: --papel sobre o cyan claro da 5.05:1 e --tinta sobre o
+     cyan escuro da 9.04:1 (manter --papel no escuro daria 1.77:1). */
+  .gal-lb figcaption{text-align:center; font-size:12.5px; color:var(--creme); line-height:1.4}
+  .gal-lb-btn{position:absolute; cursor:pointer; width:46px; height:46px; border-radius:50%;
+    background:rgba(244,237,221,.10); color:var(--papel); border:1px solid rgba(244,237,221,.40);
+    font-size:21px; line-height:1; display:grid; place-items:center; transition:background .18s, transform .18s}
+  .gal-lb-btn:hover{background:var(--cyan); color:var(--papel); transform:scale(1.06)}
+  html[data-theme="dark"] .gal-lb-btn:hover{color:var(--tinta)}
+  .gal-lb-x{top:18px; right:18px; font-size:16px}
+  .gal-lb-prev{left:max(10px,2vw)}
+  .gal-lb-next{right:max(10px,2vw)}
+
+  /* ===== foco visível (acessibilidade) =====
+     C.2. O anel antigo era outline:2px solid var(--cyan) = #5C6A34, que no
+     tema escuro daria 1.4:1 sobre a superficie e sumiria. Agora sao DUAS
+     camadas: --anel (o anel em si) e --anel-halo (2px externos, sempre de
+     valor oposto ao anel). O halo e o que garante que o foco continue
+     visivel quando cai sobre uma foto da galeria, sobre o hero ou sobre o
+     mapa de satelite, onde nao existe superficie de token nenhuma.
+     Medido por luminancia WCAG: claro #6E5A1C 4.91:1 no pior caso
+     (sobre --panel-3), escuro #E7B44F 7.61:1. Minimo exigido: 3:1.
+     A cobertura antiga era .pill, .nav-item, .gal-lb-btn e .gal-item; agora
+     e todo controle interativo do painel. */
+  .skip-link:focus-visible,
+  .pill:focus-visible,
+  .nav-item:focus-visible,
+  .gal-lb-btn:focus-visible,
+  .gal-item:focus-visible,
+  .collapse-btn:focus-visible,
+  .menu-btn:focus-visible,
+  .tema-btn:focus-visible,
+  .avatar:focus-visible,
+  .demo-btn:focus-visible,
+  .edit-tab:focus-visible,
+  .edit-new:focus-visible,
+  .edit-save:focus-visible,
+  .edit-cancel:focus-visible,
+  .edit-edit:focus-visible,
+  .edit-del:focus-visible,
+  .btn-report:focus-visible,
+  .fb-fab:focus-visible,
+  .fb-x:focus-visible,
+  .fb-chip-x:focus-visible,
+  .fb-attach-btn:focus-visible,
+  .auth-btn:focus-visible,
+  .um-sair:focus-visible,
+  .side-foot a:focus-visible,
+  .foot-site:focus-visible,
+  .lang-btn:focus-visible,
+  .welcome-x:focus-visible,
+  .welcome-enter:focus-visible,
+  select.sel:focus-visible,
+  .edit-field input:focus-visible,
+  .edit-field select:focus-visible,
+  .edit-field textarea:focus-visible,
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible{
+    outline:2px solid var(--anel); outline-offset:2px;
+    /* O HALO FICA POR DENTRO, o anel por fora. O outline e pintado DEPOIS do
+       box-shadow externo: com o halo em 2..4px o outline caia exatamente em
+       cima dele e o halo morria (medido: 4px contiguos de anel e zero pixel
+       de halo, 2.73:1 do anel sozinho sobre o scrim do lightbox). Com o halo
+       em 0..2px e o outline em 2..4px as duas camadas convivem, sem vao.
+       Nao trocar o outline-offset por 4px: abriria uma fresta de fundo. */
+    box-shadow:0 0 0 2px var(--anel-halo);
+  }
+  /* o item de menu tem o anel POR DENTRO: a sidebar recorta o overflow */
+  .nav-item:focus-visible{outline-offset:-2px; box-shadow:inset 0 0 0 2px var(--anel)}
+  /* nó do mapa: agora recebe foco. `outline` sobre elemento SVG ainda é
+     irregular entre navegadores, então o anel vem TAMBÉM como traço no
+     próprio círculo, que é desenho e sempre aparece. */
+  .node-c:focus-visible{outline:2px solid var(--anel); outline-offset:3px}
+  .node-c:focus-visible .node-dot{stroke:var(--anel); stroke-width:3}
+  /* o <main> recebe foco por programa (skip-link). Nao desenha anel: o
+     salto ja e evidente e um retangulo de 1500px seria ruido visual. */
+  .main:focus,.main:focus-visible{outline:none; box-shadow:none}
+
+
+  /* lightbox em telas estreitas: botões deixam de cobrir a foto */
+  @media(max-width:620px){
+    .gal-lb{padding:14px 10px 76px}
+    .gal-lb figure{max-width:100%}
+    .gal-lb-prev{left:50%; transform:translateX(-72px); top:auto; bottom:16px}
+    .gal-lb-next{right:50%; transform:translateX(72px); top:auto; bottom:16px}
+    .gal-lb-x{top:12px; right:12px}
+  }
+
+  /* ===== mapa real (Leaflet + tiles de rua) ===== */
+  .mapa-real{height:520px; width:100%; border-radius:var(--radius); overflow:hidden;
+    border:1px solid var(--line); background:var(--panel-2)}
+  .mapa-real.mini{height:320px}
+  .map-legend-lin{display:flex; flex-wrap:wrap; gap:16px; margin-top:10px; font-size:11.5px; color:var(--text-2)}
+  .map-legend-lin i{display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:6px; vertical-align:-1px}
+  /* popups e controles no tema do painel */
+  .leaflet-container{font-family:var(--ff)}
+  .leaflet-popup-content-wrapper{background:var(--panel); color:var(--text);
+    border:1px solid var(--line-2); border-radius:10px; box-shadow:var(--shadow)}
+  .leaflet-popup-content{margin:11px 13px; font-size:12.5px; line-height:1.5}
+  .leaflet-popup-tip{background:var(--panel); border:1px solid var(--line-2)}
+  .leaflet-popup-close-button{color:var(--text-3)!important}
+  .lp-reg{color:var(--text-3)}
+  .lp-pil{color:var(--amber)}
+  .leaflet-control-attribution{background:var(--atrib-bg)!important; color:var(--atrib-txt)!important; font-size:10px}
+  /* a tarja de atribuição é escura nos DOIS temas (--atrib-bg), então o link
+     tem de usar a tinta pensada para ela. Com --cyan-2 o link ficava
+     verde-musgo sobre quase-preto: 1,21:1. */
+  .leaflet-control-attribution a{color:var(--atrib-txt)!important;text-decoration:underline}
+  .leaflet-bar a{background:var(--panel)!important; color:var(--text)!important; border-color:var(--line-2)!important}
+  .leaflet-bar a:hover{background:var(--panel-2)!important}
+  @media(max-width:760px){.mapa-real{height:380px} .mapa-real.mini{height:260px}}
+  .lp-feito{color:var(--cyan)}
+  .lp-plan{color:var(--text-3)}
+
+  /* ===== Google Maps: balão de informação e estado de erro ===== */
+  /* O balao do Google Maps e desenhado pela API com chapa BRANCA propria,
+     que nao segue o nosso tema. Entao a tinta dentro dele tambem nao segue:
+     tokens claros redeclarados no escopo, como no relatorio. */
+  .gm-pop{--tinta:#2A2418; --text-3:#6B5D46; --verde:#38512F; --amber-txt:#8A5A00;
+    font-family:var(--ff); font-size:12.5px; line-height:1.55; color:var(--tinta); min-width:172px}
+  .gm-pop b{color:var(--tinta)}
+  .gm-pop .lp-reg{color:var(--text-3); font-size:11.5px; margin-bottom:4px}
+  .gm-pop .lp-feito{color:var(--verde); font-weight:700}
+  .gm-pop .lp-plan{color:var(--text-3); font-weight:700}
+  .gm-pop .lp-pil{color:var(--amber-txt); font-weight:700; margin-top:3px}
+  .mapa-erro{display:grid; place-items:center; height:100%; padding:24px; text-align:center;
+    font-size:12.5px; color:var(--text-2); line-height:1.6}
+
+  /* nome do lugar sob o passarinho */
+  .gm-mk-label{
+    background:rgba(20,16,12,.85); color:#f2ecdd!important;
+    padding:2px 9px; border-radius:20px; border:1px solid rgba(216,155,52,.55);
+    font-family:var(--mono)!important; font-size:11px!important; font-weight:600!important;
+    white-space:nowrap; box-shadow:0 2px 7px rgba(0,0,0,.45); letter-spacing:.01em;
+  }
+  .mapa-erro code{background:var(--tint-codigo); padding:1px 5px; border-radius:5px; font-size:11px}
+
+  /* ===== marcador-passarinho (Leaflet divIcon) ===== */
+  .mk-wrap{background:none!important;border:0!important}
+  .mk-bird{position:relative;width:42px;height:52px}
+  .mk-bird svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+  .mk-nome{position:absolute;left:50%;top:50px;transform:translateX(-50%);
+    background:rgba(20,16,12,.85);color:#f2ecdd;padding:2px 9px;border-radius:20px;
+    border:1px solid rgba(216,155,52,.55);font:600 11px/1.35 var(--mono);
+    white-space:nowrap;box-shadow:0 2px 7px rgba(0,0,0,.45)}
+  .leaflet-container{background:var(--bg-2)}
+
+  /* ===== abertura: foto no lugar do globo 3D ===== */
+  .welcome-foto{width:min(460px,84vw); height:250px; border-radius:20px; overflow:hidden;
+    box-shadow:0 22px 55px -18px rgba(42,36,24,.55); border:2px solid rgba(74,56,38,.6)}
+  .welcome-foto img{width:100%; height:100%; object-fit:cover; object-position:center 42%; display:block}
+  @media(max-width:560px){.welcome-foto{height:190px}}
+
+
+  /* ===== identidade Herbário: tipografia ===== */
+  body{font-size:14.5px}
+  h1,h2,h3,h4,.view-head h1,.card-h h2,.kpi .val,.mini-stat .n,.hero h2,.icard h3,.auth-card h2,.fb-card h3,.edit-form h3,.welcome-title,.auth-logo{font-family:var(--display)}
+  .crumb,.kpi .lbl,.nav-label,.badge-new,table.tb th,.edit-table th,.chip,.pill,select.sel,.bar-row .bl,.gb-line .tag,.mini-stat .l,.map-legend,.map-legend-lin,.legend-inline,.footer-note,.side-foot a,.btn-report,.demo-btn,.edit-tab,.trend,.nav-item .txt,.nav-label,.auth-foot,.auth-demo-sep,.lang-btn,.lp-reg,.ods-tile .gc,.herb-tag{font-family:var(--mono)}
+  .nav-item .txt{font-size:12.5px;letter-spacing:.01em}
+  .view-head h1{font-weight:600}
+  /* cartões: sombra herbário mais definida + leve contorno terra */
+  .card,.kpi{box-shadow:var(--shadow)}
+  /* No tema escuro a elevacao muda de mecanismo: sombra preta sobre terra
+     profunda e invisivel, entao quem separa o card do fundo passa a ser a
+     BORDA (mais o anel luminoso de 1px que ja vem dentro de --shadow).
+     Estes seis componentes dependiam so de box-shadow para existir. */
+  html[data-theme="dark"] .card,
+  html[data-theme="dark"] .kpi,
+  html[data-theme="dark"] .map-tip,
+  html[data-theme="dark"] .fb-card,
+  html[data-theme="dark"] .user-menu,
+  html[data-theme="dark"] .auth-card{border-color:var(--line-2)}
+  ::selection{background:var(--selecao)}
+
+  /* rodapé da sidebar: link secundário para o site + espaçamento */
+  .side-foot a + a{margin-top:8px}
+  .foot-site{background:transparent!important;color:var(--text-2)!important;border:1px solid var(--line-2);box-shadow:none!important}
+  .foot-site:hover{color:var(--terra-txt)!important;border-color:var(--terra)!important;transform:none!important;box-shadow:none!important}
+
+  /* ============================================================
+     Herbário vivo: vibração e delicadeza na mesma paleta
+     (síntese do painel de direções de arte · só cores do :root,
+     alphas e gradientes entre elas)
+     ============================================================ */
+
+  /* ===== ESCUROS NOS DOIS TEMAS (decisao de design, declarada) =====
+     Tres lugares do painel nao invertem com o tema, porque a superficie
+     deles nao e um token: e uma imagem.
+       1. O HERO: fotografia do acervo (hero-cerrado.jpg) com veu de leitura
+          por cima. E registro documental de acao de extensao, entao esta
+          proibido filter: brightness/invert/sepia para "combinar" com o
+          tema. O gradiente do hero apenas afunda no escuro (mesmo verde de
+          mata, mais fundo). A tinta sobre ele continua sendo PAPEL nos dois
+          temas: --papel e --creme nunca sao redefinidos.
+       2. O MAPA LEAFLET: imagem de satelite (Esri World Imagery). Escura
+          nos dois temas por natureza. Os rotulos .gm-mk-label e .mk-nome
+          sao chapa escura fixa com tinta clara: corretos nos dois temas e
+          intocados.
+       3. O LIGHTBOX da galeria: fundo quase preto para a foto respirar.
+     ===================================================================== */
+
+  /* hero legível sobre a foto: papel + sombra verde-profunda */
+  .hero h2{color:var(--papel);text-shadow:0 1px 2px rgba(39,56,31,.65),0 2px 18px rgba(39,56,31,.45)}
+  .hero h2 .g{color:var(--ocre)}
+  .hero p{color:var(--creme);text-shadow:0 1px 12px rgba(39,56,31,.5)}
+  .hero .crumb{text-shadow:0 1px 2px rgba(39,56,31,.6);letter-spacing:.14em}
+  .hero-foto::after{background:linear-gradient(90deg,rgba(39,56,31,.95) 0%,rgba(39,56,31,.84) 38%,rgba(39,56,31,.34) 72%,rgba(39,56,31,.10) 100%)}
+  @media(max-width:900px){.hero-foto::after{background:linear-gradient(180deg,rgba(39,56,31,.72),rgba(39,56,31,.94))}}
+
+  /* chips do hero: pastilhas de papel com ponto-semente */
+  .hero .htags .chip{background:rgba(244,237,221,.97);border-color:rgba(244,237,221,.55);box-shadow:0 2px 10px rgba(39,56,31,.4);backdrop-filter:blur(3px);font-weight:600}
+  .hero .htags .chip::before{content:"";width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:var(--ocre)}
+  .hero .htags .chip.gr::before{background:var(--verde)}
+  .hero .htags .chip.bl::before{background:var(--terra)}
+  /* A pastilha do chip do hero e papel FIXO nos dois temas (o hero e
+     escuro nos dois). Logo a tinta dela tambem tem de ser fixa: se seguisse
+     o acento, no escuro viraria verde-claro sobre papel e sumiria. Valores
+     iguais aos do tema claro, de proposito. */
+  .hero .htags .chip{color:#2A2418}
+  .hero .htags .chip.cy{color:#38512F}
+  .hero .htags .chip.gr{color:#3E6B2E}
+  .hero .htags .chip.bl{color:#A64B29}
+
+  /* leitura de desktop: main mais largo e centrado */
+  .main{flex:1;min-width:0;max-width:1760px;margin-inline:auto;padding:24px clamp(28px,3.2vw,64px) 60px}
+  .view-head p{max-width:72ch}
+  @media(min-width:1600px){.grid{gap:16px}.stack{gap:16px}}
+  @media(min-width:1700px){.gal-grid{columns:5}}
+
+  /* KPIs com fio-de-cor e vida no hover */
+  .kpi{background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 150%);transition:transform .18s cubic-bezier(.2,.7,.2,1),box-shadow .18s ease}
+  .kpi::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,var(--verde),var(--oliva) 70%,var(--ocre))}
+  .kpi.accent-green::before{background:linear-gradient(90deg,var(--green),var(--oliva))}
+  .kpi.accent-blue::before{background:linear-gradient(90deg,var(--terra-txt),var(--terra) 70%,var(--ocre))}
+  .kpi.accent-amber::before{background:linear-gradient(90deg,var(--amber),var(--ocre))}
+  .kpi.accent-red::before{background:linear-gradient(90deg,var(--red),var(--terra))}
+  .kpi:hover{transform:translateY(-2px);box-shadow:0 16px 34px -18px rgba(56,81,47,.45),var(--shadow)}
+  .kpi .val{font-size:33px}
+  #reportRoot .kpi::before,#reportRoot .kpi::after{display:none}
+
+  /* cards com lombada que acende */
+  .icard{background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 130%);border-left:3px solid var(--chip-b-cy);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+  .icard:hover{transform:translateY(-2px);border-left-color:var(--ocre);box-shadow:var(--shadow)}
+
+  /* grão de papel (espelha o site) */
+  body::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.035;mix-blend-mode:multiply}
+  body.printing-report::after{display:none}
+  @media print{body::after{display:none}}
+
+  /* barras com ponta de ipê */
+  .bar-fill{background:linear-gradient(90deg,var(--cyan-2),var(--cyan) 60%,var(--ocre) 82%,var(--terra-txt))}
+
+  /* trilha (crumb) com traço magenta→ocre */
+  .crumb{display:flex;align-items:center;gap:8px}
+  .crumb::before{content:"";width:20px;height:3px;border-radius:99px;flex:0 0 auto;background:linear-gradient(90deg,var(--magenta),var(--ocre))}
+
+  /* menu ativo com brilho de ipê + bordas de chips */
+  .nav-item.active::before{background:linear-gradient(180deg,var(--oliva),var(--ocre));box-shadow:0 0 10px rgba(216,155,52,.4)}
+  .chip.gr{border-color:var(--chip-b-gr)}
+  .chip.am{border-color:var(--chip-b-am)}
+  /* mobile: topbar e hero sem estouro horizontal (bug pré-existente).
+     O LIMITE E 900px, NAO 760px: a topbar ganhou nesta rodada o hamburguer
+     (.menu-btn, 38px) e o botao de tema (.tema-btn, 36px + 10px de margem),
+     ou seja 84px a mais na mesma barra. Medido, a topbar estourava de 761 a
+     799px de viewport (scrollWidth 798 contra clientWidth 780, o avatar
+     saindo 18px para fora da tela, o que inclui o iPad em retrato a 768px);
+     com o enxugamento comecando em 900px o estouro some em 600, 700, 761,
+     780, 799, 800, 860, 899, 900, 901, 1000 e 1180px. Nao subir para 1180px:
+     entre 800 e 1180px nao ha estouro nenhum, e ali a busca e a marca
+     institucional cabem e devem continuar visiveis.
+
+     A 360px o estouro era de outra natureza e valia para as 22 telas: a
+     .ecoa-brand (92x80 numa barra de 62px) quebrava em cinco linhas e
+     empurrava o #btnTema para fora da viewport em 10 telas. Esconder a marca
+     e o que resolve; o resto e blindagem. Depois da correcao, medido em 360,
+     390 e 412px, sobra uma unica tela com rolagem lateral ('participativa'),
+     que ja estourava antes desta rodada por conteudo do #main. */
+  @media(max-width:900px){
+    .topbar{gap:10px;padding:0 12px}
+    .btn-report span{display:none}
+    .btn-report{padding:8px 10px}
+    .app-title span{display:none}
+    .brand-row{display:none}
+    .brand-row + .wm-sep{display:none}
+    .ecoa-brand{display:none}
+    .ecoa-brand + .wm-sep{display:none}
+    .app-title{min-width:0}
+    /* o texto que varia por tela e o do <b id="topTitle">: o corte tem de
+       ser nele, nao no .app-title. */
+    .app-title b{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+    .avatar{flex:0 0 34px}
+    .hero{padding:22px 18px;gap:16px}
+    .hero .htext{max-width:100%}
+  }
+
+  /* B.1 sidebar recolhida por padrão (62px, só ícones).
+     Media a 878px de viewport ANTES desta rodada: a sidebar segurava 248px
+     fixos e o .main ficava com 630px, ou seja a navegacao comia 28% da
+     largura. Estender esta regra de 760px para 1180px devolve 186px ao
+     conteudo em toda a faixa intermediaria. O trilho em si e a rodada de
+     26/07 e nao foi tocado: so mudou o limite superior. */
+  @media(max-width:1180px){
+    /* O TRILHO SAI DO FLUXO JA FECHADO. Enquanto ele era sticky e ocupava
+       62px de coluna flex, abrir a gaveta (que e position:fixed) devolvia
+       esses 62px ao .main e a pagina inteira saltava para a esquerda a cada
+       abertura e a cada fechamento (medido: main left 62 -> 0 -> 62 e width
+       328 -> 390 -> 328 a 390px; 838 -> 900 -> 838 a 900px). Com o trilho
+       fixo desde o estado fechado e o recuo dado pelo padding do .shell, o
+       .main fica identico nos tres estados. */
+    .shell{padding-left:62px}
+    .sidebar{position:fixed; top:62px; left:0; bottom:0; z-index:50;
+      width:62px; flex-basis:auto; height:calc(100vh - 62px);
+      padding:14px 8px 18px}
+    .sidebar .nav-label,.sidebar .txt,.sidebar .badge-new,.sidebar .side-head .logo span{display:none}
+    .sidebar .nav-item{justify-content:center}
+    .sidebar .side-head{justify-content:center}
+    .sidebar .side-foot a{justify-content:center;padding:10px}
+    .collapse-btn{display:none}
+    .main{padding:16px 14px 40px}
+    .grid > *{min-width:0}
+  }
+
+
+  /* ============================================================
+     FUNDAÇÃO: skip-link, hamburguer, botão de tema, gaveta e véu
+     ============================================================ */
+
+  /* C.0 texto só para leitor de tela: legenda de tabela e anúncio de troca
+     de tela. NÃO usar display:none nem visibility:hidden: os dois tiram o
+     conteúdo da árvore de acessibilidade, que é justamente onde ele precisa
+     estar. O clip de 1px é o padrão que sobrevive a isso.
+     white-space:nowrap impede que o texto espremido em 1px vire uma coluna
+     de letras e estoure a altura da página. */
+  .sr-so-leitor{
+    position:absolute !important; width:1px; height:1px;
+    padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0 0 0 0); clip-path:inset(50%);
+    white-space:nowrap; border:0;
+  }
+
+  /* C.1 skip-link: primeiro elemento do body, fora da tela ate receber
+     foco. z-index acima do 10000 da janela de abertura, senao ele apareceria
+     atras dela. */
+  .skip-link{
+    position:fixed; top:8px; left:8px; z-index:10010;
+    transform:translateY(-160%);
+    padding:10px 16px; border-radius:10px;
+    background:var(--panel); color:var(--text);
+    border:1px solid var(--line-portadora);
+    font:600 13px var(--mono); text-decoration:none;
+    box-shadow:var(--shadow);
+    transition:transform .18s cubic-bezier(.2,.7,.2,1);
+  }
+  .skip-link:focus,.skip-link:focus-visible{transform:translateY(0)}
+
+  /* B.2 hamburguer. Substitui o #collapseBtn na faixa da gaveta: os dois
+     nunca aparecem juntos. */
+  .menu-btn{
+    display:none; cursor:pointer; align-items:center; justify-content:center;
+    width:38px; height:38px; flex:0 0 38px; padding:0;
+    border-radius:9px; color:var(--text-2);
+    background:var(--panel); border:1px solid var(--line-2);
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .menu-btn svg{width:19px;height:19px;display:block}
+  .menu-btn:hover{background:var(--panel-3); color:var(--text); border-color:var(--line-portadora)}
+  @media(max-width:1180px){.menu-btn{display:flex}}
+
+  /* D.3 botão de tema. Vocabulário visual do .btn-report e do .demo-btn:
+     mesma altura, mesmo raio, mesma borda. */
+  .tema-btn{
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    width:36px; height:36px; flex:0 0 36px; margin-right:10px; padding:0;
+    border-radius:9px; color:var(--text-2);
+    background:var(--panel); border:1px solid var(--line-2);
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .tema-btn svg{width:17px;height:17px;display:block}
+  .tema-btn:hover{background:var(--panel-3); color:var(--cyan-2); border-color:var(--chip-b-cy)}
+  /* sol no escuro, lua no claro: o ícone mostra o DESTINO do clique */
+  .tema-btn .ic-sol{display:none}
+  html[data-theme="dark"] .tema-btn .ic-lua{display:none}
+  html[data-theme="dark"] .tema-btn .ic-sol{display:block}
+
+  /* B.3/B.4 véu da gaveta: filho direto do body, cobre tudo abaixo da
+     topbar e fecha ao toque. */
+  .nav-veu{
+    position:fixed; inset:62px 0 0; z-index:45;
+    background:var(--veu); opacity:0;
+    animation:veuEntra .18s ease forwards;
+    -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);
+  }
+  .nav-veu[hidden]{display:none}
+  @keyframes veuEntra{to{opacity:1}}
+
+  /* B: tabela da tela de Edição de Dados rola dentro do próprio cartão.
+     A tabela das demais telas já sai de elTable() dentro de um contêiner
+     com overflow-x:auto (script.js), então não se repete a regra lá. */
+  .edit-list{overflow-x:auto}
+
+  /* E.2 a gaveta desliza por transform, nunca por width: animar largura
+     causaria reflow de toda a grade do main a cada quadro. */
+  @media(max-width:1180px){
+    .sidebar.open{
+      /* position, top, left, z-index e height ja vem do trilho fechado, que
+         agora tambem e fixed: abrir so alarga. */
+      width:248px; flex-basis:auto;
+      padding:14px 12px 22px;
+      background:var(--bg-2); border-right:1px solid var(--line-2);
+      box-shadow:0 18px 46px -14px rgba(0,0,0,.45);
+      transform:translateX(0);
+      animation:gavetaEntra .2s cubic-bezier(.2,.7,.2,1);
+    }
+    .sidebar.open .nav-label,
+    .sidebar.open .txt,
+    .sidebar.open .badge-new,
+    .sidebar.open .side-head .logo span{display:revert}
+    .sidebar.open .nav-item{justify-content:flex-start}
+    .sidebar.open .side-head{justify-content:space-between}
+    .sidebar.open .side-foot a{justify-content:flex-start;padding:10px 12px}
+  }
+  @keyframes gavetaEntra{from{transform:translateX(-105%)}to{transform:translateX(0)}}
+
+  /* E.1/E.3 microinterações. Transição de tema CURTA e limitada a cor:
+     nada de transition:all no body. Com 2600 linhas de JS reescrevendo
+     innerHTML a cada navegação, transição global custa caro e pisca. */
+  body,.topbar,.sidebar,.card,.kpi,.icard,.edit-list,.edit-form,.fb-card,
+  .chip,.pill,.map-tip,.menu-btn,.tema-btn{
+    transition:background-color .14s linear, border-color .14s linear, color .14s linear;
+  }
+  /* o card acende a borda no hover (realce sutil, nunca deslocamento) */
+  .card{transition:background-color .14s linear, border-color .16s ease, box-shadow .16s ease}
+  .card:hover{border-color:var(--chip-b-cy)}
+  /* entrada de tela: a animação só existe porque go() força um reflow
+     (void el.offsetWidth) antes de recolocar a classe, senão o navegador
+     agrupa a remoção e a adição no mesmo quadro e nada anima. */
+  .view-enter{animation:viewEntra .22s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes viewEntra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ============================================================
+     MOVIMENTO REDUZIDO: ESTE BLOCO E O ULTIMO DA FOLHA, DE PROPOSITO.
+     Ele vivia antes da secao FUNDACAO e nao anulava NADA: @media nao soma
+     especificidade, entao .sidebar.open aqui (0,2,0) empatava com
+     .sidebar.open la embaixo (0,2,0) e o ultimo do arquivo ganhava. Medido
+     com --force-prefers-reduced-motion: a gaveta continuava animando por
+     0.2s, o veu por 0.18s, a troca de tela por 0.22s e as transicoes de cor
+     por 0.14s, com matchMedia(...).matches = true. Empurrar o bloco para o
+     fim resolve sem espalhar !important por quatro grupos de seletores.
+     Quem acrescentar animacao DEPOIS daqui tem de anula-la aqui tambem.
+     Os outros dois blocos de movimento reduzido da folha (o de .bar-fill e
+     o da janela de abertura) continuam validos onde estao, porque as regras
+     que eles anulam vem antes deles.
+     A gaveta aparece em vez de deslizar, o veu aparece em vez de esmaecer,
+     a tela nao sobe e a troca de tema e instantanea. Nada desaparece, so
+     para de se mover.
+     ============================================================ */
+  @media (prefers-reduced-motion:reduce){
+    .kpi,.icard{transition:none}
+    .kpi:hover,.icard:hover{transform:none}
+    .sidebar.open{animation:none}
+    .nav-veu{animation:none;opacity:1}
+    .view-enter{animation:none}
+    .skip-link{transition:none}
+    body,.topbar,.sidebar,.card,.kpi,.icard,.edit-list,.edit-form,.fb-card,
+    .chip,.pill,.map-tip,.menu-btn,.tema-btn{transition:none}
+  }

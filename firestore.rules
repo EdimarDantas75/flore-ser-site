@@ -1,0 +1,114 @@
+rules_version = '2';
+
+// =============================================================
+//  Flore-ser · UFG — Regras de acesso ao Firestore
+//  Painel de Extensão Socioambiental (instituição única).
+//
+//  Princípios (mesma linha do projeto CAPES-Global):
+//   - Autorização por custom claims no token JWT (papel).
+//   - Catálogos: leitura por autenticados, escrita por governança.
+//   - Operacionais: leitura por autenticados, escrita por gestor+.
+//   - Soft delete universal: nunca apaga; marca deleted_at.
+//   - Auditoria: somente leitura no cliente (escrita via servidor).
+// =============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Helpers ----------
+    function isAuth()       { return request.auth != null; }
+    function papel()        { return isAuth() ? request.auth.token.papel : null; }
+    function isAdmin()      { return papel() == 'admin'; }
+    function isGovernanca() { return isAdmin() || papel() == 'governanca'; }
+    function isGestor()     { return isGovernanca() || papel() == 'gestor'; }
+
+    // Bloqueia hard delete: remoção lógica é feita com update de deleted_at.
+    function naoApaga()     { return false; }
+
+    // ---------- Configuração institucional ----------
+    match /config/{docId} {
+      allow read:  if isAuth();
+      allow write: if isGovernanca();
+    }
+
+    // ---------- Catálogos (seedados) ----------
+    match /paises/{id}                { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /cidades/{id}               { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /ods/{id}                   { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /dimensoes/{id}             { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /fontes_financiamento/{id}  { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /modalidades_acao/{id}      { allow read: if isAuth(); allow write: if isGovernanca(); }
+    match /agregados/{id}             { allow read: if isAuth(); allow write: if isGovernanca(); }
+
+    // ---------- Operacionais (CRUD por gestor, soft delete) ----------
+    match /captacoes/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /fluxos_mobilidade/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /convenios/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /producoes/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /eventos_internacionais/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /diagnosticos_maturidade/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /riscos/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+    match /pesquisadores/{id} {
+      allow read:   if isAuth();
+      allow create, update: if isGestor();
+      allow delete: if naoApaga();
+    }
+
+    // ---------- Usuários e vínculos de papel ----------
+    match /usuarios/{userId} {
+      allow read:   if isAuth() && (request.auth.uid == userId || isGovernanca());
+      allow write:  if isGovernanca();
+    }
+    match /vinculos_papel/{id} {
+      allow read:   if isAuth();
+      allow write:  if isAdmin();
+    }
+
+    // ---------- Auditoria (somente leitura no cliente) ----------
+    match /eventos_auditoria/{id} {
+      allow read:   if isGovernanca();
+      allow write:  if false; // escrito apenas por Cloud Function / Admin SDK
+    }
+
+    // ---------- Feedbacks (qualquer autenticado envia; gestor+ revisa/atualiza) ----------
+    match /feedbacks/{id} {
+      allow create: if isAuth();
+      allow read:   if isGestor();
+      allow update: if isGestor();
+      allow delete: if naoApaga();
+    }
+
+    // ---------- Negação padrão ----------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

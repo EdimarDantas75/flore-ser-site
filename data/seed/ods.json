@@ -1,0 +1,19 @@
+[
+  { "id": "ods_1",  "numero": 1,  "nome": "Erradicação da Pobreza",        "cor": "#E5243B" },
+  { "id": "ods_2",  "numero": 2,  "nome": "Fome Zero",                     "cor": "#DDA63A" },
+  { "id": "ods_3",  "numero": 3,  "nome": "Saúde e Bem-Estar",             "cor": "#4C9F38" },
+  { "id": "ods_4",  "numero": 4,  "nome": "Educação de Qualidade",         "cor": "#C5192D" },
+  { "id": "ods_5",  "numero": 5,  "nome": "Igualdade de Gênero",           "cor": "#FF3A21" },
+  { "id": "ods_6",  "numero": 6,  "nome": "Água Potável e Saneamento",     "cor": "#26BDE2" },
+  { "id": "ods_7",  "numero": 7,  "nome": "Energia Limpa",                 "cor": "#FCC30B" },
+  { "id": "ods_8",  "numero": 8,  "nome": "Trabalho e Crescimento",        "cor": "#A21942" },
+  { "id": "ods_9",  "numero": 9,  "nome": "Indústria e Inovação",          "cor": "#FD6925" },
+  { "id": "ods_10", "numero": 10, "nome": "Redução das Desigualdades",     "cor": "#DD1367" },
+  { "id": "ods_11", "numero": 11, "nome": "Cidades Sustentáveis",          "cor": "#FD9D24" },
+  { "id": "ods_12", "numero": 12, "nome": "Consumo Responsável",           "cor": "#BF8B2E" },
+  { "id": "ods_13", "numero": 13, "nome": "Ação Climática",                "cor": "#3F7E44" },
+  { "id": "ods_14", "numero": 14, "nome": "Vida na Água",                  "cor": "#0A97D9" },
+  { "id": "ods_15", "numero": 15, "nome": "Vida Terrestre",                "cor": "#56C02B" },
+  { "id": "ods_16", "numero": 16, "nome": "Paz e Instituições",            "cor": "#00689D" },
+  { "id": "ods_17", "numero": 17, "nome": "Parcerias",                     "cor": "#19486A" }
+]

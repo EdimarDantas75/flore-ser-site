@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flore-Ser · Ocupar os espaços públicos comuns como forma de (r)existência</title>
+<meta name="description" content="Projeto de extensão da UFG que ressignifica praças, jardins e canteiros de Goiânia por meio de mutirões, arte-educação e ecologia urbana. Chamada Pública FAPEG nº 12/2025.">
+<meta name="author" content="Flore-Ser · UFG">
+<meta name="theme-color" content="#38512F">
+
+<!-- Open Graph / redes sociais -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Flore-Ser · Ocupar os espaços públicos comuns como forma de (r)existência">
+<meta property="og:description" content="Projeto de extensão da UFG que ressignifica praças, jardins e canteiros de Goiânia: mutirões, arte-educação e ecologia urbana.">
+
+<!-- Favicon (folha do Cerrado, inline) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F7E4E2'/%3E%3Cpath d='M6 15l-3 3 4-1z' fill='%233f9b8e'/%3E%3Cpath d='M26 15l3 3-4-1z' fill='%233f9b8e'/%3E%3Ccircle cx='11' cy='17' r='4' fill='%2357b5a6'/%3E%3Ccircle cx='21' cy='17' r='4' fill='%2357b5a6'/%3E%3Ccircle cx='16' cy='18.5' r='2.4' fill='%23e79a34'/%3E%3C/svg%3E">
+
+<script>
+/* Restaura o tema ANTES de qualquer folha pintar (evita a piscada) e marca
+   html.js, de que depende o .rv (sem isso, um script.js que falhe deixaria a
+   pagina inteira invisivel). Contrato: data-theme no <html>, chave
+   FLORESER_TEMA com os valores "claro" | "escuro". */
+(function(){
+  var d = document.documentElement;
+  d.classList.add('js');
+  try{
+    var t = localStorage.getItem('FLORESER_TEMA');
+    if(t === 'escuro') d.setAttribute('data-theme','dark');
+    else if(t === 'claro') d.removeAttribute('data-theme');
+  }catch(e){ /* armazenamento bloqueado: segue no tema claro, sem barulho */ }
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,0..100;1,9..144,400..600,0..100&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ============================================================
+     DEFINIÇÕES SVG REUTILIZÁVEIS (line-art de herbário), decorativas
+     ============================================================ -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute" focusable="false">
+  <defs>
+    <symbol id="birds-emblem" viewBox="0 0 120 120">
+      <g fill="#7ec8e3">
+        <circle cx="60" cy="40" r="3.4"><animate attributeName="cy" values="40;30;40" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;.4;1" dur="3s" repeatCount="indefinite"/></circle>
+        <circle cx="60" cy="31" r="2.6"><animate attributeName="cy" values="31;22;31" dur="3s" begin="0.3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;.3;.9" dur="3s" begin="0.3s" repeatCount="indefinite"/></circle>
+        <circle cx="60" cy="23" r="1.9"><animate attributeName="cy" values="23;15;23" dur="3s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;.2;.8" dur="3s" begin="0.6s" repeatCount="indefinite"/></circle>
+      </g>
+      <g>
+        <path d="M14 74 L4 84 L16 80 Z" fill="#3f9b8e"/>
+        <path d="M18 66 Q30 60 44 70 Q40 82 26 82 Q16 78 18 66 Z" fill="#57b5a6"/>
+        <path d="M34 70 Q44 70 45 74 Q42 82 30 82 Q31 74 34 70 Z" fill="#d1743a"/>
+        <circle cx="43" cy="66" r="7.5" fill="#57b5a6"/>
+        <path d="M39 63 Q46 62 50 66" stroke="#2f5c54" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="45" cy="65" r="1.5" fill="#22302c"/>
+        <path d="M50 66 L59 68 L50 70 Z" fill="#22302c"/>
+        <g><path d="M24 66 Q20 44 34 30 Q40 46 40 62 Q34 68 24 66 Z" fill="#ecd6a2" stroke="#c9a86a" stroke-width="1"/><path d="M27 60 Q26 48 33 40" stroke="#c9a86a" stroke-width="1" fill="none"/><animateTransform attributeName="transform" type="rotate" values="-7 26 66;6 26 66;-7 26 66" dur="0.9s" repeatCount="indefinite"/></g>
+        <path d="M28 82 l0 5 M34 82 l1 5" stroke="#c98a2a" stroke-width="1.4" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(120,0) scale(-1,1)">
+        <path d="M14 74 L4 84 L16 80 Z" fill="#3f9b8e"/>
+        <path d="M18 66 Q30 60 44 70 Q40 82 26 82 Q16 78 18 66 Z" fill="#57b5a6"/>
+        <path d="M34 70 Q44 70 45 74 Q42 82 30 82 Q31 74 34 70 Z" fill="#d1743a"/>
+        <circle cx="43" cy="66" r="7.5" fill="#57b5a6"/>
+        <path d="M39 63 Q46 62 50 66" stroke="#2f5c54" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="45" cy="65" r="1.5" fill="#22302c"/>
+        <path d="M50 66 L59 68 L50 70 Z" fill="#22302c"/>
+        <g><path d="M24 66 Q20 44 34 30 Q40 46 40 62 Q34 68 24 66 Z" fill="#ecd6a2" stroke="#c9a86a" stroke-width="1"/><path d="M27 60 Q26 48 33 40" stroke="#c9a86a" stroke-width="1" fill="none"/><animateTransform attributeName="transform" type="rotate" values="-7 26 66;6 26 66;-7 26 66" dur="0.9s" begin="0.12s" repeatCount="indefinite"/></g>
+        <path d="M28 82 l0 5 M34 82 l1 5" stroke="#c98a2a" stroke-width="1.4" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(60,74)">
+        <g fill="#e79a34"><ellipse cx="0" cy="-7" rx="4" ry="6"/><ellipse cx="6.5" cy="-2" rx="6" ry="4" transform="rotate(40)"/><ellipse cx="4" cy="6" rx="4" ry="6" transform="rotate(-18)"/><ellipse cx="-4" cy="6" rx="4" ry="6" transform="rotate(18)"/><ellipse cx="-6.5" cy="-2" rx="6" ry="4" transform="rotate(-40)"/></g>
+        <circle r="3.2" fill="#b85c1e"/>
+      </g>
+    </symbol>
+    <!-- broto / muda -->
+    <symbol id="ic-sprout" viewBox="0 0 48 48">
+      <path d="M24 42V20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M24 26C24 18 18 14 10 15c0 8 6 12 14 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 22C24 15 29 11 37 12c0 7-6 11-13 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M14 42h20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1 4"/>
+    </symbol>
+    <!-- regador (mutirão de plantio) -->
+    <symbol id="ic-water" viewBox="0 0 48 48">
+      <path d="M13 22h16a3 3 0 0 1 3 3v9a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5v-6a6 6 0 0 1 3-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M29 25l9-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M38 19l4 3-3 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 22c-1-4 1-7 4-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <!-- pincel / rolo (oficinas de arte) -->
+    <symbol id="ic-brush" viewBox="0 0 48 48">
+      <rect x="9" y="10" width="22" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M31 13h5a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 20v6a2 2 0 0 1-2 2h-2v10a2 2 0 0 1-4 0V28h-2a2 2 0 0 1-2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+    <!-- sol / festa (eventos culturais) -->
+    <symbol id="ic-sun" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M24 6v5M24 37v5M6 24h5M37 24h5M11 11l3.5 3.5M33.5 33.5 37 37M37 11l-3.5 3.5M14.5 33.5 11 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <!-- livro aberto (escolas) -->
+    <symbol id="ic-book" viewBox="0 0 48 48">
+      <path d="M24 14C20 11 13 10 8 11v24c5-1 12 0 16 3 4-3 11-4 16-3V11c-5-1-12 0-16 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 14v24" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <!-- cartilha -->
+    <symbol id="ic-booklet" viewBox="0 0 48 48">
+      <rect x="12" y="8" width="24" height="32" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M18 8v32" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M23 16h9M23 22h9M23 28h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <!-- mapa / pino -->
+    <symbol id="ic-map" viewBox="0 0 48 48">
+      <path d="M24 42s12-11 12-20a12 12 0 1 0-24 0c0 9 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="24" cy="22" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <!-- câmera (exposição fotográfica) -->
+    <symbol id="ic-camera" viewBox="0 0 48 48">
+      <path d="M8 16h6l3-4h14l3 4h6a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V18a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="24" cy="27" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <!-- rede / compartilhar -->
+    <symbol id="ic-share" viewBox="0 0 48 48">
+      <circle cx="12" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="34" cy="13" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="34" cy="35" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16.5 21.5 29.5 15M16.5 26.5 29.5 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <!-- troca / mãos (feira) -->
+    <symbol id="ic-swap" viewBox="0 0 48 48">
+      <path d="M10 18h24l-6-6M38 30H14l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <!-- espiga / colheita -->
+    <symbol id="ic-harvest" viewBox="0 0 48 48">
+      <path d="M24 42V16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M24 20c-4 0-7-2-7-6 4 0 7 2 7 6zM24 20c4 0 7-2 7-6-4 0-7 2-7 6zM24 28c-4 0-7-2-7-6 4 0 7 2 7 6zM24 28c4 0 7-2 7-6-4 0-7 2-7 6zM24 14c-3 0-5-2-5-5 3 0 5 2 5 5zM24 14c3 0 5-2 5-5-3 0-5 2-5 5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M24 34c-5 0-9 3-11 8h22c-2-5-6-8-11-8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    </symbol>
+    <!-- clapper / cinema -->
+    <symbol id="ic-film" viewBox="0 0 48 48">
+      <rect x="8" y="18" width="32" height="22" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M8 18l4-8 6 3 6-3 6 3 6-3 2 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M16 15l4 3M26 12l4 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <!-- arte / paleta -->
+    <symbol id="ic-palette" viewBox="0 0 48 48">
+      <path d="M24 8a16 16 0 1 0 0 32c3 0 4-2 4-4 0-3 2-4 5-4h3a8 8 0 0 0 8-8C44 15 35 8 24 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="16" cy="20" r="2.2" fill="currentColor"/><circle cx="24" cy="16" r="2.2" fill="currentColor"/><circle cx="32" cy="19" r="2.2" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     NAVEGAÇÃO FIXA
+     ============================================================ -->
+<div class="nav-veu" id="navVeu" hidden></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#inicio" aria-label="Flore-Ser · início">
+      <span class="brand-glyph" aria-hidden="true">
+        <img class="brand-emblema" src="assets/img/emblema-passaros.jpg" alt="" onerror="this.parentElement.classList.add('sem-img')">
+        <svg class="brand-birds" viewBox="0 0 120 120"><use href="#birds-emblem"/></svg>
+      </span>
+      <span class="brand-word">Flore-Ser</span>
+    </a>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false" aria-label="Ativar tema escuro" title="Ativar tema escuro">
+      <svg class="ic-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <svg class="ic-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.2v2.4M12 19.4v2.4M2.2 12h2.4M19.4 12h2.4M5.1 5.1l1.7 1.7M17.2 17.2l1.7 1.7M18.9 5.1l-1.7 1.7M6.8 17.2l-1.7 1.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks" aria-label="Seções do site">
+      <a href="#objetivos">Objetivos</a>
+      <a href="#sobre">O projeto</a>
+      <a href="#acoes">Ações</a>
+      <a href="#eventos">Agenda</a>
+      <a href="#espacos">Espaços</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#equipe">Equipe</a>
+      <a href="#parceiros">Parceiros</a>
+      <a class="nav-cta" href="#participar">Participe</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo" tabindex="-1">
+
+<!-- ============================================================
+     HERO · início
+     ============================================================ -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="kicker rv">Projeto de Extensão · UFG · Chamada FAPEG 12/2025 · Ciências Humanas</p>
+      <h1 class="rv">Flore-Ser</h1>
+      <p class="hero-sub rv">
+        <em>ocupar os espaços públicos comuns como forma de
+        <span class="rexist">
+          <span class="paren" aria-hidden="true">(</span>r<span class="paren" aria-hidden="true">)</span>existência
+          <svg class="rexist-line" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8C60 3 120 3 180 6s90 3 118 0" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
+        </span></em>
+      </p>
+      <p class="lede rv">Um convite para reflorestar praças, jardins, passarelas e canteiros de Goiânia, com mutirões, arte-educação e o cuidado coletivo dos bens comuns. Uma cidade que floresce quando é de todas e de todos.</p>
+      <div class="hero-actions rv">
+        <a class="btn btn-primary" href="#acoes">Conheça as ações</a>
+        <a class="btn btn-secondary" href="#participar">Seja extensionista</a>
+      </div>
+    </div>
+
+    <div class="hero-art rv" aria-hidden="true">
+      <div class="hero-emblema">
+        <img class="emblema-img" src="assets/img/emblema-passaros.jpg" alt="Emblema do Flore-Ser: dois pássaros bordados em torno de uma flor" loading="eager" onerror="this.closest('.hero-emblema').classList.add('sem-img')">
+        <svg class="birds-plate" viewBox="0 0 120 120" role="img" aria-label="Dois pássaros do Flore-Ser em torno de uma flor"><use href="#birds-emblem"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- números-manchete -->
+  <div class="hero-stats rv" aria-label="Impacto do projeto">
+    <div class="hstat"><b class="count" data-count="13">0</b><span>espaços com atividade</span></div>
+    <span class="hstat-sep" aria-hidden="true"></span>
+    <div class="hstat"><b class="count" data-count="2965">0</b><span>pessoas alcançadas</span></div>
+    <span class="hstat-sep" aria-hidden="true"></span>
+    <div class="hstat"><b class="count" data-count="8">0</b><span>edições da Feira</span></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     OBJETIVOS · metas do projeto + razões para participar
+     ============================================================ -->
+<section class="section objetivos" id="objetivos">
+  <div class="container">
+    <p class="kicker num rv"><span>01</span> Objetivos do Flore-Ser</p>
+    <h2 class="rv">Para que o projeto existe</h2>
+    <div class="obj-grid">
+      <ol class="obj-list" aria-label="Objetivos do Flore-Ser">
+        <li class="obj-item rv"><span class="obj-num" aria-hidden="true">1</span><p>Promover e valorizar espaços públicos como jardins, canteiros, praças e outros.</p></li>
+        <li class="obj-item rv"><span class="obj-num" aria-hidden="true">2</span><p>Integrar a comunidade da UFG com o público por meio de ações, eventos e oficinas.</p></li>
+        <li class="obj-item rv"><span class="obj-num" aria-hidden="true">3</span><p>Promover a conscientização ambiental e a troca de saberes entre a comunidade acadêmica e o público.</p></li>
+        <li class="obj-item rv"><span class="obj-num" aria-hidden="true">4</span><p>Favorecer a promoção da saúde coletiva dos participantes e dos que usam os espaços comuns.</p></li>
+      </ol>
+      <aside class="razoes rv" aria-label="Razões para flore-ser conosco">
+        <p class="razoes-title"><em>razões para</em> <strong>flore-ser conosco</strong></p>
+        <ul class="razoes-list">
+          <li><span class="ast m" aria-hidden="true">✳</span> Poderá exercer a sua criatividade</li>
+          <li><span class="ast o" aria-hidden="true">✳</span> Conhecerá pessoas incríveis</li>
+          <li><span class="ast m" aria-hidden="true">✳</span> Contribuirá com a coletividade</li>
+          <li><span class="ast o" aria-hidden="true">✳</span> Terá experiências legais</li>
+          <li><span class="ast m" aria-hidden="true">✳</span> Ajudará a transformar espaços</li>
+        </ul>
+        <a class="razoes-cta" href="#participar">Participe do projeto →</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SOBRE · o que é o Flore-Ser
+     ============================================================ -->
+<section class="section sobre" id="sobre">
+  <div class="container">
+    <p class="kicker num rv"><span>02</span> O que é o Flore-Ser</p>
+    <h2 class="rv">Reflorestar o comum</h2>
+    <div class="sobre-grid">
+      <div class="sobre-body rv">
+        <p class="dropcap">O Flore-Ser é um projeto de extensão da Universidade Federal de Goiás que ressignifica os espaços públicos urbanos (praças, jardins, passarelas, canteiros e pátios) tratando-os não como simples infraestrutura, mas como <strong>territórios de encontro, cuidado e resistência</strong>. Iniciado em abril de 2024 e em execução até 2027 (fomento da Chamada FAPEG 12/2025), articula intervenção socioambiental com arte-educação e educação popular.</p>
+        <p>Ao plantar espécies nativas do Cerrado, cultivar hortas urbanas e PANCs, pintar murais e colar lambes, o projeto convida a comunidade a ocupar e a se apropriar afetivamente daquilo que é de todas e de todos. É a defesa do espaço público como <strong>direito coletivo e bem comum</strong>: uma cidade mais justa, inclusiva e ambientalmente consciente.</p>
+        <blockquote class="pull">
+          “Os espaços públicos, embora essenciais para a vida urbana, vêm sendo sistematicamente negligenciados, e podem se transformar em lugares de encontro, resistência e transformação social.”
+        </blockquote>
+      </div>
+      <aside class="sobre-margin rv" aria-label="Bases teóricas">
+        <p class="margin-title">Notas de campo</p>
+        <ul>
+          <li><b>Freire</b><span>educação popular</span></li>
+          <li><b>Lefebvre</b><span>direito à cidade</span></li>
+          <li><b>Federici</b><span>a política dos comuns</span></li>
+          <li><b>Hardt &amp; Negri</b><span>bem comum</span></li>
+          <li><b>Dardot &amp; Laval</b><span>o comum</span></li>
+        </ul>
+        <p class="margin-foot">Educação ambiental crítica · ecologia urbana · arte-educação.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     NÚMEROS · impacto
+     ============================================================ -->
+<div class="wave wave-to-verde" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0 46C240 78 480 78 720 52s480-26 720 6V0H0z" fill="var(--bloco-verde)"/></svg>
+</div>
+<section class="section numeros" id="numeros">
+  <div class="contour" aria-hidden="true">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice" fill="none" stroke="var(--oliva-folha)" stroke-width="1.2" opacity="0.35">
+      <path d="M-40 120C260 60 520 180 780 120s500-120 740-40"/>
+      <path d="M-40 180C260 120 520 240 780 180s500-120 740-40"/>
+      <path d="M-40 240C260 180 520 300 780 240s500-120 740-40"/>
+      <path d="M-40 300C260 240 520 360 780 300s500-120 740-40"/>
+    </svg>
+  </div>
+  <div class="container">
+    <p class="kicker num on-dark rv"><span>03</span> Impacto em números</p>
+    <h2 class="on-dark rv">A escala de um cuidado coletivo</h2>
+    <div class="num-grid">
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-map"/></svg><b class="count" data-count="13">0</b><span>espaços já com atividade · meta 24</span></div>
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-share"/></svg><b class="count" data-count="2965">0</b><span>pessoas alcançadas</span></div>
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-water"/></svg><b class="count" data-count="35">0</b><span>ações realizadas no território</span></div>
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-sprout"/></svg><b class="count" data-count="447">0</b><span>plantas na Humanidades 2 · desde 2024</span></div>
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-sun"/></svg><b class="count" data-count="8">0</b><span>edições da Feira Multicultural</span></div>
+      <div class="num-item rv"><svg class="num-ic" aria-hidden="true"><use href="#ic-palette"/></svg><b class="count" data-count="60" data-suffix="+">0</b><span>pessoas na equipe</span></div>
+    </div>
+    <p class="num-foot rv">Números apurados no inventário do projeto (2024 a jul/2026). Espaços-piloto: jardim interno da <b>Biblioteca Central</b> (UFG) e áreas externas do prédio <b>Humanidades 2</b>, Câmpus Samambaia, onde o primeiro levantamento botânico registra <b>447 plantas</b> desde 2024: 102 árvores, 45 cactos e 300 ornamentais.</p>
+  </div>
+</section>
+<div class="wave wave-from-verde" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0 34C240 66 480 66 720 40s480-26 720 6v34H0z" fill="var(--fundo)"/></svg>
+</div>
+
+<!-- ============================================================
+     AÇÕES · fichas de herbário
+     ============================================================ -->
+<section class="section acoes" id="acoes">
+  <div class="container">
+    <p class="kicker num rv"><span>04</span> As ações</p>
+    <h2 class="rv">Quatro frentes que fazem a cidade florescer</h2>
+    <p class="section-lede rv">Ações construídas coletivamente, com escuta ativa e protagonismo das comunidades. Cada frente, uma ficha do nosso guia de campo.</p>
+
+    <div class="herb-grid">
+      <article class="card-herb rv">
+        <span class="cat-n">N.01</span>
+        <div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-water"/></svg></div>
+        <span class="herb-tag"><b>Mutirões socioambientais</b><i>Plantar em comum</i></span>
+        <p>Plantio de espécies nativas do Cerrado, hortas urbanas, ervas medicinais e paisagismo regenerativo: em mutirões colaborativos que reflorestam e reaproximam.</p>
+      </article>
+
+      <article class="card-herb rv">
+        <span class="cat-n">N.02</span>
+        <div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-brush"/></svg></div>
+        <span class="herb-tag"><b>Oficinas de arte-educação</b><i>Ars urbana</i></span>
+        <p>Lambes, cartazes, pintura mural e artesanato sustentável, ao lado de oficinas de cultivo de PANCs: a arte como linguagem de pertencimento e consciência ecológica.</p>
+      </article>
+
+      <article class="card-herb rv">
+        <span class="cat-n">N.03</span>
+        <div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-sun"/></svg></div>
+        <span class="herb-tag"><b>Eventos culturais</b><i>Festa do comum</i></span>
+        <p>Saraus, feiras de trocas, piqueniques, cine-debates e festivais que devolvem os espaços públicos ao uso criativo, festivo e inclusivo da população.</p>
+      </article>
+
+      <article class="card-herb rv">
+        <span class="cat-n">N.04</span>
+        <div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-book"/></svg></div>
+        <span class="herb-tag"><b>Ações nas escolas</b><i>Semear cedo</i></span>
+        <p>Visitas técnicas e oficinas em CMEIs e escolas municipais e estaduais, sensibilizando estudantes, famílias e educadores ao cuidado com o ambiente escolar e comunitário.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EVENTOS · agenda cultural (parede de cartazes)
+     ============================================================ -->
+<section class="section eventos" id="eventos">
+  <div class="container">
+    <p class="kicker num rv"><span>05</span> Agenda cultural</p>
+    <h2 class="rv">Quatro festas para ocupar a cidade</h2>
+    <p class="section-lede rv">Encontros abertos e gratuitos, com ampla divulgação. Três datas em cartaz: a <b>Feira Multicultural</b> completa 1 ano em 13 de agosto, o <b>Clube de Leitura</b> se encontra em 22 de agosto e o <b>Festival Flore-Ser</b> acontece em 2 e 3 de setembro. Clique num cartaz para ver a arte inteira, salvar e colar na parede.</p>
+
+    <div class="poster-wall">
+      <article class="poster rv" style="--rot:1.8deg; --band:var(--verde-cerrado)">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="poster-seal" aria-hidden="true">1 ANO</span>
+        <a class="poster-arte" href="assets/img/cartazes/feira-1-ano-2026-08-13.jpg" target="_blank" rel="noopener">
+          <img src="assets/img/cartazes/feira-1-ano-2026-08-13.jpg" width="900" height="1125" loading="lazy" decoding="async"
+               alt="Cartaz de 1 ano da Feira Multicultural Flore-Ser: quinta-feira, 13 de agosto, das 9h às 17h, na Biblioteca Central da UFG, Câmpus Samambaia. Artesanatos, comidinhas, moda, acessórios autorais e papelaria. Ilustração de uma cigarra sobre flores cor-de-rosa.">
+          <span class="poster-lupa" aria-hidden="true">ver o cartaz</span>
+        </a>
+        <p class="poster-date">13 de agosto de 2026 · 9h às 17h · Biblioteca Central da UFG</p>
+        <h3>1 ano de Feira<br>Multicultural</h3>
+        <p class="poster-desc">Artesanatos, comidinhas, moda, acessórios autorais e papelaria: a festa que ocupa o câmpus completa um ano.</p>
+      </article>
+
+      <article class="poster rv" style="--rot:-1.4deg; --band:var(--ocre-pequi)">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="poster-seal" aria-hidden="true">LEITURA</span>
+        <a class="poster-arte" href="assets/img/cartazes/clube-leitura-2026-08-22.jpg" target="_blank" rel="noopener">
+          <img src="assets/img/cartazes/clube-leitura-2026-08-22.jpg" width="900" height="1125" loading="lazy" decoding="async"
+               alt="Cartaz do Clube de Leitura Flore-Ser: leitura de A mãe da mãe de sua mãe e suas filhas, de Maria José Silveira, em 22 de agosto às 8h30, no Jardim Botânico de Goiânia. A capa verde do livro aparece entre flores amarelas.">
+          <span class="poster-lupa" aria-hidden="true">ver o cartaz</span>
+        </a>
+        <p class="poster-date">22 de agosto de 2026 · 8h30 · Jardim Botânico de Goiânia</p>
+        <h3>Clube de Leitura<br>Flore-Ser</h3>
+        <p class="poster-desc">Roda de leitura ao ar livre sobre <i>A mãe da mãe de sua mãe e suas filhas</i>, de Maria José Silveira. Avenida Botafogo, 2979, Setor Pedro Ludovico.</p>
+      </article>
+
+      <article class="poster rv" style="--rot:-2deg; --band:var(--magenta-riso)">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="poster-seal" aria-hidden="true">GRATUITO</span>
+        <a class="poster-arte" href="assets/img/festival-floreser.jpg" target="_blank" rel="noopener">
+          <img src="assets/img/festival-floreser.jpg" width="904" height="1280" loading="lazy" decoding="async"
+               alt="Cartaz do Festival Flore-Ser: Saberes, Cuidados e Meio Ambiente, em 2 e 3 de setembro, na Biblioteca Central da UFG, com entrada gratuita e emissão de certificado. Ilustração de Jurupiá, com uma figura de cocar entre folhas cor-de-rosa e verdes.">
+          <span class="poster-lupa" aria-hidden="true">ver o cartaz</span>
+        </a>
+        <p class="poster-date">2 e 3 de setembro de 2026 · Biblioteca Central da UFG</p>
+        <h3>Festival Flore-Ser</h3>
+        <p class="poster-desc">“Saberes, Cuidados e Meio Ambiente”: dois dias de oficinas, rodas, arte e cultura. Entrada gratuita, inscrições durante o evento e emissão de certificado. Ilustração de Jurupiá.</p>
+      </article>
+
+      <article class="poster rv" style="--rot:2.4deg; --band:var(--terracota-ipe)">
+        <span class="tape" aria-hidden="true"></span>
+        <span class="poster-seal" aria-hidden="true">ESPAÇO COMUM</span>
+        <svg class="poster-ic" aria-hidden="true"><use href="#ic-film"/></svg>
+        <p class="poster-date">27 de fevereiro de 2026</p>
+        <h3>Sarau Flore-Ser</h3>
+        <p class="poster-desc">Poesia, música e vozes da comunidade devolvendo o espaço público ao uso criativo e festivo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ESPAÇOS · território
+     ============================================================ -->
+<section class="section espacos" id="espacos">
+  <div class="container">
+    <p class="kicker num rv"><span>06</span> Espaços-piloto e território</p>
+    <div class="espacos-grid">
+      <div class="espacos-text rv">
+        <h2>De onde a semente brota</h2>
+        <p class="section-lede">O projeto nasceu dentro da UFG e cresce para a cidade. A escolha de cada novo lugar parte de demandas comunitárias, articulação com lideranças locais e diagnóstico participativo.</p>
+        <ul class="place-list">
+          <li><span class="pin" aria-hidden="true"><svg><use href="#ic-map"/></svg></span><div><b>Biblioteca Central · UFG</b><span>Jardim interno · espaço-piloto</span></div></li>
+          <li><span class="pin" aria-hidden="true"><svg><use href="#ic-map"/></svg></span><div><b>Humanidades 2 · Câmpus Samambaia</b><span>Áreas externas · espaço-piloto</span></div></li>
+          <li><span class="pin muted" aria-hidden="true"><svg><use href="#ic-map"/></svg></span><div><b>13 espaços já com atividade</b><span>IESA, Vila Itatiaia, Bosque dos Buritis, Praça XI de Maio, Museu Antropológico, Shangrilá e outros</span></div></li>
+        </ul>
+        <p class="map-note"><svg class="inline-ic" aria-hidden="true"><use href="#ic-map"/></svg> Mapa alimentado pelos <b>mesmos dados do painel</b>. <a href="painel.html#mapa" style="color:var(--terracota-texto);font-weight:700">Ver o mapa completo no Painel &rarr;</a></p>
+      </div>
+
+      <div class="espacos-map rv">
+        <div id="mapaSite" class="site-map" role="img" aria-label="Mapa dos espaços do Flore-Ser em Goiânia"></div>
+        <span class="herb-tag map-tag"><b>Goiânia · GO</b><i>13 espaços com atividade</i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALERIA · exposição fotográfica
+     ============================================================ -->
+<section class="section galeria" id="galeria">
+  <div class="container">
+    <p class="kicker num rv"><span>07</span> Exposição fotográfica</p>
+    <h2 class="rv">Rostos, mãos e paisagens</h2>
+    <p class="section-lede rv">Registros dos mutirões, plantios, intervenções de arte-educação e da Feira Multicultural: a matéria-prima da nossa exposição fotográfica itinerante. <b>Clique em uma foto para ampliar.</b></p>
+
+    <div class="gal-filtros rv" role="group" aria-label="Filtrar fotos por tema">
+      <button class="gal-chip on" type="button" data-tema="todos" aria-pressed="true">Todas</button>
+      <button class="gal-chip" type="button" data-tema="Mutirão" aria-pressed="false">Mutirões</button>
+      <button class="gal-chip" type="button" data-tema="Plantio" aria-pressed="false">Plantio</button>
+      <button class="gal-chip" type="button" data-tema="Arte-educação" aria-pressed="false">Arte-educação</button>
+      <button class="gal-chip" type="button" data-tema="Clube de Leitura" aria-pressed="false">Clube de Leitura</button>
+      <button class="gal-chip" type="button" data-tema="Eventos" aria-pressed="false">Eventos</button>
+      <button class="gal-chip" type="button" data-tema="Escolas" aria-pressed="false">Escolas</button>
+    </div>
+
+    <div class="galeria-grid rv" id="galeriaGrid">
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/maos-sementes.jpg"><img src="assets/img/galeria/thumbs/maos-sementes.jpg" alt="Mãos em concha cheias de sementes durante um mutirão" loading="lazy"></button><figcaption>Sementes nas mãos, antes do plantio</figcaption></figure>
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/mutirao-coletivo.jpg"><img src="assets/img/galeria/thumbs/mutirao-coletivo.jpg" alt="Grupo ajoelhado plantando uma muda juntos, incluindo uma criança" loading="lazy"></button><figcaption>Mutirão coletivo: plantar é gesto comum</figcaption></figure>
+      <figure class="foto" data-tema="Arte-educação"><button class="foto-btn" data-full="assets/img/galeria/varal-de-fitas.jpg"><img src="assets/img/galeria/thumbs/varal-de-fitas.jpg" alt="Varal de fitas coloridas estendido entre árvores" loading="lazy"></button><figcaption>Varal de fitas: a arte ocupa o espaço</figcaption></figure>
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/oferta-de-sementes.jpg"><img src="assets/img/galeria/thumbs/oferta-de-sementes.jpg" alt="Mulher de chapéu estendendo as mãos com sementes" loading="lazy"></button><figcaption>Sementes para quem chega</figcaption></figure>
+      <figure class="foto" data-tema="Plantio"><button class="foto-btn" data-full="assets/img/galeria/muda-terra-vermelha.jpg"><img src="assets/img/galeria/thumbs/muda-terra-vermelha.jpg" alt="Mãos plantando uma muda na terra vermelha" loading="lazy"></button><figcaption>Muda na terra vermelha do Cerrado</figcaption></figure>
+      <figure class="foto" data-tema="Eventos"><button class="foto-btn" data-full="assets/img/galeria/feira-multicultural.jpg"><img src="assets/img/galeria/thumbs/feira-multicultural.jpg" alt="Placa pintada à mão indicando a Feira Multicultural Flore-Ser" loading="lazy"></button><figcaption>Feira Multicultural Flore-Ser</figcaption></figure>
+      <figure class="foto" data-tema="Arte-educação"><button class="foto-btn" data-full="assets/img/galeria/o-ir-faz-o-caminho.jpg"><img src="assets/img/galeria/thumbs/o-ir-faz-o-caminho.jpg" alt="Placa pintada em tronco de árvore com a frase O ir faz o caminho" loading="lazy"></button><figcaption>“O ir faz o caminho”</figcaption></figure>
+      <figure class="foto" data-tema="Arte-educação"><button class="foto-btn" data-full="assets/img/galeria/arvore-de-tassels.jpg"><img src="assets/img/galeria/thumbs/arvore-de-tassels.jpg" alt="Galho decorado com tassels coloridos sobre carretel pintado" loading="lazy"></button><figcaption>Árvore de tassels e carretel pintado</figcaption></figure>
+      <figure class="foto" data-tema="Plantio"><button class="foto-btn" data-full="assets/img/galeria/extensionistas-mudas.jpg"><img src="assets/img/galeria/thumbs/extensionistas-mudas.jpg" alt="Dois extensionistas sorrindo segurando mudas nativas" loading="lazy"></button><figcaption>Extensionistas com as mudas nativas</figcaption></figure>
+      <figure class="foto" data-tema="Eventos"><button class="foto-btn" data-full="assets/img/galeria/cerrado-nossa-casa.jpg"><img src="assets/img/galeria/thumbs/cerrado-nossa-casa.jpg" alt="Peça artesanal pintada com a frase O Cerrado é a nossa casa" loading="lazy"></button><figcaption>“O Cerrado é a nossa casa”</figcaption></figure>
+      <figure class="foto" data-tema="Escolas"><button class="foto-btn" data-full="assets/img/galeria/plantio-em-fileiras.jpg"><img src="assets/img/galeria/thumbs/plantio-em-fileiras.jpg" alt="Adultos e crianças plantando em fileiras no canteiro" loading="lazy"></button><figcaption>Plantio em fileiras, com as crianças</figcaption></figure>
+      <figure class="foto" data-tema="Arte-educação"><button class="foto-btn" data-full="assets/img/galeria/educacao-transforma.jpg"><img src="assets/img/galeria/thumbs/educacao-transforma.jpg" alt="Placas penduradas em árvore com a frase A educação transforma vidas" loading="lazy"></button><figcaption>“A educação transforma vidas”</figcaption></figure>
+      <figure class="foto" data-tema="Plantio"><button class="foto-btn" data-full="assets/img/galeria/maos-no-canteiro.jpg"><img src="assets/img/galeria/thumbs/maos-no-canteiro.jpg" alt="Mulher sentada na terra plantando mudas no canteiro" loading="lazy"></button><figcaption>Mãos no canteiro</figcaption></figure>
+      <figure class="foto" data-tema="Escolas"><button class="foto-btn" data-full="assets/img/galeria/proxima-geracao.jpg"><img src="assets/img/galeria/thumbs/proxima-geracao.jpg" alt="Menino usando enxada entre flores no canteiro" loading="lazy"></button><figcaption>A próxima geração cuidando do espaço</figcaption></figure>
+      <figure class="foto" data-tema="Arte-educação"><button class="foto-btn" data-full="assets/img/galeria/instalando-intervencao.jpg"><img src="assets/img/galeria/thumbs/instalando-intervencao.jpg" alt="Pessoa pendurando uma placa artesanal em uma árvore" loading="lazy"></button><figcaption>Instalando a intervenção na Biblioteca Central</figcaption></figure>
+      <figure class="foto" data-tema="Eventos"><button class="foto-btn" data-full="assets/img/galeria/cuidar-do-cerrado.jpg"><img src="assets/img/galeria/thumbs/cuidar-do-cerrado.jpg" alt="Peça de cerâmica pintada com a frase Cuidar do Cerrado é cuidar da vida" loading="lazy"></button><figcaption>“Cuidar do Cerrado é cuidar da vida”</figcaption></figure>
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/mutirao-parreiral.jpg"><img src="assets/img/galeria/thumbs/mutirao-parreiral.jpg" alt="Mutirante de chapéu com enxada durante ação no Parreiral" loading="lazy"></button><figcaption>Mutirão no Parreiral</figcaption></figure>
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/preparo-do-solo.jpg"><img src="assets/img/galeria/thumbs/preparo-do-solo.jpg" alt="Pessoas preparando o solo com ferramentas ao longo do canteiro" loading="lazy"></button><figcaption>Preparo do solo no mutirão</figcaption></figure>
+      <figure class="foto" data-tema="Mutirão"><button class="foto-btn" data-full="assets/img/galeria/requalificando-canteiro.jpg"><img src="assets/img/galeria/thumbs/requalificando-canteiro.jpg" alt="Equipe trabalhando na requalificação de um canteiro cercado" loading="lazy"></button><figcaption>Requalificando o canteiro</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-roda-arvores.jpg"><img src="assets/img/galeria/thumbs/clube-roda-arvores.jpg" alt="Roda de leitura sob as árvores" loading="lazy"></button><figcaption>Roda de leitura sob as árvores</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-coletivo.jpg"><img src="assets/img/galeria/thumbs/clube-coletivo.jpg" alt="O coletivo do Flore-Ser reunido" loading="lazy"></button><figcaption>O coletivo do Flore-Ser reunido</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-tapetes.jpg"><img src="assets/img/galeria/thumbs/clube-tapetes.jpg" alt="O Clube de Leitura ocupa o parque" loading="lazy"></button><figcaption>O Clube de Leitura ocupa o parque</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-bordado.jpg"><img src="assets/img/galeria/thumbs/clube-bordado.jpg" alt="Bordado e leitura: mãos que cuidam" loading="lazy"></button><figcaption>Bordado e leitura: mãos que cuidam</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-sarau.jpg"><img src="assets/img/galeria/thumbs/clube-sarau.jpg" alt="Sarau: vozes e poesia ao ar livre" loading="lazy"></button><figcaption>Sarau: vozes e poesia ao ar livre</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-bandeira.jpg"><img src="assets/img/galeria/thumbs/clube-bandeira.jpg" alt="“Hoje é dia de Flore-Ser”" loading="lazy"></button><figcaption>“Hoje é dia de Flore-Ser”</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-sombra.jpg"><img src="assets/img/galeria/thumbs/clube-sombra.jpg" alt="Leitura à sombra, no câmpus" loading="lazy"></button><figcaption>Leitura à sombra, no câmpus</figcaption></figure>
+      <figure class="foto" data-tema="Clube de Leitura"><button class="foto-btn" data-full="assets/img/galeria/clube-crianca.jpg"><img src="assets/img/galeria/thumbs/clube-crianca.jpg" alt="A próxima geração no Clube" loading="lazy"></button><figcaption>A próxima geração no Clube</figcaption></figure>
+    </div>
+    <p class="gal-vazio" id="galVazio" hidden>Nenhuma foto neste tema ainda.</p>
+  </div>
+
+  <!-- ampliação da foto -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lb-btn lb-fechar" id="lbFechar" aria-label="Fechar">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Foto anterior">‹</button>
+    <figure class="lb-fig">
+      <img id="lbImg" src="" alt="">
+      <figcaption id="lbCap"></figcaption>
+    </figure>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Próxima foto">›</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     ENTREGÁVEIS · o que fica
+     ============================================================ -->
+<section class="section entregaveis" id="entregaveis">
+  <div class="container">
+    <p class="kicker num rv"><span>08</span> O que fica</p>
+    <h2 class="rv">Produtos que semeiam continuidade</h2>
+    <div class="deliver-grid">
+      <article class="card-herb small rv"><span class="cat-n">N.01</span><div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-booklet"/></svg></div><h3>Cartilha digital</h3><p>Guia ilustrado de cultivo urbano, PANCs e ocupação criativa dos espaços.</p></article>
+      <article class="card-herb small rv"><span class="cat-n">N.02</span><div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-map"/></svg></div><h3>Mapa colaborativo</h3><p>Os 24 espaços requalificados, abertos à consulta e à participação.</p></article>
+      <article class="card-herb small rv"><span class="cat-n">N.03</span><div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-camera"/></svg></div><h3>Exposição itinerante</h3><p>Registros fotográficos das ações, viajando por escolas e praças.</p></article>
+      <article class="card-herb small rv"><span class="cat-n">N.04</span><div class="card-art" aria-hidden="true"><svg class="draw-ic"><use href="#ic-share"/></svg></div><h3>Redes e materiais</h3><p>Divulgação, materiais educativos e subsídios a políticas públicas.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EQUIPE · coordenação
+     ============================================================ -->
+<section class="section equipe" id="equipe">
+  <div class="container">
+    <p class="kicker num rv"><span>09</span> Coordenação e equipe</p>
+    <h2 class="rv">Quem faz florescer</h2>
+    <div class="equipe-grid">
+      <div class="coord rv">
+        <span class="herb-tag"><b>Coordenação</b><i>UFG</i></span>
+        <div class="coord-people">
+          <div class="person">
+            <p class="p-name">Elis Veloso Portela de Araújo</p>
+            <p class="p-role">Coordenadora · SIBI/UFG</p>
+          </div>
+          <div class="person">
+            <p class="p-name">Luiz Mello de Almeida Neto</p>
+            <p class="p-role">Vice-coordenador · FCS</p>
+          </div>
+        </div>
+      </div>
+      <div class="corpo rv">
+        <p class="corpo-big"><b class="count" data-count="60" data-suffix="+">0</b> integrantes na equipe</p>
+        <p>discentes, docentes, servidoras/es e comunidade externa (meta de <b>100 extensionistas</b>), reunindo saberes acadêmicos e populares em torno do comum, sob coordenação da Biblioteca Central e da FCS.</p>
+        <p class="corpo-units">SIBI/UFG · Biblioteca Central · FCS · IESA · FE · PROAD · Escola de Agronomia · Faculdade de História</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARCEIROS
+     ============================================================ -->
+<section class="section parceiros" id="parceiros">
+  <div class="container">
+    <p class="kicker num rv"><span>10</span> Parceiros e unidades</p>
+    <h2 class="rv">Uma rede que sustenta a semente</h2>
+
+    <div class="partner-block rv">
+      <p class="partner-label">Realização · UFG</p>
+      <ul class="partner-list">
+        <li>SIBI/UFG · Biblioteca Central</li>
+        <li>Faculdade de Ciências Sociais (FCS)</li>
+        <li>Instituto de Estudos Socioambientais (IESA)</li>
+        <li>Faculdade de Educação (FE)</li>
+        <li>Unidade de Conservação (UC/UFG)</li>
+      </ul>
+    </div>
+
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="partner-block rv">
+      <p class="partner-label">Apoio</p>
+      <ul class="partner-list">
+        <li>FUNAPE</li><li>Instituto Verbena</li><li>Sint-Ifesgo</li><li>Adufg</li>
+      </ul>
+    </div>
+
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="partner-block rv">
+      <p class="partner-label">Parceiros externos e poder público</p>
+      <ul class="partner-list">
+        <li>AMMA · Agência Municipal de Meio Ambiente</li>
+        <li>Comurg</li>
+      </ul>
+    </div>
+
+    <p class="fund rv">Financiamento: <b>FAPEG</b> · Chamada Pública nº 12/2025</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTICIPAR · CTA
+     ============================================================ -->
+<section class="section participar" id="participar">
+  <span class="paren-mark left" aria-hidden="true">(</span>
+  <span class="paren-mark right" aria-hidden="true">)</span>
+  <div class="container">
+    <p class="kicker on-dark rv">Ocupe. Cuide. Floresça.</p>
+    <h2 class="on-dark big rv">A próxima praça a florescer pode ser a sua</h2>
+    <p class="participar-lede rv">Estudante, educador/a, morador/a ou coletivo: há muitas formas de plantar junto. Some-se ao próximo mutirão, leve o Flore-Ser à sua escola ou praça, ou acompanhe as ações.</p>
+    <div class="participar-actions rv">
+      <a class="btn btn-cta" href="mailto:floreser.ufg@gmail.com?subject=Quero%20participar%20do%20pr%C3%B3ximo%20mutir%C3%A3o">Participar do próximo mutirão</a>
+      <a class="btn btn-ghost" href="mailto:floreser.ufg@gmail.com?subject=Quero%20ser%20extensionista%20do%20Flore-Ser">Seja extensionista</a>
+    </div>
+    <p class="participar-contact rv">
+      <a class="contact-chip" href="https://www.instagram.com/floreser.ufg" target="_blank" rel="noopener">
+        <svg class="inline-ic" aria-hidden="true"><use href="#ic-share"/></svg> Instagram <b>@floreser.ufg</b>
+      </a>
+      <a class="contact-chip" href="mailto:floreser.ufg@gmail.com">E-mail <b>floreser.ufg@gmail.com</b></a>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     RODAPÉ
+     ============================================================ -->
+<footer class="footer" id="rodape">
+  <div class="contour foot-contour" aria-hidden="true">
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="xMidYMid slice" fill="none" stroke="var(--oliva-folha)" stroke-width="1.1" opacity="0.3">
+      <path d="M-40 60C260 20 520 120 780 60s500-100 740-30"/>
+      <path d="M-40 120C260 80 520 180 780 120s500-100 740-30"/>
+      <path d="M-40 180C260 140 520 240 780 180s500-100 740-30"/>
+    </svg>
+  </div>
+  <div class="container foot-inner">
+    <div class="foot-brand">
+      <span class="brand-glyph big" aria-hidden="true">
+        <img class="brand-emblema" src="assets/img/emblema-passaros.jpg" alt="" onerror="this.parentElement.classList.add('sem-img')">
+        <svg class="brand-birds" viewBox="0 0 120 120"><use href="#birds-emblem"/></svg>
+      </span>
+      <p class="foot-title">Flore-Ser</p>
+      <p class="foot-tag">ocupar os espaços públicos comuns<br>como forma de (r)existência</p>
+    </div>
+    <nav class="foot-nav" aria-label="Rodapé">
+      <a href="#sobre">O projeto</a>
+      <a href="#acoes">Ações</a>
+      <a href="#eventos">Agenda</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#participar">Participe</a>
+    </nav>
+    <div class="foot-meta">
+      <p>Projeto de Extensão · Universidade Federal de Goiás</p>
+      <p>Chamada Pública FAPEG nº 12/2025 · Ciências Humanas</p>
+      <p>Goiânia · GO · 2025</p>
+    </div>
+  </div>
+  <div class="container foot-bottom">
+    <span>© 2025 Flore-Ser · UFG</span>
+    <span>Feito com cuidado, em comum. 🌱</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

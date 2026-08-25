@@ -1,0 +1,43 @@
+# OS / editor
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*~
+
+# Logs / temporários
+*.log
+*.tmp
+
+# Dependências (caso venham a existir)
+node_modules/
+package-lock.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+
+# ===== Fotos originais do projeto (NÃO versionar — ~4,9 GB) =====
+# Os originais ficam só na máquina/OneDrive. O site usa versões
+# otimizadas em assets/img/galeria/ (essas SÃO versionadas).
+assets/img/*/
+!assets/img/galeria/
+
+# arquivos brutos de câmera / originais pesados
+*.CR2
+*.NEF
+*.ARW
+*.HEIC
+*.heic
+
+# capturas de tela soltas
+assets/img/Captura de tela*
+
+# fotos soltas do WhatsApp (originais não curados; o site usa as otimizadas
+# de galeria/). Ficam no disco, mas fora do repo e da publicação.
+**/WhatsApp Image*
+**/WhatsApp Video*
+
+# Python
+__pycache__/
+*.pyc

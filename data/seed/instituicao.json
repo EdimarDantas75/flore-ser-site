@@ -1,0 +1,13 @@
+{
+  "id": "instituicao",
+  "nome": "Flore-Ser · Requalificação de Espaços Públicos (Extensão UFG)",
+  "sigla": "Flore-Ser",
+  "sede_cidade": "Goiânia",
+  "sede_lat": -16.68,
+  "sede_lon": -49.25,
+  "indice_maturidade": 68,
+  "indice_maturidade_nucleo": 72,
+  "modelo_dimensoes": 7,
+  "ano_referencia": 2026,
+  "orgaos_responsaveis": ["SIBI/UFG · Elis Veloso Portela de Araújo (coord.)", "FCS · Luiz Mello de Almeida Neto (vice)", "PROEC/UFG"]
+}

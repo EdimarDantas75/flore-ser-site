@@ -1,0 +1,22 @@
+{
+  "name": "flore-ser",
+  "version": "0.1.0",
+  "description": "Flore-ser · UFG — site de divulgação + painel de extensão socioambiental (frontend estático + Firebase/Firestore opcional).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "emu": "firebase emulators:start",
+    "serve": "firebase emulators:start --only hosting",
+    "seed": "node scripts/seed.js",
+    "seed:emu": "FIRESTORE_EMULATOR_HOST=localhost:8080 node scripts/seed.js",
+    "claim": "node scripts/set-claim.js",
+    "claim:emu": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 node scripts/set-claim.js",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes,storage"
+  },
+  "devDependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-tools": "^13.0.0"
+  }
+}

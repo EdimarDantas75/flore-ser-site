@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flore-Ser · Apresentação Institucional</title>
+<meta name="description" content="Apresentação institucional do Flore-Ser, o projeto de extensão da UFG que ocupa os espaços públicos de Goiânia com plantio, arte-educação e cultura.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F7E4E2'/%3E%3Cpath d='M6 15l-3 3 4-1z' fill='%233f9b8e'/%3E%3Cpath d='M26 15l3 3-4-1z' fill='%233f9b8e'/%3E%3Ccircle cx='11' cy='17' r='4' fill='%2357b5a6'/%3E%3Ccircle cx='21' cy='17' r='4' fill='%2357b5a6'/%3E%3Ccircle cx='16' cy='18.5' r='2.4' fill='%23e79a34'/%3E%3C/svg%3E">
+<script>
+/* Restaura o tema salvo antes de qualquer pintura (evita a piscada).
+   Contrato compartilhado com index.html e painel.html: atributo data-theme
+   no <html>, chave FLORESER_TEMA, valores "claro" | "escuro".
+   Sem preferencia salva nao escreve nada: ausente = claro, o padrao institucional. */
+(function(){ try{ if(localStorage.getItem('FLORESER_TEMA') === 'escuro'){
+  document.documentElement.setAttribute('data-theme','dark'); } }catch(e){} })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Flore-Ser: Herbário Comum em versão clara, no papel rosado do emblema ===== */
+  :root{
+    color-scheme: light;
+    --fundo:#F7E4E2;            /* rosa claro do emblema bordado */
+    --fundo-2:#F3D9D6;
+    --panel:#FBF1EE;
+    --panel-2:#F5E2DE;
+    --linha:rgba(74,56,38,.16);
+    --linha-2:rgba(74,56,38,.32);
+    --tinta:#2A2418;
+    --tinta-2:#5A4B38;
+    --tinta-3:#6A5748;         /* era #8A7060 (3.44:1). Medido: 4.78:1 no pior caso */
+    --verde:#38512F;            /* verde-musgo, acento principal */
+    --oliva:#5C6A34;
+    --terra:#C0603A;            /* terracota */
+    --terra-txt:#93411F;        /* era #A64B29 (4.01:1 sobre o glow). Medido: 4.87:1 no pior caso */
+    --ocre:#D89B34;             /* realce não-textual */
+    --magenta:#E5286E;          /* pulso artístico: borda e traço, uso não-textual */
+    --magenta-txt:#C81B5B;      /* a mesma matiz, só a luminância, para o texto do selo (4.92:1) */
+    --casca:#4A3826;
+    --sombra:0 18px 40px -22px rgba(56,81,47,.30), 0 4px 14px -8px rgba(74,56,38,.22);
+    --raio:14px;
+    --raio-2:16px;
+
+    /* Compostos. Não há cor nova aqui: são os pigmentos acima escritos com alfa,
+       promovidos a token para que o tema escuro tenha onde pegar. */
+    --realce:rgba(192,96,58,.22);        /* ::selection */
+    --rail-fade:rgba(243,217,214,.8);    /* topo do rail: --fundo-2 com alfa */
+    --dot-halo:rgba(56,81,47,.16);
+    --vidro:rgba(251,241,238,.8);        /* --panel com alfa: metachip, selo */
+    --vidro-2:rgba(251,241,238,.7);      /* --panel com alfa: eyebrow */
+    --pulso:rgba(56,81,47,.4);
+    --pulso-0:rgba(56,81,47,0);
+    --borda-bad:rgba(166,75,41,.35);
+    --borda-good:rgba(56,81,47,.4);
+    --pill-bg:rgba(216,155,52,.12);
+    --pill-borda:rgba(166,75,41,.80);    /* alfa medido: 3.14:1 sobre o próprio tint */
+    --ic-bg:rgba(56,81,47,.08);
+    --ic-borda:rgba(56,81,47,.22);
+    --banner-a:rgba(56,81,47,.08);
+    --banner-b:rgba(216,155,52,.08);
+    --fita:rgba(216,155,52,.68);
+    --glow-ocre:rgba(216,155,52,.35);
+    --glow-oliva:rgba(92,106,52,.25);
+    --glow-terra:rgba(192,96,58,.22);
+    --glow-ocre-2:rgba(216,155,52,.3);
+
+    /* Cromo do canvas do radar: o JS lê estes quatro por getComputedStyle. */
+    --grade:rgba(74,56,38,.18);
+    --grade-2:rgba(74,56,38,.14);
+    --rotulo:#5A4B38;
+    --ponto-miolo:#FBF1EE;
+    --radar-a:rgba(56,81,47,.30);
+    --radar-b:rgba(216,155,52,.22);
+
+    /* DADO, não tema: as quatro frentes do inventário.
+       Ordem e identidade fixas nos dois temas; só a luminância muda. */
+    --dado-1:#38512F;   /* Plantio e Mutirões */
+    --dado-2:#D89B34;   /* Escolas */
+    --dado-3:#C0603A;   /* Arte-Educação */
+    --dado-4:#5C6A34;   /* Hortas e Eventos */
+
+    /* Foco, borda portadora, grão, blend do emblema. */
+    --anel:#6E5A1C;                      /* 5.00:1 no pior caso claro, 4.87:1 sobre o glow */
+    --anel-halo:#FBF1EE;
+    --borda-portadora:#75664B;           /* 4.56:1 sobre --fundo: a única borda que pode
+                                            ser o único indicador de um controle */
+    --grao-blend:multiply;
+    --grao-opacidade:.035;
+    --emblema-blend:multiply;
+    --emblema-mascara:radial-gradient(circle at 50% 50%, #000 52%, transparent 72%);
+
+    --display:'Fraunces',Georgia,'Times New Roman',serif;
+    --ff:'Source Serif 4',Georgia,serif;
+    --mono:'Space Mono',ui-monospace,'Cascadia Code',monospace;
+  }
+
+  /* ===== TEMA ESCURO =====
+     Decisões de design declaradas, porque cada uma contraria uma expectativa:
+
+     (a) O escuro deste deck é VINHO/TERRA (#190F0E, matiz 8deg), e não a terra
+         do painel (#171209, matiz 35deg). O claro daqui é o rosa do emblema
+         bordado, não o papel do painel, e o escuro respeita essa temperatura.
+         A coerência com o painel foi mantida por medição, não por impressão:
+         sobre estas quatro superfícies os portadores entregam --tinta 13.85 a
+         16.34, --tinta-2 8.80 a 10.37, --tinta-3 5.37 a 6.34, --verde 6.79 a
+         8.01, --ocre 8.70 a 10.26. Todos acima do pior caso da tabela do painel.
+
+     (b) --panel continua mais CLARO que --panel-2 nos dois temas. No escuro o
+         cartão sobe ficando mais claro que o fundo (a sombra preta é invisível
+         sobre terra profunda), com um anel luminoso de 1px dentro de --sombra.
+         A luz continua vindo de cima.
+
+     (c) O emblema bordado (assets/img/emblema-passaros.jpg) é linha física e não
+         pode ser recolorido, invertido nem filtrado. No claro o mix-blend-mode:
+         multiply apaga o fundo do JPG; no escuro ele enegreceria o bordado, então
+         vira normal: o próprio disco rosa do arquivo passa a ser o assento. Nenhum
+         pixel muda. A máscara radial, que no claro desmancha a borda em 52% a 72%,
+         no escuro passa a ter corte nítido em 46%: com a borda macia sobre vinho o
+         emblema virava um halo borrado de luz, e não um medalhão (visto em captura).
+
+     (d) O cartaz do Festival é registro de peça gráfica: nada de filter, brightness
+         ou blend. Mudam só a borda (--casca) e a fita (--fita), que são cromo.
+
+     (e) --dado-1 a --dado-4 são DADO. Mudam de luminância entre os temas, nunca de
+         identidade nem de ordem: série 1 continua verde, 2 ocre, 3 terracota, 4 oliva,
+         para que a mesma frente seja a mesma cor num slide projetado e num PDF. */
+  html[data-theme="dark"]{
+    color-scheme: dark;
+    --fundo:#190F0E;
+    --fundo-2:#130A0A;
+    --panel:#2A1B18;
+    --panel-2:#211513;
+    --linha:rgba(240,226,196,.14);
+    --linha-2:rgba(240,226,196,.26);
+    --tinta:#F3EAD8;
+    --tinta-2:#CDBB98;
+    --tinta-3:#A2916F;
+    --verde:#7FB463;
+    --oliva:#A7BE63;
+    --terra:#E08B5A;
+    --terra-txt:#EC9A72;
+    --ocre:#E7B44F;
+    --magenta:#F2749F;
+    --magenta-txt:#F2749F;
+    --casca:rgba(240,226,196,.40);
+    --sombra:0 18px 40px -22px rgba(0,0,0,.80), 0 4px 14px -8px rgba(0,0,0,.60), 0 0 0 1px rgba(240,226,196,.07);
+    --realce:rgba(167,190,99,.26);
+    --rail-fade:rgba(19,10,10,.8);
+    --dot-halo:rgba(127,180,99,.18);
+    --vidro:rgba(42,27,24,.8);
+    --vidro-2:rgba(42,27,24,.7);
+    --pulso:rgba(127,180,99,.4);
+    --pulso-0:rgba(127,180,99,0);
+    --borda-bad:rgba(236,154,114,.45);
+    --borda-good:rgba(127,180,99,.50);
+    --pill-bg:rgba(231,180,79,.14);
+    --pill-borda:rgba(236,154,114,.60);  /* .60 é o mínimo que fecha 3:1 sobre o tint */
+    --ic-bg:rgba(127,180,99,.12);
+    --ic-borda:rgba(127,180,99,.32);
+    --banner-a:rgba(127,180,99,.08);
+    --banner-b:rgba(231,180,79,.08);
+    --fita:rgba(231,180,79,.68);
+    --glow-ocre:rgba(231,180,79,.18);
+    --glow-oliva:rgba(167,190,99,.14);
+    --glow-terra:rgba(224,139,90,.14);
+    --glow-ocre-2:rgba(231,180,79,.16);
+    --grade:rgba(240,226,196,.14);
+    --grade-2:rgba(240,226,196,.10);
+    --rotulo:#CDBB98;
+    --ponto-miolo:#2A1B18;
+    --radar-a:rgba(127,180,99,.28);
+    --radar-b:rgba(231,180,79,.20);
+    --dado-1:#7FB463;
+    --dado-2:#E7B44F;
+    --dado-3:#E08B5A;
+    --dado-4:#A7BE63;
+    --anel:#E7B44F;                      /* 8.70:1 no pior caso escuro, 8.47:1 sobre o glow */
+    --anel-halo:#190F0E;
+    --borda-portadora:rgba(240,226,196,.40);  /* compõe #6F6357: 3.22:1 sobre --fundo */
+    --grao-blend:soft-light;             /* multiply só escurece: sobre vinho o grão sumiria */
+    --grao-opacidade:.05;
+    --emblema-blend:normal;              /* ver decisão (c) */
+    --emblema-mascara:radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0) 48%);
+  }
+  *{box-sizing:border-box}
+  html{scroll-snap-type:y mandatory; scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important; animation-iteration-count:1!important;
+      transition-duration:.001ms!important}
+    .card:hover{transform:none}
+  }
+  body{margin:0; background:var(--fundo); color:var(--tinta); font-family:var(--ff); -webkit-font-smoothing:antialiased}
+  ::selection{background:var(--realce)}
+  /* Anel de foco em duas camadas: o anel e, logo fora dele, um halo de valor oposto.
+     O halo é o que faz o foco sobreviver quando cai sobre o emblema, o cartaz ou um glow,
+     onde não existe superfície de token nenhuma. Medido: 5.00:1 no pior caso claro,
+     8.70:1 no pior caso escuro, 4.87:1 e 8.47:1 sobre o glow. */
+  :focus-visible{outline:none; box-shadow:0 0 0 2px var(--anel), 0 0 0 4px var(--anel-halo)}
+  @media (forced-colors:active){ :focus-visible{outline:2px solid Highlight; outline-offset:2px} }
+  /* O slide é um contêiner com tabindex -1, não um controle: um anel de tela inteira seria
+     ruído numa projeção. O foco nele aparece como filete no limite esquerdo, junto ao rail. */
+  .slide:focus{outline:none}
+  .slide:focus-visible{outline:none; box-shadow:inset 3px 0 0 0 var(--anel)}
+
+  /* skip-link: mesmo nome de classe e mesmo comportamento do index.html */
+  .skip-link{position:absolute; left:-9999px; top:0; z-index:60; text-decoration:none;
+    font:700 12px var(--mono); letter-spacing:.06em; color:var(--tinta);
+    background:var(--panel); border:1px solid var(--borda-portadora);
+    border-radius:10px; padding:10px 16px}
+  .skip-link:focus{left:76px; top:12px}
+
+  /* E.4 transição de cor ao trocar de tema: só propriedades de cor, nunca transition:all,
+     que arrastaria os reveals. Anulada em prefers-reduced-motion pela regra acima. */
+  body,.rail,.panel,.kpi,.area,.now,.idxcard,.fin,.eyebrow,.metachip,.selo,
+  .govbanner,.tema,.skip-link,.end .url,.hint kbd,.meta-row .track,.score .track{
+    transition:background-color .18s ease, color .18s ease, border-color .18s ease}
+
+  /* grão de papel (identidade) */
+  body::before{content:""; position:fixed; inset:0; z-index:5; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:var(--grao-opacidade); mix-blend-mode:var(--grao-blend)}
+
+  /* ---- rail de marca + progresso ---- */
+  .rail{position:fixed; top:0; left:0; height:100vh; height:100svh; width:64px; z-index:30;
+    display:flex; flex-direction:column; align-items:center; gap:18px; padding:20px 0;
+    border-right:1px solid var(--linha); background:linear-gradient(180deg,var(--rail-fade),transparent)}
+  .rail .glyph{width:26px; height:26px}
+  .rail .vword{writing-mode:vertical-rl; transform:rotate(180deg); font:600 clamp(28px,5vh,44px)/1 var(--display); letter-spacing:.14em; color:var(--verde); text-transform:uppercase; margin-top:8px}
+  .dots{margin-top:auto; display:flex; flex-direction:column; gap:2px}
+  /* O desenho continua sendo um ponto de 10px, mas o alvo de toque passa a ter 24px.
+     A borda do ponto inativo era --linha-2 (1.76:1) e era o único indicador dele:
+     virou --borda-portadora, a única borda do sistema que fecha 3:1. */
+  .dots button{width:24px; height:24px; padding:7px; border:0; background:transparent;
+    cursor:pointer; display:block; border-radius:50%; -webkit-appearance:none; appearance:none}
+  .dots button::before{content:""; display:block; width:10px; height:10px; border-radius:50%;
+    border:1.5px solid var(--borda-portadora); background:transparent;
+    transition:background-color .2s ease, border-color .2s ease, box-shadow .2s ease}
+  .dots button:hover::before{border-color:var(--verde)}
+  .dots button[aria-current="true"]::before{background:var(--verde); border-color:var(--verde);
+    box-shadow:0 0 0 4px var(--dot-halo)}
+
+  /* D.4 alternador de tema: canto inferior esquerdo, dentro do rail, longe do centro
+     da projeção e do contador. z-index herdado do rail (30), acima do grão (5). */
+  .tema{margin-top:14px; flex:0 0 auto; width:40px; height:40px; padding:0;
+    display:grid; place-items:center; border-radius:12px; cursor:pointer;
+    border:1px solid var(--borda-portadora); background:var(--panel); color:var(--verde)}
+  .tema:hover{border-color:var(--verde); color:var(--terra-txt)}
+  .tema svg{width:19px; height:19px; display:block; transition:opacity .2s ease}
+  .tema .sol{display:none}
+  html[data-theme="dark"] .tema .sol{display:block}
+  html[data-theme="dark"] .tema .lua{display:none}
+
+  .counter{position:fixed; right:22px; bottom:20px; z-index:30; font:700 12px var(--mono); color:var(--tinta-3); letter-spacing:.08em; font-variant-numeric:tabular-nums}
+  .counter b{color:var(--verde)}
+  .hint{position:fixed; right:22px; top:20px; z-index:30; font:500 11px var(--mono); color:var(--tinta-3); letter-spacing:.04em}
+  .hint kbd{font:inherit; color:var(--tinta-2); border:1px solid var(--linha-2); border-radius:4px; padding:1px 5px; background:var(--panel)}
+
+  /* ---- slides ---- */
+  .deck{margin-left:64px}
+  .slide{min-height:100vh; min-height:100svh; scroll-snap-align:start; position:relative;
+    display:flex; align-items:center; padding:64px clamp(28px,6vw,110px); overflow:hidden}
+  .inner{width:100%; max-width:1120px; margin:0 auto; position:relative; z-index:2}
+  /* Item de grid tem min-width:auto por padrão: sem isto a trilha 1fr não encolhe e o
+     conteúdo era cortado por .slide{overflow:hidden} em telas estreitas (visto em 390px). */
+  .cols>*,.areas>*,.kpis>*,.cards>*,.govlist>*,.steps>*,.matgrid>*,.idx>*,
+  .meta-row,.meta-row>*,.score,.score>*,.fin,.finleg>*{min-width:0}
+
+  .eyebrow{display:inline-flex; align-items:center; gap:9px; font:700 11.5px/1 var(--mono);
+    letter-spacing:.2em; text-transform:uppercase; color:var(--verde);
+    padding:7px 12px; border:1.4px solid var(--linha-2); border-radius:999px; background:var(--vidro-2)}
+  .eyebrow .d{width:6px; height:6px; border-radius:50%; background:var(--terra)}
+  h1{font-family:var(--display); font-size:clamp(2.2rem,5.6vw,4.4rem); font-weight:600; letter-spacing:-.02em; line-height:1.02; margin:22px 0 0; text-wrap:balance; color:var(--verde)}
+  h2{font-family:var(--display); font-size:clamp(1.7rem,3.8vw,2.7rem); font-weight:600; letter-spacing:-.015em; line-height:1.08; margin:14px 0 0; text-wrap:balance; max-width:24ch; color:var(--tinta)}
+  h2::after{content:""; display:block; width:58px; height:4px; border-radius:99px; margin-top:16px;
+    background:linear-gradient(90deg,var(--terra),var(--ocre) 62%,var(--magenta))}
+  .lede{font-size:clamp(1.02rem,1.7vw,1.22rem); color:var(--tinta-2); max-width:62ch; line-height:1.55; margin:18px 0 0}
+  .kick{margin:0; color:var(--terra-txt); font:700 12px var(--mono); letter-spacing:.1em; text-transform:uppercase}
+
+  /* reveal */
+  .slide .rv{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .slide.in .rv{opacity:1; transform:none}
+  .slide.in .rv:nth-child(2){transition-delay:.06s}
+  .slide.in .rv:nth-child(3){transition-delay:.12s}
+  .slide.in .rv:nth-child(4){transition-delay:.18s}
+  @media (prefers-reduced-motion:reduce){ .slide .rv{opacity:1; transform:none} }
+
+  /* washes de aquarela (decorativos) */
+  .glow{position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; z-index:0; pointer-events:none}
+
+  /* ---- capa ---- */
+  .cover{text-align:center; justify-content:center}
+  .cover .inner{max-width:900px; display:flex; flex-direction:column; align-items:center}
+  .emblema{display:block; width:min(360px,58vw); height:auto; margin-bottom:4px;
+    mix-blend-mode:var(--emblema-blend); filter:saturate(1.05);
+    -webkit-mask-image:var(--emblema-mascara);
+            mask-image:var(--emblema-mascara)}
+  .cover h1{font-size:clamp(2.6rem,8vw,5.4rem)}
+  .cover .sub{font-family:var(--display); font-style:italic; font-size:clamp(1.05rem,2.2vw,1.4rem); color:var(--tinta-2); margin:18px 0 0; max-width:46ch}
+  .cover .meta{display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:28px}
+  .metachip{font:700 12px var(--mono); letter-spacing:.03em; color:var(--tinta-2); border:1.4px solid var(--linha-2); border-radius:8px; padding:8px 12px; background:var(--vidro)}
+  .metachip b{color:var(--verde)}
+  .live{display:inline-flex; align-items:center; gap:7px; color:var(--verde); font-weight:700}
+  .live::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--verde); box-shadow:0 0 0 0 var(--pulso); animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 var(--pulso)}70%{box-shadow:0 0 0 10px var(--pulso-0)}100%{box-shadow:0 0 0 0 var(--pulso-0)}}
+
+  /* ---- grids ---- */
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:34px}
+  .panel{border:1px solid var(--linha); border-radius:16px; padding:22px; background:linear-gradient(180deg,var(--panel),var(--panel-2)); box-shadow:var(--sombra)}
+  .panel h3{margin:0 0 4px; font-family:var(--display); font-size:17px; font-weight:600}
+  .panel .tag{font:700 11px var(--mono); letter-spacing:.08em; text-transform:uppercase}
+  .panel.bad{border-color:var(--borda-bad)} .panel.bad .tag{color:var(--terra-txt)}
+  .panel.good{border-color:var(--borda-good)} .panel.good .tag{color:var(--verde)}
+  .panel ul{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px}
+  .panel li{display:flex; gap:10px; align-items:flex-start; color:var(--tinta-2); font-size:14px; line-height:1.45}
+  .panel li i{flex:0 0 auto; width:16px; height:16px; margin-top:2px; color:var(--verde); font-style:normal}
+  .panel li .t{flex:1; min-width:0; text-align:left}
+  .panel.bad li i{color:var(--terra-txt)}
+
+  /* frentes */
+  .areas{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:30px}
+  .area{border:1px solid var(--linha); border-radius:14px; padding:15px 15px 14px; background:var(--panel); position:relative; overflow:hidden; box-shadow:var(--sombra)}
+  .area::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--verde),var(--ocre))}
+  .area .n{font:700 11px var(--mono); color:var(--terra-txt); letter-spacing:.06em}
+  .area h4{margin:6px 0 8px; font-family:var(--display); font-size:15px; font-weight:600; letter-spacing:-.01em}
+  .area p{margin:0; font-size:11.5px; color:var(--tinta-2); line-height:1.5; overflow-wrap:anywhere}
+  .area .cnt{position:absolute; top:13px; right:14px; font:700 15px var(--mono); color:var(--verde); font-variant-numeric:tabular-nums}
+  .area.wide{grid-column:span 2}
+
+  /* KPI tiles */
+  .kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:30px}
+  .kpi{border:1px solid var(--linha); border-radius:14px; padding:18px 16px; background:linear-gradient(180deg,var(--panel),var(--panel-2)); position:relative; overflow:hidden; box-shadow:var(--sombra)}
+  .kpi::before{content:""; position:absolute; left:0; top:0; right:0; height:3px; background:linear-gradient(90deg,var(--verde),var(--oliva) 70%,var(--ocre))}
+  .kpi .v{font-family:var(--display); font-weight:600; font-size:clamp(1.7rem,3.2vw,2.5rem); line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--verde)}
+  .kpi .l{margin-top:8px; font-size:12.5px; color:var(--tinta-2); line-height:1.35}
+  .kpi .s{font:600 11px var(--mono); color:var(--tinta-3); overflow-wrap:anywhere}
+
+  /* barra de frentes */
+  .fin{margin-top:22px; border:1px solid var(--linha); border-radius:14px; padding:18px 20px; background:var(--panel); box-shadow:var(--sombra)}
+  .fin .ttl{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:13px; color:var(--tinta-2)}
+  .fin .ttl b{font-family:var(--display); font-weight:600; font-size:18px; color:var(--tinta); font-variant-numeric:tabular-nums; white-space:nowrap}
+  .finbar{height:16px; border-radius:8px; overflow:hidden; display:flex; margin:14px 0 10px; border:1px solid var(--borda-portadora)}
+  .finbar span{height:100%}
+  .finleg{display:flex; flex-wrap:wrap; gap:14px; font:600 11.5px var(--mono); color:var(--tinta-2)}
+  /* O contorno dá 3:1 ao quadradinho sem tocar na cor da série, que é dado e é normativa:
+     a série 2 (ocre #D89B34) entrega só 2.19:1 sobre --panel no claro e não pode ser
+     clareada nem escurecida. O rótulo textual ao lado continua sendo o portador do estado. */
+  .finleg i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px;
+    vertical-align:middle; box-shadow:0 0 0 1px var(--borda-portadora)}
+
+  /* progresso real × meta */
+  .metas{display:flex; flex-direction:column; gap:12px; margin-top:30px}
+  .meta-row{display:grid; grid-template-columns:200px 1fr 110px; gap:14px; align-items:center; font-size:13.5px}
+  .meta-row .nm{color:var(--tinta-2)}
+  .meta-row .track{height:10px; border-radius:6px; background:var(--panel-2); border:1px solid var(--linha); overflow:hidden}
+  .meta-row .fill{display:block; height:100%; border-radius:6px; background:linear-gradient(90deg,var(--verde),var(--oliva) 82%,var(--terra-txt))}
+  .meta-row .n{font:700 13px var(--mono); color:var(--tinta); text-align:right; font-variant-numeric:tabular-nums}
+  .metanote{margin-top:18px; font-size:12.5px; color:var(--tinta-3); border-top:1px dashed var(--linha-2); padding-top:14px}
+
+  /* maturidade */
+  .matgrid{display:grid; grid-template-columns:minmax(300px,440px) 1fr; gap:34px; align-items:center; margin-top:26px}
+  .radarwrap canvas{width:100%; height:auto; display:block}
+  .idx{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:16px}
+  .idxcard{flex:1; border:1px solid var(--linha); border-radius:13px; padding:14px 16px; background:linear-gradient(180deg,var(--panel),var(--panel-2)); box-shadow:var(--sombra)}
+  .idxcard .v{font-family:var(--display); font-weight:600; font-size:32px; line-height:1; font-variant-numeric:tabular-nums; color:var(--verde)}
+  .idxcard .v small{font:700 14px var(--mono); color:var(--tinta-3)}
+  .idxcard .l{font-size:11.5px; color:var(--tinta-2); margin-top:5px; line-height:1.3}
+  .scorelist{display:flex; flex-direction:column; gap:9px}
+  .score{display:grid; grid-template-columns:180px 1fr 40px; gap:12px; align-items:center; font-size:13px}
+  .score .nm{color:var(--tinta-2)}
+  .score .track{height:7px; border-radius:5px; background:var(--panel-2); border:1px solid var(--linha); overflow:hidden}
+  .score .fill{display:block; height:100%; border-radius:5px; background:linear-gradient(90deg,var(--verde),var(--oliva) 82%,var(--terra-txt))}
+  .score .n{font:700 13px var(--mono); color:var(--tinta); text-align:right; font-variant-numeric:tabular-nums}
+  .amp{margin-top:18px; font-size:12.5px; color:var(--tinta-3); border-top:1px dashed var(--linha-2); padding-top:14px}
+  .amp b{color:var(--tinta-2)}
+  .amp .pills{display:flex; flex-wrap:wrap; gap:7px; margin-top:9px}
+  .amp .pills span{font:700 11px var(--mono); color:var(--terra-txt); border:1px solid var(--pill-borda); background:var(--pill-bg); border-radius:7px; padding:4px 8px}
+
+  /* cards de entrega */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:30px}
+  .card{border:1px solid var(--linha); border-radius:15px; padding:20px 18px; background:linear-gradient(180deg,var(--panel),var(--panel-2)); box-shadow:var(--sombra); position:relative;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease, background-color .18s ease}
+  .card::before{content:""; position:absolute; top:-1px; left:20px; width:44px; height:6px; border-radius:0 0 5px 5px; background:linear-gradient(90deg,var(--terra),var(--ocre)); opacity:.9}
+  .card:hover{border-color:var(--borda-portadora); transform:translateY(-3px)}
+  .card .ic{width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:19px; margin-bottom:13px;
+    background:var(--ic-bg); border:1px solid var(--ic-borda)}
+  .card h4{margin:0 0 7px; font-family:var(--display); font-size:15.5px; font-weight:600; letter-spacing:-.01em}
+  .card p{margin:0; font-size:12.8px; color:var(--tinta-2); line-height:1.5}
+
+  /* lista de governança */
+  .govlist{display:grid; grid-template-columns:1fr 1fr; gap:14px 30px; margin-top:28px}
+  .gov{display:flex; gap:13px; align-items:flex-start}
+  .gov .ic{flex:0 0 auto; width:34px; height:34px; border-radius:9px; display:grid; place-items:center; font-size:16px;
+    background:var(--ic-bg); border:1px solid var(--ic-borda)}
+  .gov h4{margin:0 0 3px; font-family:var(--display); font-size:14.5px; font-weight:600}
+  .gov p{margin:0; font-size:12.5px; color:var(--tinta-2); line-height:1.45}
+  .govbanner{margin-top:26px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
+    border:1px solid var(--linha-2); border-radius:14px; padding:16px 22px; background:linear-gradient(90deg,var(--banner-a),var(--banner-b))}
+  .govbanner .big{font-family:var(--display); font-weight:600; font-size:20px; color:var(--tinta)}
+  .govbanner .big b{color:var(--verde)}
+
+  /* estado + próximos */
+  .steps{display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:30px}
+  .now{border:1px solid var(--linha); border-radius:15px; padding:22px; background:linear-gradient(180deg,var(--panel),var(--panel-2)); box-shadow:var(--sombra)}
+  .now .tag{font:700 11px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--verde)}
+  .next .tag{color:var(--terra-txt)}
+  .now ul{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px}
+  .now li{display:flex; gap:11px; font-size:13.5px; color:var(--tinta-2); line-height:1.45}
+  .now li i{flex:0 0 auto; margin-top:1px; font-style:normal}
+
+  /* selo + arte do festival */
+  .festa{display:flex; align-items:center; gap:28px; margin-top:24px}
+  .selo{display:inline-flex; align-items:center; gap:8px; font:700 12px var(--mono); letter-spacing:.06em; text-transform:uppercase;
+    color:var(--magenta-txt); border:1.6px solid var(--magenta); border-radius:999px; padding:9px 16px; transform:rotate(-1.5deg); background:var(--vidro)}
+  .festa-arte{position:relative; flex:0 0 auto; transform:rotate(1.6deg)}
+  .festa-arte img{display:block; height:min(30vh,264px); width:auto; border-radius:8px; border:1.4px solid var(--casca); box-shadow:var(--sombra)}
+  .festa-arte::before{content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-2deg); width:74px; height:18px;
+    background:var(--fita); border-radius:2px; z-index:2}
+
+  /* fechamento */
+  .end{text-align:center; justify-content:center}
+  .end .inner{max-width:820px; display:flex; flex-direction:column; align-items:center}
+  .end .end-h{font-family:var(--display); font-weight:600; color:var(--verde); max-width:none;
+    font-size:clamp(2.2rem,6vw,4rem); letter-spacing:-.02em; line-height:1.02; margin:22px 0 0}
+  .end .end-h::after{display:none}
+  .end .url{margin-top:26px; font:700 15px var(--mono); color:var(--verde); border:1.4px solid var(--linha-2); border-radius:10px; padding:12px 20px; background:var(--panel)}
+  .end .foot{margin-top:20px; color:var(--tinta-3); font:700 12px var(--mono); letter-spacing:.05em}
+
+  @media (max-width:860px){
+    .cols,.matgrid,.steps,.govlist{grid-template-columns:1fr}
+    .areas,.kpis,.cards{grid-template-columns:1fr 1fr}
+    .area.wide{grid-column:span 1}
+    .score{grid-template-columns:130px 1fr 36px}
+    .meta-row{grid-template-columns:120px 1fr 96px}
+    .hint{display:none}
+    .rail{width:46px} .deck{margin-left:46px}
+    .rail .vword{font-size:clamp(18px,3.4vh,28px)}
+    .festa{flex-direction:column; align-items:flex-start}
+    .skip-link:focus{left:56px}
+    .tema{width:34px; height:34px; border-radius:10px}
+    .tema svg{width:16px; height:16px}
+  }
+
+  /* Em tela estreita ou baixa o conteúdo de um slide passa da altura da janela, e
+     .slide{overflow:hidden} o CORTAVA de vez (visto em captura a 390x844: o slide 4
+     perdia dois KPIs e a barra de frentes). Aqui a altura volta a poder crescer, o
+     recorte fica só no eixo horizontal (que é o que contém os washes) e o snap
+     afrouxa para proximity, senão o rodapé do slide fica inalcançável. */
+  @media (max-width:860px), (max-height:760px){
+    html{scroll-snap-type:y proximity}
+    .slide{overflow-x:clip; overflow-y:visible}
+    .counter{background:var(--vidro); border:1px solid var(--linha);
+      border-radius:8px; padding:5px 9px; right:12px; bottom:12px}
+  }
+
+  /* telefone: nada é escondido, tudo é reorganizado em uma coluna */
+  @media (max-width:560px){
+    .slide{padding:44px 20px}
+    .areas,.kpis,.cards{grid-template-columns:1fr}
+    .meta-row,.score{grid-template-columns:1fr auto; gap:4px 10px}
+    .meta-row .nm,.score .nm{grid-column:1 / -1}
+    .idx{flex-direction:column}
+    .festa-arte{width:100%; transform:none}
+    .festa-arte img{height:auto; max-height:44vh; width:100%; object-fit:contain}
+    .cover .meta{gap:7px}
+    .govbanner{padding:14px 16px}
+    .matgrid{gap:22px}
+  }
+
+  /* projetor e notebook baixo: com snap mandatory o rodapé de um slide alto fica
+     inalcançável, então o snap afrouxa para proximity e as caixas encolhem */
+  @media (max-height:760px){
+    html{scroll-snap-type:y proximity}
+    .slide{padding-block:36px}
+    .kpis{gap:10px}
+    .kpi{padding:12px 14px}
+    .cards{gap:12px}
+    .dots{gap:0}
+    .rail .vword{font-size:clamp(16px,3.2vh,26px)}
+  }
+
+  /* um deck institucional vira PDF: o tema claro é o de impressão, sempre */
+  @media print{
+    html{scroll-snap-type:none; scroll-behavior:auto}
+    html[data-theme="dark"]{
+      --fundo:#F7E4E2; --fundo-2:#F3D9D6; --panel:#FBF1EE; --panel-2:#F5E2DE;
+      --linha:rgba(74,56,38,.16); --linha-2:rgba(74,56,38,.32);
+      --tinta:#2A2418; --tinta-2:#5A4B38; --tinta-3:#6A5748;
+      --verde:#38512F; --oliva:#5C6A34; --terra:#C0603A; --terra-txt:#93411F;
+      --ocre:#D89B34; --magenta:#E5286E; --magenta-txt:#C81B5B; --casca:#4A3826;
+      --dado-1:#38512F; --dado-2:#D89B34; --dado-3:#C0603A; --dado-4:#5C6A34;
+      --vidro:rgba(251,241,238,.8); --vidro-2:rgba(251,241,238,.7);
+      --ic-bg:rgba(56,81,47,.08); --ic-borda:rgba(56,81,47,.22);
+      --pill-bg:rgba(216,155,52,.12); --pill-borda:rgba(166,75,41,.80);
+      --banner-a:rgba(56,81,47,.08); --banner-b:rgba(216,155,52,.08);
+      --fita:rgba(216,155,52,.68); --borda-bad:rgba(166,75,41,.35);
+      --borda-good:rgba(56,81,47,.4); --borda-portadora:#75664B;
+      --emblema-blend:multiply; --sombra:none;
+    }
+    .rail,.hint,.counter,.glow,.skip-link,.tema{display:none!important}
+    body::before{display:none}
+    .deck{margin-left:0}
+    .slide{min-height:auto; page-break-after:always; break-after:page; padding:24px}
+    .panel,.card,.kpi,.area,.now,.idxcard,.fin{box-shadow:none}
+    .slide .rv{opacity:1; transform:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#deck">Pular para o conteúdo</a>
+
+<!-- ===== RAIL ===== -->
+<aside class="rail">
+  <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21V10" stroke="var(--verde)" stroke-width="1.9"/><path d="M12 13.5C12 8.5 8.5 6 4 6.6c0 5 3.5 7.5 8 6.9" stroke="var(--oliva)" stroke-width="1.9"/><path d="M12 11.5C12 7 15 4.4 19.5 5c0 4.5-3 7-7.5 6.5" stroke="var(--verde)" stroke-width="1.9"/></svg>
+  <span class="vword" aria-hidden="true">flore-ser</span>
+  <nav class="dots" id="dots" aria-label="Navegação entre slides"></nav>
+  <button class="tema" id="btema" type="button" aria-pressed="false" aria-label="Ativar tema escuro" title="Ativar tema escuro"><svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 14.6A8.6 8.6 0 0 1 9.4 4 8.6 8.6 0 1 0 20 14.6z"/></svg><svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/></svg></button>
+</aside>
+<div class="hint" aria-hidden="true">use <kbd>↑</kbd> <kbd>↓</kbd> ou <kbd>espaço</kbd></div>
+<div class="counter" aria-hidden="true"><b id="cnum">01</b> / <span id="ctot">10</span></div>
+
+<main class="deck" id="deck" tabindex="-1">
+
+  <!-- 1 · CAPA -->
+  <section class="slide cover" id="s1" role="group" aria-roledescription="slide" aria-label="Slide 1 de 10: capa">
+    <div class="glow" style="width:520px;height:520px;background:var(--glow-ocre);top:-160px;right:-120px"></div>
+    <div class="glow" style="width:420px;height:420px;background:var(--glow-oliva);bottom:-140px;left:-100px"></div>
+    <div class="inner">
+      <img class="emblema rv" src="_v1-divulgacao/assets/img/emblema-passaros.jpg" alt="Emblema do Flore-Ser: dois pássaros bordados em torno de uma flor" onerror="this.style.display='none'">
+      <span class="eyebrow rv"><span class="d"></span>Projeto de Extensão · UFG</span>
+      <h1 class="rv">Flore-Ser</h1>
+      <p class="sub rv">Cerrado que floresce na cidade: um convite para ocupar os espaços públicos comuns como forma de (r)existência.</p>
+      <div class="meta rv">
+        <span class="metachip"><span class="live">em campo desde abril/2024</span></span>
+        <span class="metachip">SIBI/UFG · FCS · UFG</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · CONTEXTO -->
+  <section class="slide" id="s2" role="group" aria-roledescription="slide" aria-label="Slide 2 de 10: o ponto de partida">
+    <div class="inner">
+      <p class="kick rv">O ponto de partida</p>
+      <h2 class="rv">Praças, jardins e canteiros de Goiânia esperam por cuidado e vida.</h2>
+      <div class="cols">
+        <div class="panel bad rv">
+          <span class="tag">Antes</span>
+          <h3>Espaço comum negligenciado</h3>
+          <ul>
+            <li><i>◯</i><span class="t">Praças e canteiros ociosos, sem cuidado nem pertencimento da comunidade.</span></li>
+            <li><i>◯</i><span class="t">Cidade que impermeabiliza o solo e apaga o Cerrado nativo do cotidiano.</span></li>
+            <li><i>◯</i><span class="t">Moradores afastados dos espaços públicos que são de todos.</span></li>
+          </ul>
+        </div>
+        <div class="panel good rv">
+          <span class="tag">Com o Flore-Ser</span>
+          <h3>Território que floresce</h3>
+          <ul>
+            <li><i>◆</i><span class="t">Ocupação afetiva: <b>mutirões de plantio</b> devolvem vida ao espaço comum.</span></li>
+            <li><i>◆</i><span class="t">Nativas do Cerrado, PANCs e hortas no lugar do abandono.</span></li>
+            <li><i>◆</i><span class="t">Arte-educação, Clube de Leitura e festas reaproximam a comunidade da rua.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · FRENTES DE ATUAÇÃO -->
+  <section class="slide" id="s3" role="group" aria-roledescription="slide" aria-label="Slide 3 de 10: frentes de atuação">
+    <div class="inner">
+      <p class="kick rv">O que fazemos</p>
+      <h2 class="rv">Sete frentes que devolvem vida ao espaço público.</h2>
+      <div class="areas">
+        <div class="area rv"><span class="cnt">13</span><div class="n">01</div><h4>Plantio &amp; Mutirões</h4><p>Nativas do Cerrado, PANCs e hortas comunitárias, que já somam 13 espaços com atividade registrada.</p></div>
+        <div class="area rv"><span class="cnt">6+</span><div class="n">02</div><h4>Arte-Educação</h4><p>Oficinas de lambes, murais e bordado que reescrevem a paisagem urbana.</p></div>
+        <div class="area wide rv"><span class="cnt">8</span><div class="n">03</div><h4>Eventos Culturais &amp; Ocupação</h4><p>Feira Multicultural (8 edições), Clube de Leitura, Sarau e o Festival Flore-Ser: encontros que ocupam o comum como forma de (r)existência.</p></div>
+        <div class="area rv"><div class="n">04</div><h4>Escolas &amp; Educação Ambiental</h4><p>Plantios e formação com estudantes da rede pública, de CMEIs à escola municipal.</p></div>
+        <div class="area rv"><span class="cnt">14</span><div class="n">05</div><h4>Biodiversidade do Cerrado</h4><p>Inventário botânico com 14 espécies nativas, PANCs e medicinais em campo.</p></div>
+        <div class="area rv"><span class="cnt">6</span><div class="n">06</div><h4>Rede de Parcerias</h4><p>AMMA, EcomAmor, Arca Goiás, Jardim Botânico e a rede interna da UFG.</p></div>
+        <div class="area rv"><span class="cnt">60+</span><div class="n">07</div><h4>Extensão &amp; Comunidade</h4><p>Pessoas na equipe, vindas de 8 unidades da UFG, em campo formando e sendo formadas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · COLHEITA ATÉ AGORA (dados reais) -->
+  <section class="slide" id="s4" role="group" aria-roledescription="slide" aria-label="Slide 4 de 10: a colheita até agora">
+    <div class="glow" style="width:460px;height:460px;background:var(--glow-terra);bottom:-180px;left:-120px"></div>
+    <div class="inner">
+      <p class="kick rv">O que já floresceu · inventário 2024 a jul/2026</p>
+      <h2 class="rv">A colheita até agora, medida em campo.</h2>
+      <div class="kpis">
+        <div class="kpi rv"><div class="v">13</div><div class="l">espaços com atividade <span class="s">· praças, campi e escolas</span></div></div>
+        <div class="kpi rv"><div class="v">2.965</div><div class="l">pessoas alcançadas <span class="s">· registradas no inventário</span></div></div>
+        <div class="kpi rv"><div class="v">35</div><div class="l">ações no território <span class="s">· mutirões, oficinas, eventos</span></div></div>
+        <div class="kpi rv"><div class="v">447</div><div class="l">plantas na Humanidades 2 <span class="s">· desde 2024 · 102 árvores · 45 cactos · 300 ornamentais</span></div></div>
+        <div class="kpi rv"><div class="v">8</div><div class="l">edições da Feira Multicultural <span class="s">· + Clube de Leitura e Sarau</span></div></div>
+        <div class="kpi rv"><div class="v">60+</div><div class="l">pessoas na equipe <span class="s">· 8 unidades da UFG</span></div></div>
+      </div>
+      <div class="fin rv">
+        <div class="ttl"><span>Ações por frente · inventário do projeto</span><b>35 ações</b></div>
+        <div class="finbar">
+          <span style="width:42%;background:var(--dado-1)" title="Plantio &amp; Mutirões"></span>
+          <span style="width:26%;background:var(--dado-2)" title="Ações em escolas"></span>
+          <span style="width:19%;background:var(--dado-3)" title="Oficinas de arte-educação"></span>
+          <span style="width:13%;background:var(--dado-4)" title="Hortas e eventos"></span>
+        </div>
+        <div class="finleg">
+          <span><i style="background:var(--dado-1)"></i>Plantio &amp; Mutirões</span>
+          <span><i style="background:var(--dado-2)"></i>Escolas</span>
+          <span><i style="background:var(--dado-3)"></i>Arte-Educação</span>
+          <span><i style="background:var(--dado-4)"></i>Hortas &amp; Eventos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · METAS DO PLANO -->
+  <section class="slide" id="s5" role="group" aria-roledescription="slide" aria-label="Slide 5 de 10: metas do plano">
+    <div class="inner">
+      <p class="kick rv">Para onde vamos · plano de trabalho</p>
+      <h2 class="rv">Real × meta: o caminho até 2027.</h2>
+      <div class="metas">
+        <div class="meta-row rv"><span class="nm">Espaços ativados</span><span class="track"><span class="fill" style="width:54%"></span></span><span class="n">13 / 24</span></div>
+        <div class="meta-row rv"><span class="nm">Pessoas alcançadas</span><span class="track"><span class="fill" style="width:30%"></span></span><span class="n">2.965 / 10.000</span></div>
+        <div class="meta-row rv"><span class="nm">Ações no inventário</span><span class="track"><span class="fill" style="width:58%"></span></span><span class="n">35 / 60</span></div>
+        <div class="meta-row rv"><span class="nm">Extensionistas</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="n">60+ / 100</span></div>
+        <div class="meta-row rv"><span class="nm">Parceiros na rede</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="n">6 / 10</span></div>
+        <div class="meta-row rv"><span class="nm">Edições da Feira</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="n">8 / 8</span></div>
+      </div>
+      <p class="metanote rv">Os números realizados vêm do inventário de campo do projeto; as metas são as do plano de trabalho até 2027. O painel público acompanha essa evolução em tempo real.</p>
+    </div>
+  </section>
+
+  <!-- 6 · MATURIDADE -->
+  <section class="slide" id="s6" role="group" aria-roledescription="slide" aria-label="Slide 6 de 10: maturidade do território">
+    <div class="inner">
+      <p class="kick rv">Como acompanhamos o florescer</p>
+      <h2 class="rv">Sete dimensões medem o território a cada mutirão.</h2>
+      <div class="matgrid">
+        <div class="radarwrap rv"><canvas id="radar" width="440" height="400"></canvas></div>
+        <div class="rv">
+          <div class="idx">
+            <div class="idxcard"><div class="v">70<small>/100</small></div><div class="l">Índice médio de florescer <b>nas 7 dimensões</b> (diagnóstico 2026)</div></div>
+            <div class="idxcard"><div class="v">13<small>/24</small></div><div class="l">espaços já em <b>ocupação</b> · meta de 24</div></div>
+          </div>
+          <div class="scorelist">
+            <div class="score"><span class="nm">Plantio</span><span class="track"><span class="fill" style="width:82%"></span></span><span class="n">82</span></div>
+            <div class="score"><span class="nm">Biodiversidade</span><span class="track"><span class="fill" style="width:78%"></span></span><span class="n">78</span></div>
+            <div class="score"><span class="nm">Parcerias</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="n">74</span></div>
+            <div class="score"><span class="nm">Engajamento</span><span class="track"><span class="fill" style="width:71%"></span></span><span class="n">71</span></div>
+            <div class="score"><span class="nm">Arte-Educação</span><span class="track"><span class="fill" style="width:68%"></span></span><span class="n">68</span></div>
+            <div class="score"><span class="nm">Escolas</span><span class="track"><span class="fill" style="width:63%"></span></span><span class="n">63</span></div>
+            <div class="score"><span class="nm">Comunicação</span><span class="track"><span class="fill" style="width:55%"></span></span><span class="n">55</span></div>
+          </div>
+          <div class="amp">
+            As dimensões mais baixas, que são <b>Comunicação</b> e <b>Escolas</b>, apontam onde os próximos esforços devem florescer:
+            <div class="pills"><span>Sinalização dos espaços</span><span>Redes sociais</span><span>Mais escolas e CMEIs</span><span>Formação continuada</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · O QUE ENTREGA -->
+  <section class="slide" id="s7" role="group" aria-roledescription="slide" aria-label="Slide 7 de 10: o que o projeto entrega">
+    <div class="inner">
+      <p class="kick rv">O que o projeto entrega</p>
+      <h2 class="rv">Frutos concretos para a cidade e a comunidade.</h2>
+      <div class="cards">
+        <div class="card rv"><div class="ic">🌱</div><h4>Espaços ressignificados</h4><p>Praças, campi e escolas ocupados com plantio: somente a Humanidades 2 reúne 447 plantas vivas desde 2024.</p></div>
+        <div class="card rv"><div class="ic">🎨</div><h4>Arte-educação na rua</h4><p>Lambes, murais e bordado coletivo que reescrevem a paisagem e convidam ao pertencimento.</p></div>
+        <div class="card rv"><div class="ic">🎉</div><h4>Cultura que ocupa</h4><p>Feira Multicultural, Clube de Leitura no parque, Sarau e o Festival Flore-Ser em setembro.</p></div>
+        <div class="card rv"><div class="ic">🌾</div><h4>Biodiversidade urbana</h4><p>14 espécies nativas, PANCs e medicinais reintroduzidas nos canteiros da cidade.</p></div>
+        <div class="card rv"><div class="ic">🤝</div><h4>Rede de parcerias</h4><p>AMMA, EcomAmor, Arca Goiás e Jardim Botânico somando mudas, saber técnico e alcance.</p></div>
+        <div class="card rv"><div class="ic">📊</div><h4>Painel público de dados</h4><p>Site e painel abertos: cada espaço, ação e meta documentados e acompanhados por qualquer pessoa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · GOVERNANÇA / RAÍZES -->
+  <section class="slide" id="s8" role="group" aria-roledescription="slide" aria-label="Slide 8 de 10: governança e raízes">
+    <div class="inner">
+      <p class="kick rv">Por que o projeto se sustenta</p>
+      <h2 class="rv">Raízes firmes: método, parceria e permanência.</h2>
+      <div class="govlist">
+        <div class="gov rv"><div class="ic">🌿</div><div><h4>Coordenação institucional</h4><p>Elis Veloso (SIBI/UFG) e Luiz Mello (FCS) conduzem o projeto de extensão dentro da UFG.</p></div></div>
+        <div class="gov rv"><div class="ic">🏛</div><div><h4>Execução planejada</h4><p>Metas, cronograma e prestação de contas claros para o projeto em execução até 2027.</p></div></div>
+        <div class="gov rv"><div class="ic">🎓</div><div><h4>Universidade em rede</h4><p>SIBI/UFG, Biblioteca Central, FCS, IESA, FE, PROAD, Agronomia e História em campo.</p></div></div>
+        <div class="gov rv"><div class="ic">🤝</div><div><h4>Parceiros externos</h4><p>AMMA, Comurg, EcomAmor, Arca Goiás e Jardim Botânico; apoio de FUNAPE, Instituto Verbena, Sint-Ifesgo e Adufg.</p></div></div>
+        <div class="gov rv"><div class="ic">🌱</div><div><h4>Método participativo</h4><p>Mutirões abertos: a comunidade planta, cuida e se apropria, e esse cuidado permanece.</p></div></div>
+        <div class="gov rv"><div class="ic">📋</div><div><h4>Transparência &amp; registro</h4><p>Inventário de campo, painel público e prestação de contas sempre abertos.</p></div></div>
+      </div>
+      <div class="govbanner rv">
+        <span class="big">Legado: <b>espaço público vivo</b></span>
+        <span style="font:600 13px var(--mono);color:var(--tinta-2)">cuidado que continua depois que o projeto passa</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · ESTADO + PRÓXIMOS -->
+  <section class="slide" id="s9" role="group" aria-roledescription="slide" aria-label="Slide 9 de 10: onde estamos e para onde vamos">
+    <div class="inner">
+      <p class="kick rv">Onde estamos e para onde vamos</p>
+      <h2 class="rv">Começamos pelos pilotos e já florescemos em 13 espaços.</h2>
+      <div class="steps">
+        <div class="now rv">
+          <span class="tag">Já em campo</span>
+          <ul>
+            <li><i>✅</i>13 espaços com atividade, incluindo os pilotos na Biblioteca Central e na Humanidades 2 (447 plantas desde 2024).</li>
+            <li><i>✅</i>35 ações registradas: mutirões, oficinas, escolas e hortas.</li>
+            <li><i>✅</i>8 edições da Feira Multicultural + Clube de Leitura e Sarau.</li>
+            <li><i>✅</i>Site e painel públicos de dados no ar.</li>
+          </ul>
+        </div>
+        <div class="now next rv">
+          <span class="tag">Próximos passos</span>
+          <ul>
+            <li><i>→</i>Festival Flore-Ser: 2 e 3 de setembro, na Biblioteca Central da UFG, com 56 atividades e entrada gratuita.</li>
+            <li><i>→</i>Expandir para os 24 espaços do plano e chegar a ~10.000 pessoas.</li>
+            <li><i>→</i>Ampliar a rede de escolas e a comunicação dos espaços.</li>
+            <li><i>→</i>Área de gestão do painel para a equipe atualizar dados em campo.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="festa rv">
+        <div class="selo">✳ Festival Flore-Ser · 2 e 3 de setembro · entrada gratuita</div>
+        <div class="festa-arte"><img src="_v1-divulgacao/assets/img/festival-floreser.jpg" alt="Cartaz do Festival Flore-Ser: saberes, cuidados e meio ambiente, nos dias 2 e 3 de setembro, na Biblioteca Central da UFG" onerror="this.closest('.festa-arte').style.display='none'"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · FECHAMENTO -->
+  <section class="slide end" id="s10" role="group" aria-roledescription="slide" aria-label="Slide 10 de 10: fechamento">
+    <div class="glow" style="width:520px;height:420px;background:var(--glow-ocre-2);top:-120px;left:50%;transform:translateX(-50%)"></div>
+    <div class="inner">
+      <img class="emblema rv" style="width:min(220px,42vw)" src="_v1-divulgacao/assets/img/emblema-passaros.jpg" alt="" aria-hidden="true" onerror="this.style.display='none'">
+      <h2 class="rv end-h">Cerrado que floresce na cidade.</h2>
+      <p class="lede rv" style="text-align:center">Ocupar os espaços públicos comuns como forma de (r)existência. Plantar, cuidar e pertencer, juntos.</p>
+      <div class="url rv">edimardantas75.github.io/flore-ser-site</div>
+      <div class="foot rv">Flore-Ser · SIBI/UFG · FCS · UFG · Goiânia, Goiás</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const slides = [...document.querySelectorAll('.slide')];
+  const cnum = document.getElementById('cnum');
+  document.getElementById('ctot').textContent = String(slides.length).padStart(2,'0');
+
+  const raiz = document.documentElement;
+  const semMovimento = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tok = (n) => getComputedStyle(raiz).getPropertyValue(n).trim();
+
+  // ---- porta unica de troca de slide: clique, teclado e snap passam por aqui ----
+  function irParaSlide(i, comFoco){
+    const alvo = slides[Math.max(0, Math.min(i, slides.length - 1))];
+    if(!alvo) return;
+    alvo.scrollIntoView({behavior: semMovimento() ? 'auto' : 'smooth', block: 'start'});
+    if(comFoco !== false && alvo.focus) alvo.focus({preventScroll: true});
+  }
+
+  // ---- dots ----
+  const dotsBox = document.getElementById('dots');
+  slides.forEach((s,i)=>{
+    s.tabIndex = -1;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Ir ao ' + (s.getAttribute('aria-label') || ('slide ' + (i+1))));
+    b.addEventListener('click', () => irParaSlide(i));
+    b.addEventListener('keydown', (ev) => {
+      if(ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar'){
+        ev.preventDefault(); ev.stopPropagation(); irParaSlide(i);
+      }
+    });
+    dotsBox.appendChild(b);
+  });
+  const dots=[...dotsBox.children];
+
+  // ---- decorativos: fora da arvore de acessibilidade ----
+  document.querySelectorAll('.panel li i, .now li i, .card .ic, .gov .ic, .glow, .eyebrow .d')
+    .forEach(el => el.setAttribute('aria-hidden','true'));
+
+  // ---- observer: slide atual + reveal ----
+  let cur=0;
+  const io=new IntersectionObserver((ents)=>{ ents.forEach(e=>{ if(e.isIntersecting){
+    e.target.classList.add('in'); const i=slides.indexOf(e.target);
+    if(i>=0){ cur=i; cnum.textContent=String(i+1).padStart(2,'0');
+      dots.forEach((d,j)=>d.setAttribute('aria-current', j===i?'true':'false')); } } }); },{threshold:.55});
+  slides.forEach(s=>io.observe(s));
+  dots[0].setAttribute('aria-current','true');
+
+  // E: entrada da capa com reflow forcado, para a transicao disparar de fato
+  // mesmo quando o observer resolve antes do primeiro quadro
+  const capa = slides[0];
+  if(capa){ capa.classList.remove('in'); void capa.offsetWidth; capa.classList.add('in'); }
+
+  // ---- teclado ----
+  addEventListener('keydown',(e)=>{
+    if(e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key;
+    // Espaco e Enter pertencem ao controle focado (o alternador de tema, um dot):
+    // sem esta guarda, o Espaco avancaria o slide em vez de acionar o botao.
+    const alvo = e.target;
+    if(alvo && alvo.closest && alvo.closest('button, a, input, select, textarea, [contenteditable]')
+       && (k === ' ' || k === 'Spacebar' || k === 'Enter')) return;
+    if([' ','Spacebar','ArrowDown','ArrowRight','PageDown'].includes(k)){ e.preventDefault(); irParaSlide(cur+1); }
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(k)){ e.preventDefault(); irParaSlide(cur-1); }
+    else if(k==='Home'){ e.preventDefault(); irParaSlide(0); }
+    else if(k==='End'){ e.preventDefault(); irParaSlide(slides.length-1); } });
+
+  // ---- tema (contrato: data-theme no <html>, chave FLORESER_TEMA, "claro" | "escuro") ----
+  const btema = document.getElementById('btema');
+  function rotularTema(){
+    const escuro = raiz.getAttribute('data-theme') === 'dark';
+    const rotulo = escuro ? 'Ativar tema claro' : 'Ativar tema escuro';
+    btema.setAttribute('aria-pressed', escuro ? 'true' : 'false');
+    btema.setAttribute('aria-label', rotulo);
+    btema.title = rotulo;
+  }
+  function aplicarTema(escuro){
+    if(escuro) raiz.setAttribute('data-theme','dark'); else raiz.removeAttribute('data-theme');
+    rotularTema();
+    desenharRadar();
+  }
+  if(btema){
+    rotularTema();
+    btema.addEventListener('click', () => {
+      const escuro = raiz.getAttribute('data-theme') !== 'dark';
+      aplicarTema(escuro);
+      try{ localStorage.setItem('FLORESER_TEMA', escuro ? 'escuro' : 'claro'); }catch(e){}
+    });
+  }
+
+  // Impressao sempre no tema claro: o canvas nao obedece a @media print sozinho.
+  let temaAntesDeImprimir = null;
+  addEventListener('beforeprint', () => {
+    temaAntesDeImprimir = raiz.getAttribute('data-theme');
+    if(temaAntesDeImprimir === 'dark') aplicarTema(false);
+  });
+  addEventListener('afterprint', () => {
+    if(temaAntesDeImprimir === 'dark') aplicarTema(true);
+    temaAntesDeImprimir = null;
+  });
+
+  // ---- radar do território (7 dimensões · scores do diagnóstico 2026) ----
+  // Nomeado, e nao IIFE, porque precisa ser redesenhado a cada troca de tema: o canvas
+  // nao herda variavel CSS. Reatribuir cv.width zera a transformacao antes do ctx.scale,
+  // entao chamar de novo e seguro e a escala nao acumula.
+  function desenharRadar(){
+    const cv=document.getElementById('radar'); if(!cv) return;
+    const ctx=cv.getContext('2d'); const DPR=Math.min(devicePixelRatio||1,2);
+    const W=480,H=400; cv.width=W*DPR; cv.height=H*DPR; cv.style.width='100%'; cv.style.maxWidth=W+'px';
+    ctx.scale(DPR,DPR);
+    const cGrade=tok('--grade'), cRaio=tok('--grade-2'), cRotulo=tok('--rotulo'),
+          cMiolo=tok('--ponto-miolo'), cSerie=tok('--dado-1'),
+          cRadarA=tok('--radar-a'), cRadarB=tok('--radar-b');
+    const labels=['Plantio','Arte-Educação','Engajamento','Escolas','Biodiversidade','Parcerias','Comunicação'];
+    const vals=[82,68,71,63,78,74,55];
+    const N=labels.length, cx=W/2, cy=H/2+6, R=136, ang=i=>-Math.PI/2 + i*2*Math.PI/N;
+    for(let g=1;g<=5;g++){ const rr=R*g/5; ctx.beginPath();
+      for(let i=0;i<=N;i++){ const a=ang(i%N); const x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+      ctx.closePath(); ctx.strokeStyle=cGrade; ctx.lineWidth=1; ctx.stroke(); }
+    ctx.font='700 11px "Space Mono", ui-monospace, monospace';
+    for(let i=0;i<N;i++){ const a=ang(i);
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(a), cy+R*Math.sin(a));
+      ctx.strokeStyle=cRaio; ctx.stroke();
+      const lx=cx+(R+22)*Math.cos(a), ly=cy+(R+22)*Math.sin(a);
+      ctx.fillStyle=cRotulo; ctx.textAlign=Math.abs(Math.cos(a))<0.3?'center':(Math.cos(a)>0?'left':'right');
+      ctx.textBaseline='middle'; ctx.fillText(labels[i], lx, ly); }
+    ctx.beginPath();
+    for(let i=0;i<=N;i++){ const a=ang(i%N), rr=R*vals[i%N]/100; const x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.closePath();
+    const grad=ctx.createLinearGradient(cx-R,cy-R,cx+R,cy+R); grad.addColorStop(0,cRadarA); grad.addColorStop(1,cRadarB);
+    ctx.fillStyle=grad; ctx.fill(); ctx.strokeStyle=cSerie; ctx.lineWidth=2.2; ctx.stroke();
+    for(let i=0;i<N;i++){ const a=ang(i), rr=R*vals[i]/100; const x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a);
+      ctx.beginPath(); ctx.arc(x,y,3.6,0,7); ctx.fillStyle=cMiolo; ctx.fill(); ctx.strokeStyle=cSerie; ctx.lineWidth=2; ctx.stroke(); }
+  }
+  desenharRadar();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[
+  { "id": "cap_fapeg_2025",     "fonte_id": "fonte_fapeg",     "valor": 85000, "ano": 2025, "instrumento": "convenio",        "modalidade_id": "mod_plantio", "origem": "estadual",   "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_proec_2025",     "fonte_id": "fonte_proec",     "valor": 42000, "ano": 2025, "instrumento": "edital_extensao", "modalidade_id": "mod_oficina", "origem": "proprio",    "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_ufg_2025",       "fonte_id": "fonte_ufg",       "valor": 60000, "ano": 2025, "instrumento": "institucional",   "modalidade_id": "mod_evento",  "origem": "proprio",    "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_amma_2025",      "fonte_id": "fonte_amma",      "valor": 55000, "ano": 2025, "instrumento": "convenio",        "modalidade_id": "mod_plantio", "origem": "municipal",  "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_municipal_2025", "fonte_id": "fonte_municipal", "valor": 48000, "ano": 2025, "instrumento": "convenio",        "modalidade_id": "mod_escola",  "origem": "municipal",  "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_ecomamor_2025",  "fonte_id": "fonte_ecomamor",  "valor": 30000, "ano": 2025, "instrumento": "parceria",        "modalidade_id": "mod_horta",   "origem": "parceiro",   "status_execucao": "em_execucao", "deleted_at": null },
+  { "id": "cap_doacoes_2025",   "fonte_id": "fonte_doacoes",   "valor": 18000, "ano": 2025, "instrumento": "doacao",          "modalidade_id": "mod_oficina", "origem": "comunidade", "status_execucao": "em_execucao", "deleted_at": null }
+]

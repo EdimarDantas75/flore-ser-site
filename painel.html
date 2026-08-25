@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flore-Ser · Painel de Extensão Socioambiental · UFG</title>
+<meta name="description" content="Painel do projeto de extensão Flore-Ser (UFG): ocupação de espaços públicos de Goiânia com plantio de nativas do Cerrado, oficinas de arte-educação e eventos culturais.">
+<meta name="theme-color" content="#38512F">
+<script>
+/* Restauracao do tema ANTES de qualquer folha de estilo pintar (evita a
+   piscada de tema claro num usuario que escolheu o escuro).
+   Contrato: atributo data-theme no <html>; ausente ou "light" = CLARO, que
+   e o padrao do produto institucional; "dark" = escuro. Chave de
+   armazenamento: FLORESER_TEMA, valores "claro" | "escuro".
+   Toda leitura de localStorage vai em try/catch com falha silenciosa: em
+   navegacao privativa ou com cookies de terceiros bloqueados o acesso
+   dispara excecao, e nesse caso o padrao (claro) ja e o certo.
+   Nao se usa matchMedia aqui de proposito: o contrato diz ausente = claro. */
+(function(){
+  try{
+    if(localStorage.getItem('FLORESER_TEMA')==='escuro')
+      document.documentElement.setAttribute('data-theme','dark');
+  }catch(e){}
+})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2338512F'/%3E%3Cpath d='M16 26V13' stroke='%23F4EDDD' stroke-width='2.2' stroke-linecap='round'/%3E%3Cpath d='M16 17C16 11 11 8 5 9c0 6 5 9 11 8' fill='none' stroke='%23EADFC7' stroke-width='2.2'/%3E%3Cpath d='M16 15C16 9 20 6 26 7c0 6-4 9-10 8' fill='none' stroke='%23C0603A' stroke-width='2.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_v1-divulgacao/assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="styles.css?v=22">
+</head>
+<body>
+<a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+<!-- ============ JANELA DE BOAS-VINDAS (abertura) ============ -->
+<!-- É uma janela de verdade: cobre a página inteira e é a única coisa com que
+     se pode interagir enquanto está aberta. Por isso role/aria-modal aqui e
+     inert no resto (posto por initWelcome), senão o Tab passeia pela topbar e
+     pelo menu por baixo do véu. Mesmo padrão do lightbox da galeria. -->
+<div class="welcome" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="welcome-bg"></div>
+  <button class="welcome-x" id="welcomeClose" title="Fechar" aria-label="Fechar boas-vindas">✕</button>
+  <div class="welcome-inner">
+    <div class="welcome-foto">
+      <img src="assets/img/hero-cerrado.jpg" alt="Ações de arte-educação e plantio do Flore-Ser ocupando os espaços públicos de Goiânia">
+    </div>
+    <div class="welcome-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10" stroke="#38512f" stroke-width="1.9"/><path d="M12 13.5C12 8.5 8.5 6 4 6.6c0 5 3.5 7.5 8 6.9" stroke="#5c6a34" stroke-width="1.9"/><path d="M12 11.5C12 7 15 4.4 19.5 5c0 4.5-3 7-7.5 6.5" stroke="#38512f" stroke-width="1.9"/></svg>
+      <div class="wb-txt"><b>flore-ser</b><small>Cerrado que floresce na cidade</small></div>
+    </div>
+    <h2 class="welcome-title" id="welcomeTitle">Bem-vindo(a) ao <span>Flore-Ser</span></h2>
+    <p class="welcome-sub">A extensão da UFG que ocupa os espaços públicos de Goiânia: plantio de nativas do Cerrado, PANCs e hortas, oficinas de arte-educação e eventos culturais. 24 espaços · 100 extensionistas · ~10.000 pessoas.</p>
+    <button class="welcome-enter" id="welcomeEnter">Entrar no painel <span aria-hidden="true">→</span></button>
+  </div>
+</div>
+
+<!-- ============ GATE DE LOGIN ============ -->
+<div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+  <div class="auth-card">
+    <div class="auth-logo"><span class="glyph"></span><b>Flore-Ser</b><span class="g">·</span>UFG</div>
+    <h2 id="authTitle">Painel de Extensão Socioambiental</h2>
+    <p>Acesso institucional para a equipe do projeto Flore-Ser. Coordenação: Elis Veloso (SIBI/UFG) e Luiz Mello (FCS).</p>
+    <button class="auth-btn" id="btnLogin">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Entrar com Google
+    </button>
+    <div class="auth-msg" id="authMsg"></div>
+    <div class="auth-demo">
+      <div class="auth-demo-sep"><span>ou acesso de demonstração (Gestão)</span></div>
+      <div class="auth-demo-btns">
+        <button class="demo-btn" data-demo="prpg@ecoa.demo" title="Acesso de demonstração (Coordenação)">Coordenação</button>
+        <button class="demo-btn" data-demo="sri@ecoa.demo" title="Acesso de demonstração (SIBI/UFG)">SIBI/UFG</button>
+        <button class="demo-btn" data-demo="ppg@ecoa.demo" title="Acesso de demonstração (FCS)">FCS</button>
+      </div>
+    </div>
+    <div class="auth-foot">SIBI/UFG · FCS · UFG</div>
+  </div>
+</div>
+
+<!-- ============ TOP BAR ============ -->
+<!-- <header> e não <div>: o botão de tema, o de relatório e a marca precisam
+     morar dentro de um marco para serem alcançáveis por quem navega por
+     marcos. Nenhum CSS muda: a folha seleciona pela classe. -->
+<header class="topbar">
+  <!-- Gaveta: so aparece ate 1180px, onde a sidebar vira trilho de icones.
+       O aria-expanded e sincronizado pelo JS a cada abertura e fechamento. -->
+  <button id="btnMenu" class="menu-btn" type="button" aria-expanded="false"
+          aria-controls="sidebar" aria-label="Abrir menu de navegação">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <div class="brand-row">
+    <!-- Marca institucional: coloque o arquivo em assets/img/marcas-institucionais.jpg.
+         Enquanto não existir, o slot se esconde sozinho (sem ícone quebrado). -->
+    <img class="brand-logos" src="assets/img/marcas-institucionais.jpg" alt="UFG · Flore-Ser" title="Universidade Federal de Goiás" onerror="this.style.display='none'">
+  </div>
+  <div class="wm-sep"></div>
+  <div class="ecoa-brand" title="Flore-Ser · Cerrado que floresce na cidade">
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10" stroke="#38512f" stroke-width="1.9"/><path d="M12 13.5C12 8.5 8.5 6 4 6.6c0 5 3.5 7.5 8 6.9" stroke="#5c6a34" stroke-width="1.9"/><path d="M12 11.5C12 7 15 4.4 19.5 5c0 4.5-3 7-7.5 6.5" stroke="#38512f" stroke-width="1.9"/></svg>
+    <div class="ecoa-txt"><b>flore-ser</b><small>Cerrado que floresce na cidade</small></div>
+  </div>
+  <div class="wm-sep"></div>
+  <div class="app-title">
+    <b id="topTitle">Visão Geral</b>
+    <span>Painel de Extensão · Flore-Ser</span>
+  </div>
+  <div class="spacer"></div>
+  <button id="btnRelatorio" class="btn-report" title="Gerar relatório consolidado em PDF (A4)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6a2 2 0 0 0 2 2h6"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+    <span>Gerar Relatório PDF</span>
+  </button>
+  <!-- Botao de tema: fica na TOPBAR de proposito. buildNav() reescreve o
+       #nav inteiro e go() reescreve o #main inteiro a cada navegacao; a
+       topbar nunca e reescrita, entao o botao e seus ouvintes sobrevivem. -->
+  <button id="btnTema" class="tema-btn" type="button" aria-pressed="false"
+          aria-label="Ativar tema escuro" title="Ativar tema escuro">
+    <svg class="ic-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="ic-lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <div class="avatar">ED</div>
+</header>
+<!-- Veu da gaveta: filho DIRETO do body, nunca dentro de #nav ou #main,
+     que sao destruidos e reconstruidos a cada navegacao. -->
+<div class="nav-veu" id="navVeu" hidden></div>
+
+<!-- Anuncio de troca de tela. go() reescreve o #main inteiro; sem isto a
+     navegacao e silenciosa para quem usa leitor de tela. Fica FORA do #main
+     de proposito: precisa sobreviver a reescrita para ser lido. -->
+<div id="anuncioTela" class="sr-so-leitor" role="status" aria-live="polite"></div>
+
+<div class="shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-head">
+      <div class="logo"><span class="glyph"></span><span>Flore-Ser</span></div>
+      <!-- sem aria-label o nome acessivel deste botao era o caractere «. -->
+      <button class="collapse-btn" id="collapseBtn" type="button"
+              aria-label="Recolher menu" title="Recolher menu"><span aria-hidden="true">«</span></button>
+    </div>
+    <nav id="nav" aria-label="Seções do painel"></nav>
+    <div class="side-foot">
+      <a class="foot-site" href="index.html" title="Voltar ao site de divulgação do Flore-Ser">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span>
+        <span class="txt">Site do projeto</span>
+      </a>
+      <a href="apresentacao.html" target="_blank" rel="noopener" title="Abrir a apresentação institucional do Flore-Ser">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+        <span class="txt">Apresentação</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <!-- tabindex=-1 no proprio <main>: go() troca o innerHTML, mas o
+       elemento em si nunca e recriado, entao o alvo do skip-link sobrevive. -->
+  <main class="main" id="main" tabindex="-1" aria-label="Conteúdo do painel"></main>
+</div>
+
+<div class="map-tip" id="mapTip"></div>
+
+<div id="reportRoot" class="report-root" aria-hidden="true"></div>
+
+<button id="fbBtn" class="fb-fab" title="Enviar feedback sobre o sistema" hidden>💬 Feedback</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="_v1-divulgacao/assets/vendor/leaflet/leaflet.js"></script>
+<script type="module" src="script.js?v=22"></script>
+</body>
+</html>

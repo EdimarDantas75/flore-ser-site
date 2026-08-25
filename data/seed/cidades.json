@@ -1,0 +1,125 @@
+[
+ {
+  "id": "cid_humanidades_2",
+  "nome": "Humanidades 2",
+  "pais_id": "reg_campi_ufg",
+  "continente": "Campi UFG",
+  "lat": -16.6035,
+  "lon": -49.2685,
+  "status": "realizado",
+  "levantamento": {
+   "desde": 2024,
+   "arvores": 102,
+   "cactos": 45,
+   "ornamentais": 300
+  }
+ },
+ {
+  "id": "cid_biblioteca_central",
+  "nome": "Biblioteca Central",
+  "pais_id": "reg_campi_ufg",
+  "continente": "Campi UFG",
+  "lat": -16.6055,
+  "lon": -49.264,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_campus_samambaia",
+  "nome": "Câmpus Samambaia",
+  "pais_id": "reg_campi_ufg",
+  "continente": "Campi UFG",
+  "lat": -16.602,
+  "lon": -49.266,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_iesa",
+  "nome": "IESA",
+  "pais_id": "reg_campi_ufg",
+  "continente": "Campi UFG",
+  "lat": -16.6013,
+  "lon": -49.2637,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_avenida_esperanca",
+  "nome": "Avenida Esperança",
+  "pais_id": "reg_campi_ufg",
+  "continente": "Campi UFG",
+  "lat": -16.6075,
+  "lon": -49.2585,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_museu_antropologico",
+  "nome": "Museu Antropológico",
+  "pais_id": "reg_regiao_central",
+  "continente": "Região Central",
+  "lat": -16.6778,
+  "lon": -49.2432,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_praca_xi_de_maio",
+  "nome": "Praça XI de Maio",
+  "pais_id": "reg_regiao_central",
+  "continente": "Região Central",
+  "lat": -16.6628,
+  "lon": -49.256,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_bosque_dos_buritis",
+  "nome": "Bosque dos Buritis",
+  "pais_id": "reg_regiao_oeste",
+  "continente": "Região Oeste",
+  "lat": -16.6818,
+  "lon": -49.2619,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_shangrila",
+  "nome": "Shangrilá",
+  "pais_id": "reg_regiao_oeste",
+  "continente": "Região Oeste",
+  "lat": -16.6585,
+  "lon": -49.2985,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_parque_leolidio_ramos_di_caiado_go",
+  "nome": "Parque Leolídio Ramos Caiado",
+  "pais_id": "reg_regiao_norte",
+  "continente": "Região Norte",
+  "lat": -16.6284,
+  "lon": -49.2581,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_vila_itatiaia",
+  "nome": "Vila Itatiaia",
+  "pais_id": "reg_regiao_norte",
+  "continente": "Região Norte",
+  "lat": -16.5945,
+  "lon": -49.272,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_praca_wilton_valente_chaves_setor_",
+  "nome": "Praça Wilton Valente Chaves",
+  "pais_id": "reg_regiao_sul",
+  "continente": "Região Sul",
+  "lat": -16.6905,
+  "lon": -49.2455,
+  "status": "realizado"
+ },
+ {
+  "id": "cid_escola_municipal_jesuina_de_abreu",
+  "nome": "Escola Municipal Jesuína de Abreu",
+  "pais_id": "reg_regiao_sudoeste",
+  "continente": "Região Sudoeste",
+  "lat": -16.7075,
+  "lon": -49.302,
+  "status": "realizado"
+ }
+]

@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// Cloud Storage — anexos, comprovantes e documentos do painel.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuth()       { return request.auth != null; }
+    function isGestor()     {
+      return isAuth() && request.auth.token.papel in ['admin', 'governanca', 'gestor'];
+    }
+
+    // Comprovantes de captação/financiamento
+    match /comprovantes/{ano}/{arquivo} {
+      allow read:  if isAuth();
+      allow write: if isGestor()
+                   && request.resource.size < 20 * 1024 * 1024
+                   && request.resource.contentType.matches('application/pdf|image/(png|jpe?g|gif|webp)');
+    }
+
+    // Documentos de convênios e relatórios
+    match /documentos/{contexto}/{arquivo} {
+      allow read:  if isAuth();
+      allow write: if isGestor() && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // Anexos de feedback (imagens ou PDF) — escopados pelo uid do autor.
+    // Cada usuário grava/apaga só sob o próprio uid; leem gestor+ ou o autor.
+    match /feedbacks/{uid}/{fid}/{arquivo} {
+      allow read:   if isGestor() || (isAuth() && request.auth.uid == uid);
+      allow write:  if isAuth() && request.auth.uid == uid
+                    && request.resource.size < 10 * 1024 * 1024
+                    && request.resource.contentType.matches('application/pdf|image/(png|jpe?g|gif|webp)');
+      allow delete: if isAuth() && request.auth.uid == uid;
+    }
+
+    // Negação padrão
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

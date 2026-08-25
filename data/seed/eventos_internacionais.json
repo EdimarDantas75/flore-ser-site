@@ -1,0 +1,362 @@
+[
+ {
+  "id": "ev_feira_01",
+  "nome": "Feira Multicultural Flore-Ser · I Edição",
+  "periodo": "ago/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 150,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 150,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_02",
+  "nome": "Feira Multicultural Flore-Ser · II Edição",
+  "periodo": "set/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 200,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 200,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_03",
+  "nome": "Feira Multicultural Flore-Ser · III Edição",
+  "periodo": "out/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_04",
+  "nome": "Feira Multicultural Flore-Ser · IV Edição",
+  "periodo": "nov/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_05",
+  "nome": "Feira Multicultural Flore-Ser · V Edição",
+  "periodo": "fev/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_06",
+  "nome": "Feira Multicultural Flore-Ser · VI Edição",
+  "periodo": "mar/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_07",
+  "nome": "Feira Multicultural Flore-Ser · VII Edição",
+  "periodo": "abr/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_feira_08",
+  "nome": "Feira Multicultural Flore-Ser · VIII Edição",
+  "periodo": "mai/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 300,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 300,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   12
+  ],
+  "tags": [
+   "Feira Multicultural"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_3_acao_de_re",
+  "nome": "Ação de Requalificação na Praça XI de Maio",
+  "periodo": "mai/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 10,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 10,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Ocupação",
+   "Cultura"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_5_semana_nac",
+  "nome": "Semana Nacional do Livro e da Biblioteca",
+  "periodo": "2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 60,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 60,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Leitura",
+   "Cultura"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_14_arraia_flo",
+  "nome": "Arraiá Flore-Ser",
+  "periodo": "jun/2025 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 60,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 60,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Cultura popular",
+   "Festa"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_24_clube_do_l",
+  "nome": "Clube do Livro e programação Cultural - 1ª Edição",
+  "periodo": "abr/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 12,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 12,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Leitura",
+   "Cultura"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_26_flore_ser_",
+  "nome": "Flore-Ser no Parque - Clube do Livro e Programação Cultural ",
+  "periodo": "mai/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 16,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 16,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Leitura",
+   "Cultura"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_27_oficina_de",
+  "nome": "Oficina de Fanzine com Ilda Santa Fé e Ateliê da Palavra",
+  "periodo": "mai/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 15,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 15,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Arte-Educação",
+   "Oficina"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_29_flore_ser_",
+  "nome": "Flore-Ser no Parque -Clube do Livro e Programação Cultural -",
+  "periodo": "jun/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 38,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 38,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Leitura",
+   "Cultura"
+  ],
+  "deleted_at": null
+ },
+ {
+  "id": "ev_30_flore_ser_",
+  "nome": "Flore-Ser na Praça(Clube do Livro e Programação Cultural) 4ª",
+  "periodo": "jul/2026 · Goiânia",
+  "situacao": "Realizada",
+  "participantes": 39,
+  "realce": "gr",
+  "stats": [
+   {
+    "valor": 39,
+    "rotulo": "público"
+   }
+  ],
+  "ods": [
+   11,
+   4
+  ],
+  "tags": [
+   "Leitura",
+   "Cultura"
+  ],
+  "deleted_at": null
+ }
+]
